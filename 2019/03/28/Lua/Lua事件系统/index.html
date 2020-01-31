@@ -5,20 +5,20 @@
   
 
   
-  <title>Hexo</title>
+  <title>Lua事件系统（EventManager.lua） | </title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="Lua事件系统（EventManager.lua）在使用LuaFrameWork的时候，苦于没有事件系统传递消息，于是写了这个事件管理器，进行多个模块之间、单个模块内部的消息传递。 作为事件管理器，那么就是需要管理事件，因此我选择function作为参数进行传递。事件需要一个唯一标识符，无论是数字还是string都可以，我选择string作为标识符，因为这样更容易辨识。事件有可能需要传递参数，lu">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://yoursite.com/2020/01/31/Lua/Lua事件系统/index.html">
-<meta property="og:site_name" content="Hexo">
+<meta property="og:title" content="Lua事件系统（EventManager.lua）">
+<meta property="og:url" content="http://yoursite.com/2019/03/28/Lua/Lua事件系统/index.html">
+<meta property="og:site_name">
 <meta property="og:description" content="Lua事件系统（EventManager.lua）在使用LuaFrameWork的时候，苦于没有事件系统传递消息，于是写了这个事件管理器，进行多个模块之间、单个模块内部的消息传递。 作为事件管理器，那么就是需要管理事件，因此我选择function作为参数进行传递。事件需要一个唯一标识符，无论是数字还是string都可以，我选择string作为标识符，因为这样更容易辨识。事件有可能需要传递参数，lu">
-<meta property="og:updated_time" content="2019-07-11T11:24:19.622Z">
+<meta property="og:updated_time" content="2020-01-31T03:15:03.996Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hexo">
+<meta name="twitter:title" content="Lua事件系统（EventManager.lua）">
 <meta name="twitter:description" content="Lua事件系统（EventManager.lua）在使用LuaFrameWork的时候，苦于没有事件系统传递消息，于是写了这个事件管理器，进行多个模块之间、单个模块内部的消息传递。 作为事件管理器，那么就是需要管理事件，因此我选择function作为参数进行传递。事件需要一个唯一标识符，无论是数字还是string都可以，我选择string作为标识符，因为这样更容易辨识。事件有可能需要传递参数，lu">
   
-    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+    <link rel="alternate" href="/atom.xml" title="" type="application/atom+xml">
   
   
     <link rel="icon" href="/favicon.png">
@@ -37,7 +37,7 @@
   <div id="header-outer" class="outer">
     <div id="header-title" class="inner">
       <h1 id="logo-wrap">
-        <a href="/" id="logo">Hexo</a>
+        <a href="/" id="logo"></a>
       </h1>
       
     </div>
@@ -52,9 +52,9 @@
       </nav>
       <nav id="sub-nav">
         
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS"></a>
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
         
-        <a id="nav-search-btn" class="nav-icon" title="Buscar"></a>
+        <a id="nav-search-btn" class="nav-icon" title="Suche"></a>
       </nav>
       <div id="search-form-wrap">
         <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
@@ -65,13 +65,23 @@
       <div class="outer">
         <section id="main"><article id="post-Lua/Lua事件系统" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2020/01/31/Lua/Lua事件系统/" class="article-date">
-  <time datetime="2020-01-31T01:58:26.497Z" itemprop="datePublished">2020-01-31</time>
+    <a href="/2019/03/28/Lua/Lua事件系统/" class="article-date">
+  <time datetime="2019-03-28T14:47:05.000Z" itemprop="datePublished">2019-03-28</time>
 </a>
     
   </div>
   <div class="article-inner">
     
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Lua事件系统（EventManager.lua）
+    </h1>
+  
+
+      </header>
     
     <div class="article-entry" itemprop="articleBody">
       
@@ -92,7 +102,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/01/31/Lua/Lua事件系统/" data-id="ck61jk6dz000aywkliusougqj" class="article-share-link">Compartir</a>
+      <a data-url="http://yoursite.com/2019/03/28/Lua/Lua事件系统/" data-id="ck61jk6dz000aywkliusougqj" class="article-share-link">Teilen</a>
       
       
     </footer>
@@ -101,8 +111,8 @@
     
 <nav id="article-nav">
   
-    <a href="/2020/01/31/Lua/Lua面向对象/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Nuevo</strong>
+    <a href="/2020/01/31/Cmd/01/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Neuer</strong>
       <div class="article-nav-title">
         
           (no title)
@@ -111,8 +121,8 @@
     </a>
   
   
-    <a href="/2020/01/31/Cmd/01/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Viejo</strong>
+    <a href="/2018/07/24/Unity_SmartMerge/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Älter</strong>
       <div class="article-nav-title"></div>
     </a>
   
@@ -135,9 +145,9 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Archivos</h3>
+    <h3 class="widget-title">Archiv</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li></ul>
     </div>
   </div>
 
@@ -145,7 +155,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Posts recientes</h3>
+    <h3 class="widget-title">letzter Beitrag</h3>
     <div class="widget">
       <ul>
         
@@ -166,7 +176,7 @@
           </li>
         
           <li>
-            <a href="/2020/01/31/Lua/Lua面向对象/">(no title)</a>
+            <a href="/2020/01/31/设计模式/工厂模式/">(no title)</a>
           </li>
         
       </ul>
@@ -181,8 +191,8 @@
   
   <div class="outer">
     <div id="footer-info" class="inner">
-      &copy; 2020 John Doe<br>
-      Construido por <a href="http://hexo.io/" target="_blank">Hexo</a>
+      &copy; 2020 <br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>
 </footer>

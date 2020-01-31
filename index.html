@@ -5,16 +5,16 @@
   
 
   
-  <title>Hexo</title>
+  <title></title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
+<meta property="og:title">
 <meta property="og:url" content="http://yoursite.com/index.html">
-<meta property="og:site_name" content="Hexo">
+<meta property="og:site_name">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hexo">
+<meta name="twitter:title">
   
-    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+    <link rel="alternate" href="/atom.xml" title="" type="application/atom+xml">
   
   
     <link rel="icon" href="/favicon.png">
@@ -33,7 +33,7 @@
   <div id="header-outer" class="outer">
     <div id="header-title" class="inner">
       <h1 id="logo-wrap">
-        <a href="/" id="logo">Hexo</a>
+        <a href="/" id="logo"></a>
       </h1>
       
     </div>
@@ -48,9 +48,9 @@
       </nav>
       <nav id="sub-nav">
         
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS"></a>
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
         
-        <a id="nav-search-btn" class="nav-icon" title="Buscar"></a>
+        <a id="nav-search-btn" class="nav-icon" title="Suche"></a>
       </nav>
       <div id="search-form-wrap">
         <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
@@ -133,7 +133,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/01/31/算法/快速排序/" data-id="ck61jk6dv0007ywkllf3n5s90" class="article-share-link">Compartir</a>
+      <a data-url="http://yoursite.com/2020/01/31/算法/快速排序/" data-id="ck61jk6dv0007ywkllf3n5s90" class="article-share-link">Teilen</a>
       
       
     </footer>
@@ -223,7 +223,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/01/31/算法/冒泡排序/" data-id="ck61jk6dr0006ywkluqvdgirc" class="article-share-link">Compartir</a>
+      <a data-url="http://yoursite.com/2020/01/31/算法/冒泡排序/" data-id="ck61jk6dr0006ywkluqvdgirc" class="article-share-link">Teilen</a>
       
       
     </footer>
@@ -254,7 +254,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/01/31/设计模式/门面模式/" data-id="ck61jk6dy0009ywkljdzwjt8c" class="article-share-link">Compartir</a>
+      <a data-url="http://yoursite.com/2020/01/31/设计模式/门面模式/" data-id="ck61jk6dy0009ywkljdzwjt8c" class="article-share-link">Teilen</a>
       
       
     </footer>
@@ -290,7 +290,40 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/01/31/设计模式/订阅者模式/" data-id="ck61jk6dw0008ywklgpqnosnn" class="article-share-link">Compartir</a>
+      <a data-url="http://yoursite.com/2020/01/31/设计模式/订阅者模式/" data-id="ck61jk6dw0008ywklgpqnosnn" class="article-share-link">Teilen</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-设计模式/工厂模式" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/01/31/设计模式/工厂模式/" class="article-date">
+  <time datetime="2020-01-31T01:58:26.532Z" itemprop="datePublished">2020-01-31</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="工厂模式（Factory）"><a href="#工厂模式（Factory）" class="headerlink" title="工厂模式（Factory）"></a>工厂模式（Factory）</h3><p>都知道流水线是近代工业的重大突破，使得生产效率大幅度提高。工厂模式的作用也是如此。一般来说，我们平常用到某个类，直接new一个就可以了。但是特殊情况下，我们不确定需要哪个类，或者存在多个同类型的类比如任务、车、游戏中的基础数据类比如资源、道具等这些类的时候，就可能用到工厂模式。</p>
+<p>它可以直接返回我们需要的类的实例，而不需要我们去考虑中间的各种转换跟弯弯，这些逻辑都写在了工厂内部，使用的时候直接传递一个或者多个具有唯一标识的信息，工厂就可以返回我们需要的类的实例。这就是其方便之处。</p>
+<p>工厂模式同样也存在多种实现方式，最简单的就是直接通过逻辑判断然后返回需要的类：</p>
+<h4 id="简单工厂"><a href="#简单工厂" class="headerlink" title="简单工厂"></a>简单工厂</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">static void Factory(string type)&#123;</span><br><span class="line">    if(type == &quot;prop&quot;)&#123;</span><br><span class="line">        // create prop 创建道具</span><br><span class="line">    &#125;</span><br><span class="line">    else if(type == &quot;resource&quot;)&#123;</span><br><span class="line">        // create resource //创建资源</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    switch(type)&#123;</span><br><span class="line">        case &quot;prop&quot;:</span><br><span class="line">        &#123;</span><br><span class="line">            // create prop 创建道具</span><br><span class="line">        &#125;</span><br><span class="line">        break;</span><br><span class="line">        case &quot;resources&quot;:</span><br><span class="line">        &#123;</span><br><span class="line">            // create resource //创建资源</span><br><span class="line">        &#125;</span><br><span class="line">        break;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>简单工厂直接以逻辑判断做处理，直接生成对应的实例，当然，之际情况下，不会使用string作为判断依据，每个游戏中都有对应的数据类的唯一标识符，通过标识符辨别需要生成哪种类型的实例。</p>
+<h4 id="接口-抽象类"><a href="#接口-抽象类" class="headerlink" title="接口/抽象类"></a>接口/抽象类</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line">namespace VSCode&#123;</span><br><span class="line">    interface IFactor</span><br><span class="line">    &#123;</span><br><span class="line">        void Name();</span><br><span class="line">        void GetType();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    class FactoryA : IFactor</span><br><span class="line">    &#123;</span><br><span class="line">        void IFactor.GetType()</span><br><span class="line">        &#123;</span><br><span class="line">            throw new System.NotImplementedException();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        void IFactor.Name()</span><br><span class="line">        &#123;</span><br><span class="line">            throw new System.NotImplementedException();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    class FactoryB : IFactor</span><br><span class="line">    &#123;</span><br><span class="line">        void IFactor.GetType()</span><br><span class="line">        &#123;</span><br><span class="line">            throw new System.NotImplementedException();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        void IFactor.Name()</span><br><span class="line">        &#123;</span><br><span class="line">            throw new System.NotImplementedException();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    class NullFactory : IFactor</span><br><span class="line">    &#123;</span><br><span class="line">        public void Name()</span><br><span class="line">        &#123;</span><br><span class="line">            throw new System.NotImplementedException();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        void IFactor.GetType()</span><br><span class="line">        &#123;</span><br><span class="line">            throw new System.NotImplementedException();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    class  Factory &#123;</span><br><span class="line">        public static IFactor FactoryCreateItem(string type)&#123;            </span><br><span class="line">            if(type == &quot;A&quot;)&#123;</span><br><span class="line">                return new FactoryA();</span><br><span class="line">            &#125;</span><br><span class="line">            else if(type == &quot;B&quot;)</span><br><span class="line">            &#123;</span><br><span class="line">                return new FactoryB();</span><br><span class="line">            &#125;</span><br><span class="line">            else</span><br><span class="line">            &#123;</span><br><span class="line">                return new NullFactory();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>接口/抽象类则复杂一些，因为生成都都是同一类型的不同类，因此，直接将相同的部分抽象到接口或者抽象类中，然后不同的类型继承并重写。然后将创建方式写在一块，使用的时候，直接调用并传入需要的参数就可以获得需要的类的实例</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/01/31/设计模式/工厂模式/" data-id="ck61lhd1f00003ckl3pymilfr" class="article-share-link">Teilen</a>
       
       
     </footer>
@@ -335,46 +368,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/01/31/Lua/Lua面向对象/" data-id="ck61jk6e2000bywklsa6iw376" class="article-share-link">Compartir</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Lua/Lua事件系统" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/01/31/Lua/Lua事件系统/" class="article-date">
-  <time datetime="2020-01-31T01:58:26.497Z" itemprop="datePublished">2020-01-31</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="Lua事件系统（EventManager-lua）"><a href="#Lua事件系统（EventManager-lua）" class="headerlink" title="Lua事件系统（EventManager.lua）"></a>Lua事件系统（EventManager.lua）</h3><p>在使用LuaFrameWork的时候，苦于没有事件系统传递消息，于是写了这个事件管理器，进行多个模块之间、单个模块内部的消息传递。</p>
-<p>作为事件管理器，那么就是需要管理事件，因此我选择function作为参数进行传递。事件需要一个唯一标识符，无论是数字还是string都可以，我选择string作为标识符，因为这样更容易辨识。事件有可能需要传递参数，lua的可变参数为 ‘…’三个点。</p>
-<p>用string作为唯一标识符的问题在于可能会不小心出现两个同样的标识符，这样就会导致出现错误调用的问题，因此我添加了一个tag标签，用于区分不同模块的事件。</p>
-<h4 id="保存事件"><a href="#保存事件" class="headerlink" title="保存事件"></a>保存事件</h4><p>事件我用两个变量进行保存，一个是带tag的表示模块内部的事件容器 <em>eventsWithTag</em>，一个是不带tag的，表示通用的事件的容器 <em>events</em></p>
-<h4 id="添加事件"><a href="#添加事件" class="headerlink" title="添加事件"></a>添加事件</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">local function AddListener(list, name, func)</span><br><span class="line">    if list[tostring(name)] == nil then</span><br><span class="line">        list[tostring(name)] = &#123;&#125;</span><br><span class="line">        table.insert(list[tostring(name)], func)</span><br><span class="line">    else</span><br><span class="line">        local eventList = list[tostring(name)]</span><br><span class="line">        if not CheckContainFunc(eventList, func) then</span><br><span class="line">            table.insert(eventList, func)</span><br><span class="line">        else</span><br><span class="line">            print(string.format(&quot;Events Contains A Same Key %s&quot;, name))</span><br><span class="line">        end</span><br><span class="line">    end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">local function AddListenerWithTag(tag, name, func)</span><br><span class="line">    if eventsWithTag[tostring(tag)] then</span><br><span class="line">        local tagEvents = eventsWithTag[tostring(tag)]</span><br><span class="line">        AddListener(tagEvents, name, func)</span><br><span class="line">    else</span><br><span class="line">        eventsWithTag[tostring(tag)] = &#123;&#125; -- add a new tag to keep events</span><br><span class="line">        AddListener(eventsWithTag[tostring(tag)], name, func)</span><br><span class="line">    end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
-<p>tag 表示模块的唯一标识符，lua中没有过多的数据格式限制，如果需要的话，可以改为其他的数据格式，比如数字、table等等，管理器通过这个tag查找事件属于哪个模块的事件</p>
-<p>name 表示事件的唯一标识符，管理器通过这个name查找对应的事件</p>
-<p>func 表示回调函数，事件最终会调用这些方法，方法可以带参数，调用的时候如果不传递则为nil</p>
-<h4 id="删除事件"><a href="#删除事件" class="headerlink" title="删除事件"></a>删除事件</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">local function RemoveListener(list, name, func)</span><br><span class="line">    if list ~= nil then</span><br><span class="line">        local eventList = list[tostring(name)]</span><br><span class="line">        local index = CheckContainFunc(eventList, func)</span><br><span class="line">        if index then</span><br><span class="line">            print(&quot;Remove &quot; .. name .. &quot; Succeed !&quot;)</span><br><span class="line">            table.remove(eventList, index)</span><br><span class="line">        else</span><br><span class="line">            print(&quot;Attempt To Remove A UnRegister Event: &quot; .. name)</span><br><span class="line">        end</span><br><span class="line">    end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">local function RemoveListenerWithTag(tag, name, func)</span><br><span class="line">    local tmpEventTag = eventsWithTag[tostring(tag)]</span><br><span class="line">    if tmpEventTag then</span><br><span class="line">        RemoveListener(tmpEventTag, name, func)</span><br><span class="line">    end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
-<p>同样的，怎么添加事件就需要怎么样删除事件。通过tag跟name查找并删除即可。</p>
-<h4 id="调用事件"><a href="#调用事件" class="headerlink" title="调用事件"></a>调用事件</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">local function DispatchListener(list, name, ...)</span><br><span class="line">    if list[tostring(name)] ~= nil then</span><br><span class="line">        local events = list[tostring(name)]</span><br><span class="line">        for i, v in pairs(events) do</span><br><span class="line">            if v ~= nil then</span><br><span class="line">                v(...)</span><br><span class="line">            end</span><br><span class="line">        end</span><br><span class="line">    else</span><br><span class="line">        print(string.format(&quot;event is not registed %s&quot;, name))</span><br><span class="line">    end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">local function DispatchListenerByTag(tag, name, ...)</span><br><span class="line">    local eventsList = eventsWithTag[tostring(tag)]</span><br><span class="line">    DispatchListener(eventsList, name, ...)</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
-<p>调用的时候，根据传入的tag跟name查找事件，遍历name下所有的事件并调用。</p>
-<p>具体方法可以看Scripts目录下的EventManager.lua文件，事件跟模块的唯一标识符最好也能够放在一个全局类中，这样模块之间调用事件不会出现不必要的交叉</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/01/31/Lua/Lua事件系统/" data-id="ck61jk6dz000aywkliusougqj" class="article-share-link">Compartir</a>
+      <a data-url="http://yoursite.com/2020/01/31/Lua/Lua面向对象/" data-id="ck61jk6e2000bywklsa6iw376" class="article-share-link">Teilen</a>
       
       
     </footer>
@@ -406,7 +400,56 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/01/31/Cmd/01/" data-id="ck61jk6do0005ywkl43j4xgvr" class="article-share-link">Compartir</a>
+      <a data-url="http://yoursite.com/2020/01/31/Cmd/01/" data-id="ck61jk6do0005ywkl43j4xgvr" class="article-share-link">Teilen</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Lua/Lua事件系统" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/03/28/Lua/Lua事件系统/" class="article-date">
+  <time datetime="2019-03-28T14:47:05.000Z" itemprop="datePublished">2019-03-28</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/03/28/Lua/Lua事件系统/">Lua事件系统（EventManager.lua）</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="Lua事件系统（EventManager-lua）"><a href="#Lua事件系统（EventManager-lua）" class="headerlink" title="Lua事件系统（EventManager.lua）"></a>Lua事件系统（EventManager.lua）</h3><p>在使用LuaFrameWork的时候，苦于没有事件系统传递消息，于是写了这个事件管理器，进行多个模块之间、单个模块内部的消息传递。</p>
+<p>作为事件管理器，那么就是需要管理事件，因此我选择function作为参数进行传递。事件需要一个唯一标识符，无论是数字还是string都可以，我选择string作为标识符，因为这样更容易辨识。事件有可能需要传递参数，lua的可变参数为 ‘…’三个点。</p>
+<p>用string作为唯一标识符的问题在于可能会不小心出现两个同样的标识符，这样就会导致出现错误调用的问题，因此我添加了一个tag标签，用于区分不同模块的事件。</p>
+<h4 id="保存事件"><a href="#保存事件" class="headerlink" title="保存事件"></a>保存事件</h4><p>事件我用两个变量进行保存，一个是带tag的表示模块内部的事件容器 <em>eventsWithTag</em>，一个是不带tag的，表示通用的事件的容器 <em>events</em></p>
+<h4 id="添加事件"><a href="#添加事件" class="headerlink" title="添加事件"></a>添加事件</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">local function AddListener(list, name, func)</span><br><span class="line">    if list[tostring(name)] == nil then</span><br><span class="line">        list[tostring(name)] = &#123;&#125;</span><br><span class="line">        table.insert(list[tostring(name)], func)</span><br><span class="line">    else</span><br><span class="line">        local eventList = list[tostring(name)]</span><br><span class="line">        if not CheckContainFunc(eventList, func) then</span><br><span class="line">            table.insert(eventList, func)</span><br><span class="line">        else</span><br><span class="line">            print(string.format(&quot;Events Contains A Same Key %s&quot;, name))</span><br><span class="line">        end</span><br><span class="line">    end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">local function AddListenerWithTag(tag, name, func)</span><br><span class="line">    if eventsWithTag[tostring(tag)] then</span><br><span class="line">        local tagEvents = eventsWithTag[tostring(tag)]</span><br><span class="line">        AddListener(tagEvents, name, func)</span><br><span class="line">    else</span><br><span class="line">        eventsWithTag[tostring(tag)] = &#123;&#125; -- add a new tag to keep events</span><br><span class="line">        AddListener(eventsWithTag[tostring(tag)], name, func)</span><br><span class="line">    end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<p>tag 表示模块的唯一标识符，lua中没有过多的数据格式限制，如果需要的话，可以改为其他的数据格式，比如数字、table等等，管理器通过这个tag查找事件属于哪个模块的事件</p>
+<p>name 表示事件的唯一标识符，管理器通过这个name查找对应的事件</p>
+<p>func 表示回调函数，事件最终会调用这些方法，方法可以带参数，调用的时候如果不传递则为nil</p>
+<h4 id="删除事件"><a href="#删除事件" class="headerlink" title="删除事件"></a>删除事件</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">local function RemoveListener(list, name, func)</span><br><span class="line">    if list ~= nil then</span><br><span class="line">        local eventList = list[tostring(name)]</span><br><span class="line">        local index = CheckContainFunc(eventList, func)</span><br><span class="line">        if index then</span><br><span class="line">            print(&quot;Remove &quot; .. name .. &quot; Succeed !&quot;)</span><br><span class="line">            table.remove(eventList, index)</span><br><span class="line">        else</span><br><span class="line">            print(&quot;Attempt To Remove A UnRegister Event: &quot; .. name)</span><br><span class="line">        end</span><br><span class="line">    end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">local function RemoveListenerWithTag(tag, name, func)</span><br><span class="line">    local tmpEventTag = eventsWithTag[tostring(tag)]</span><br><span class="line">    if tmpEventTag then</span><br><span class="line">        RemoveListener(tmpEventTag, name, func)</span><br><span class="line">    end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<p>同样的，怎么添加事件就需要怎么样删除事件。通过tag跟name查找并删除即可。</p>
+<h4 id="调用事件"><a href="#调用事件" class="headerlink" title="调用事件"></a>调用事件</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">local function DispatchListener(list, name, ...)</span><br><span class="line">    if list[tostring(name)] ~= nil then</span><br><span class="line">        local events = list[tostring(name)]</span><br><span class="line">        for i, v in pairs(events) do</span><br><span class="line">            if v ~= nil then</span><br><span class="line">                v(...)</span><br><span class="line">            end</span><br><span class="line">        end</span><br><span class="line">    else</span><br><span class="line">        print(string.format(&quot;event is not registed %s&quot;, name))</span><br><span class="line">    end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">local function DispatchListenerByTag(tag, name, ...)</span><br><span class="line">    local eventsList = eventsWithTag[tostring(tag)]</span><br><span class="line">    DispatchListener(eventsList, name, ...)</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<p>调用的时候，根据传入的tag跟name查找事件，遍历name下所有的事件并调用。</p>
+<p>具体方法可以看Scripts目录下的EventManager.lua文件，事件跟模块的唯一标识符最好也能够放在一个全局类中，这样模块之间调用事件不会出现不必要的交叉</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/03/28/Lua/Lua事件系统/" data-id="ck61jk6dz000aywkliusougqj" class="article-share-link">Teilen</a>
       
       
     </footer>
@@ -432,7 +475,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/07/24/Unity_SmartMerge/" data-id="ck61jk6b80000ywklqfyymhgu" class="article-share-link">Compartir</a>
+      <a data-url="http://yoursite.com/2018/07/24/Unity_SmartMerge/" data-id="ck61jk6b80000ywklqfyymhgu" class="article-share-link">Teilen</a>
       
       
     </footer>
@@ -469,43 +512,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/03/28/test2/" data-id="ck61jk6bt0003ywklmalhq44b" class="article-share-link">Compartir</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Article-title" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/03/28/Article-title/" class="article-date">
-  <time datetime="2018-03-28T14:24:15.000Z" itemprop="datePublished">2018-03-28</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/03/28/Article-title/">Article title</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/03/28/Article-title/" data-id="ck61jk6bq0001ywkl52no0bvz" class="article-share-link">Compartir</a>
+      <a data-url="http://yoursite.com/2018/03/28/test2/" data-id="ck61jk6bt0003ywklmalhq44b" class="article-share-link">Teilen</a>
       
       
     </footer>
@@ -519,7 +526,7 @@
 
   <nav id="page-nav">
     
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Siguiente &raquo;</a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">weiter &raquo;</a>
   </nav>
 
 </section>
@@ -536,9 +543,9 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Archivos</h3>
+    <h3 class="widget-title">Archiv</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li></ul>
     </div>
   </div>
 
@@ -546,7 +553,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Posts recientes</h3>
+    <h3 class="widget-title">letzter Beitrag</h3>
     <div class="widget">
       <ul>
         
@@ -567,7 +574,7 @@
           </li>
         
           <li>
-            <a href="/2020/01/31/Lua/Lua面向对象/">(no title)</a>
+            <a href="/2020/01/31/设计模式/工厂模式/">(no title)</a>
           </li>
         
       </ul>
@@ -582,8 +589,8 @@
   
   <div class="outer">
     <div id="footer-info" class="inner">
-      &copy; 2020 John Doe<br>
-      Construido por <a href="http://hexo.io/" target="_blank">Hexo</a>
+      &copy; 2020 <br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>
 </footer>
