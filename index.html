@@ -42,7 +42,7 @@
 				<h1 class="site-name"><a href="/" title=""></a></h1>
 				<h2 class="blog-motto"></h2>
 			</div>
-			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜單">
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
 			</a></div>
 			<nav class="animated">
 				<ul>
@@ -83,7 +83,7 @@
 		<a href="/about" title="" target="_blank" itemprop="author"></a>
 		
   <p class="article-time">
-    <time datetime="2019-03-28T14:47:05.000Z" itemprop="datePublished"> 發表於 2019-03-28</time>
+    <time datetime="2019-03-28T14:47:05.000Z" itemprop="datePublished"> 发表于 2019-03-28</time>
     
   </p>
 </header>
@@ -138,6 +138,61 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
+      <a href="/2019/03/28/Cmd/01/" title="Windows批处理命令" itemprop="url">Windows批处理命令</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="" target="_blank" itemprop="author"></a>
+		
+  <p class="article-time">
+    <time datetime="2019-03-28T14:47:05.000Z" itemprop="datePublished"> 发表于 2019-03-28</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <h1 id="Windows批处理命令"><a href="#Windows批处理命令" class="headerlink" title="Windows批处理命令"></a>Windows批处理命令</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>Windows批处理命令是使用一些含有特殊意义的符号和一些完成指定功能的命令组合而成</p>
+<h2 id="常见批处理命令"><a href="#常见批处理命令" class="headerlink" title="常见批处理命令"></a>常见批处理命令</h2><ol>
+<li><p>REM 和 ::</p>
+<p>为注释命令，后面的内容不显示不执行</p>
+</li>
+</ol>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
       <a href="/2019/03/28/Lua/Lua面向对象/" title="Lua面向对象" itemprop="url">Lua面向对象</a>
   </h1>
   <p class="article-author">By
@@ -145,7 +200,7 @@
 		<a href="/about" title="" target="_blank" itemprop="author"></a>
 		
   <p class="article-time">
-    <time datetime="2019-03-28T14:47:05.000Z" itemprop="datePublished"> 發表於 2019-03-28</time>
+    <time datetime="2019-03-28T14:47:05.000Z" itemprop="datePublished"> 发表于 2019-03-28</time>
     
   </p>
 </header>
@@ -206,25 +261,26 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2019/03/28/Cmd/01/" title="Windows批处理命令" itemprop="url">Windows批处理命令</a>
+      <a href="/2019/03/28/设计模式/工厂模式/" title="工厂模式（Factory）" itemprop="url">工厂模式（Factory）</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="" target="_blank" itemprop="author"></a>
 		
   <p class="article-time">
-    <time datetime="2019-03-28T14:47:05.000Z" itemprop="datePublished"> 發表於 2019-03-28</time>
+    <time datetime="2019-03-28T14:47:05.000Z" itemprop="datePublished"> 发表于 2019-03-28</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <h1 id="Windows批处理命令"><a href="#Windows批处理命令" class="headerlink" title="Windows批处理命令"></a>Windows批处理命令</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>Windows批处理命令是使用一些含有特殊意义的符号和一些完成指定功能的命令组合而成</p>
-<h2 id="常见批处理命令"><a href="#常见批处理命令" class="headerlink" title="常见批处理命令"></a>常见批处理命令</h2><ol>
-<li><p>REM 和 ::</p>
-<p>为注释命令，后面的内容不显示不执行</p>
-</li>
-</ol>
+        <h3 id="工厂模式（Factory）"><a href="#工厂模式（Factory）" class="headerlink" title="工厂模式（Factory）"></a>工厂模式（Factory）</h3><p>都知道流水线是近代工业的重大突破，使得生产效率大幅度提高。工厂模式的作用也是如此。一般来说，我们平常用到某个类，直接new一个就可以了。但是特殊情况下，我们不确定需要哪个类，或者存在多个同类型的类比如任务、车、游戏中的基础数据类比如资源、道具等这些类的时候，就可能用到工厂模式。</p>
+<p>它可以直接返回我们需要的类的实例，而不需要我们去考虑中间的各种转换跟弯弯，这些逻辑都写在了工厂内部，使用的时候直接传递一个或者多个具有唯一标识的信息，工厂就可以返回我们需要的类的实例。这就是其方便之处。</p>
+<p>工厂模式同样也存在多种实现方式，最简单的就是直接通过逻辑判断然后返回需要的类：</p>
+<h4 id="简单工厂"><a href="#简单工厂" class="headerlink" title="简单工厂"></a>简单工厂</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">static void Factory(string type)&#123;</span><br><span class="line">    if(type == &quot;prop&quot;)&#123;</span><br><span class="line">        // create prop 创建道具</span><br><span class="line">    &#125;</span><br><span class="line">    else if(type == &quot;resource&quot;)&#123;</span><br><span class="line">        // create resource //创建资源</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    switch(type)&#123;</span><br><span class="line">        case &quot;prop&quot;:</span><br><span class="line">        &#123;</span><br><span class="line">            // create prop 创建道具</span><br><span class="line">        &#125;</span><br><span class="line">        break;</span><br><span class="line">        case &quot;resources&quot;:</span><br><span class="line">        &#123;</span><br><span class="line">            // create resource //创建资源</span><br><span class="line">        &#125;</span><br><span class="line">        break;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>简单工厂直接以逻辑判断做处理，直接生成对应的实例，当然，之际情况下，不会使用string作为判断依据，每个游戏中都有对应的数据类的唯一标识符，通过标识符辨别需要生成哪种类型的实例。</p>
+<h4 id="接口-抽象类"><a href="#接口-抽象类" class="headerlink" title="接口/抽象类"></a>接口/抽象类</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line">namespace VSCode&#123;</span><br><span class="line">    interface IFactor</span><br><span class="line">    &#123;</span><br><span class="line">        void Name();</span><br><span class="line">        void GetType();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    class FactoryA : IFactor</span><br><span class="line">    &#123;</span><br><span class="line">        void IFactor.GetType()</span><br><span class="line">        &#123;</span><br><span class="line">            throw new System.NotImplementedException();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        void IFactor.Name()</span><br><span class="line">        &#123;</span><br><span class="line">            throw new System.NotImplementedException();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    class FactoryB : IFactor</span><br><span class="line">    &#123;</span><br><span class="line">        void IFactor.GetType()</span><br><span class="line">        &#123;</span><br><span class="line">            throw new System.NotImplementedException();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        void IFactor.Name()</span><br><span class="line">        &#123;</span><br><span class="line">            throw new System.NotImplementedException();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    class NullFactory : IFactor</span><br><span class="line">    &#123;</span><br><span class="line">        public void Name()</span><br><span class="line">        &#123;</span><br><span class="line">            throw new System.NotImplementedException();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        void IFactor.GetType()</span><br><span class="line">        &#123;</span><br><span class="line">            throw new System.NotImplementedException();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    class  Factory &#123;</span><br><span class="line">        public static IFactor FactoryCreateItem(string type)&#123;            </span><br><span class="line">            if(type == &quot;A&quot;)&#123;</span><br><span class="line">                return new FactoryA();</span><br><span class="line">            &#125;</span><br><span class="line">            else if(type == &quot;B&quot;)</span><br><span class="line">            &#123;</span><br><span class="line">                return new FactoryB();</span><br><span class="line">            &#125;</span><br><span class="line">            else</span><br><span class="line">            &#123;</span><br><span class="line">                return new NullFactory();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>接口/抽象类则复杂一些，因为生成都都是同一类型的不同类，因此，直接将相同的部分抽象到接口或者抽象类中，然后不同的类型继承并重写。然后将创建方式写在一块，使用的时候，直接调用并传入需要的参数就可以获得需要的类的实例</p>
 
         
         
@@ -268,7 +324,7 @@
 		<a href="/about" title="" target="_blank" itemprop="author"></a>
 		
   <p class="article-time">
-    <time datetime="2019-03-28T14:47:05.000Z" itemprop="datePublished"> 發表於 2019-03-28</time>
+    <time datetime="2019-03-28T14:47:05.000Z" itemprop="datePublished"> 发表于 2019-03-28</time>
     
   </p>
 </header>
@@ -381,7 +437,7 @@
 		<a href="/about" title="" target="_blank" itemprop="author"></a>
 		
   <p class="article-time">
-    <time datetime="2019-03-28T14:47:05.000Z" itemprop="datePublished"> 發表於 2019-03-28</time>
+    <time datetime="2019-03-28T14:47:05.000Z" itemprop="datePublished"> 发表于 2019-03-28</time>
     
   </p>
 </header>
@@ -486,7 +542,7 @@
 		<a href="/about" title="" target="_blank" itemprop="author"></a>
 		
   <p class="article-time">
-    <time datetime="2019-03-28T14:47:05.000Z" itemprop="datePublished"> 發表於 2019-03-28</time>
+    <time datetime="2019-03-28T14:47:05.000Z" itemprop="datePublished"> 发表于 2019-03-28</time>
     
   </p>
 </header>
@@ -538,62 +594,6 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2019/03/28/设计模式/工厂模式/" title="工厂模式（Factory）" itemprop="url">工厂模式（Factory）</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="" target="_blank" itemprop="author"></a>
-		
-  <p class="article-time">
-    <time datetime="2019-03-28T14:47:05.000Z" itemprop="datePublished"> 發表於 2019-03-28</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <h3 id="工厂模式（Factory）"><a href="#工厂模式（Factory）" class="headerlink" title="工厂模式（Factory）"></a>工厂模式（Factory）</h3><p>都知道流水线是近代工业的重大突破，使得生产效率大幅度提高。工厂模式的作用也是如此。一般来说，我们平常用到某个类，直接new一个就可以了。但是特殊情况下，我们不确定需要哪个类，或者存在多个同类型的类比如任务、车、游戏中的基础数据类比如资源、道具等这些类的时候，就可能用到工厂模式。</p>
-<p>它可以直接返回我们需要的类的实例，而不需要我们去考虑中间的各种转换跟弯弯，这些逻辑都写在了工厂内部，使用的时候直接传递一个或者多个具有唯一标识的信息，工厂就可以返回我们需要的类的实例。这就是其方便之处。</p>
-<p>工厂模式同样也存在多种实现方式，最简单的就是直接通过逻辑判断然后返回需要的类：</p>
-<h4 id="简单工厂"><a href="#简单工厂" class="headerlink" title="简单工厂"></a>简单工厂</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">static void Factory(string type)&#123;</span><br><span class="line">    if(type == &quot;prop&quot;)&#123;</span><br><span class="line">        // create prop 创建道具</span><br><span class="line">    &#125;</span><br><span class="line">    else if(type == &quot;resource&quot;)&#123;</span><br><span class="line">        // create resource //创建资源</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    switch(type)&#123;</span><br><span class="line">        case &quot;prop&quot;:</span><br><span class="line">        &#123;</span><br><span class="line">            // create prop 创建道具</span><br><span class="line">        &#125;</span><br><span class="line">        break;</span><br><span class="line">        case &quot;resources&quot;:</span><br><span class="line">        &#123;</span><br><span class="line">            // create resource //创建资源</span><br><span class="line">        &#125;</span><br><span class="line">        break;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>简单工厂直接以逻辑判断做处理，直接生成对应的实例，当然，之际情况下，不会使用string作为判断依据，每个游戏中都有对应的数据类的唯一标识符，通过标识符辨别需要生成哪种类型的实例。</p>
-<h4 id="接口-抽象类"><a href="#接口-抽象类" class="headerlink" title="接口/抽象类"></a>接口/抽象类</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line">namespace VSCode&#123;</span><br><span class="line">    interface IFactor</span><br><span class="line">    &#123;</span><br><span class="line">        void Name();</span><br><span class="line">        void GetType();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    class FactoryA : IFactor</span><br><span class="line">    &#123;</span><br><span class="line">        void IFactor.GetType()</span><br><span class="line">        &#123;</span><br><span class="line">            throw new System.NotImplementedException();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        void IFactor.Name()</span><br><span class="line">        &#123;</span><br><span class="line">            throw new System.NotImplementedException();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    class FactoryB : IFactor</span><br><span class="line">    &#123;</span><br><span class="line">        void IFactor.GetType()</span><br><span class="line">        &#123;</span><br><span class="line">            throw new System.NotImplementedException();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        void IFactor.Name()</span><br><span class="line">        &#123;</span><br><span class="line">            throw new System.NotImplementedException();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    class NullFactory : IFactor</span><br><span class="line">    &#123;</span><br><span class="line">        public void Name()</span><br><span class="line">        &#123;</span><br><span class="line">            throw new System.NotImplementedException();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        void IFactor.GetType()</span><br><span class="line">        &#123;</span><br><span class="line">            throw new System.NotImplementedException();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    class  Factory &#123;</span><br><span class="line">        public static IFactor FactoryCreateItem(string type)&#123;            </span><br><span class="line">            if(type == &quot;A&quot;)&#123;</span><br><span class="line">                return new FactoryA();</span><br><span class="line">            &#125;</span><br><span class="line">            else if(type == &quot;B&quot;)</span><br><span class="line">            &#123;</span><br><span class="line">                return new FactoryB();</span><br><span class="line">            &#125;</span><br><span class="line">            else</span><br><span class="line">            &#123;</span><br><span class="line">                return new NullFactory();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>接口/抽象类则复杂一些，因为生成都都是同一类型的不同类，因此，直接将相同的部分抽象到接口或者抽象类中，然后不同的类型继承并重写。然后将创建方式写在一块，使用的时候，直接调用并传入需要的参数就可以获得需要的类的实例</p>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
       <a href="/2019/03/28/设计模式/门面模式/" title="门面模式（Facade）" itemprop="url">门面模式（Facade）</a>
   </h1>
   <p class="article-author">By
@@ -601,7 +601,7 @@
 		<a href="/about" title="" target="_blank" itemprop="author"></a>
 		
   <p class="article-time">
-    <time datetime="2019-03-28T14:47:05.000Z" itemprop="datePublished"> 發表於 2019-03-28</time>
+    <time datetime="2019-03-28T14:47:05.000Z" itemprop="datePublished"> 发表于 2019-03-28</time>
     
   </p>
 </header>
@@ -644,10 +644,10 @@
 
 
 </div>
-      <div class="openaside"><a class="navbutton" href="#" title="顯示側邊欄"></a></div>
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
 
 <div id="asidepart">
-<div class="closeaside"><a class="closebutton" href="#" title="隱藏側邊欄"></a></div>
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
 <aside class="clearfix">
 
   
@@ -658,18 +658,12 @@
   
 
   <div class="linkslist">
-  <p class="asidetitle">友情鏈接</p>
+  <p class="asidetitle">友情链接</p>
     <ul>
         
           <li>
             
             	<a href="https://coderq.com" target="_blank" title="一个面向程序员交流分享的新一代社区">码农圈</a>
-            
-          </li>
-        
-          <li>
-            
-            	<a href="http://wuchong.me" target="_blank" title="Jark&#39;s Blog">Jark&#39;s Blog</a>
             
           </li>
         
@@ -680,12 +674,12 @@
 
 
   <div class="rsspart">
-	<a href="/atom.xml" target="_blank" title="rss">RSS 訂閱</a>
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
 </div>
 
   <div class="weiboshow">
   <p class="asidetitle">新浪微博</p>
-    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=&verifier=b3593ceb&dpc=1"></iframe>
+    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=&verifier=&dpc=1"></iframe>
 </div>
 
 
@@ -701,13 +695,11 @@
 	
 	
 	<section class="info">
-		<p> Hello ,I&#39;m Larry Page in Google. <br/>
-			This is my blog,believe it or not.</p>
+		<p> 人生如逆旅 <br/>
+			我亦是行人</p>
 	</section>
 	 
 	<div class="social-font" class="clearfix">
-		
-		<a href="http://weibo.com/2176287895" target="_blank" class="icon-weibo" title="微博"></a>
 		
 		
 		
@@ -836,7 +828,7 @@ var _hmt = _hmt || [];
 <!-- Totop Begin -->
 
 	<div id="totop">
-	<a title="返回頂部"><img src="/img/scrollup.png"/></a>
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
 	</div>
 	<script src="/js/totop.js"></script>
 
