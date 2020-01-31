@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="冒泡排序每次比较两个相邻的元素，如果顺序错误则交换，一趟结束只能将一个数归位，给入的数组有多长就需要循环多少趟 例如 [4, 2, 6, 3, 1] 按从大到小排序，则顺序为：    输入 4 2 6 3 1     第一趟 4 6 3 2 1   第二趟 6 4 3 1 1   第三趟 6 4 3 2 1   第四趟 6 4 3 2 1   第五趟 6 4 3 2 1    从右往左，每一趟确定">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="http://yoursite.com/2020/01/31/算法/冒泡排序/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="冒泡排序每次比较两个相邻的元素，如果顺序错误则交换，一趟结束只能将一个数归位，给入的数组有多长就需要循环多少趟 例如 [4, 2, 6, 3, 1] 按从大到小排序，则顺序为：    输入 4 2 6 3 1     第一趟 4 6 3 2 1   第二趟 6 4 3 1 1   第三趟 6 4 3 2 1   第四趟 6 4 3 2 1   第五趟 6 4 3 2 1    从右往左，每一趟确定">
+<meta property="og:updated_time" content="2019-07-11T09:52:57.380Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hexo">
+<meta name="twitter:description" content="冒泡排序每次比较两个相邻的元素，如果顺序错误则交换，一趟结束只能将一个数归位，给入的数组有多长就需要循环多少趟 例如 [4, 2, 6, 3, 1] 按从大到小排序，则顺序为：    输入 4 2 6 3 1     第一趟 4 6 3 2 1   第二趟 6 4 3 1 1   第三趟 6 4 3 2 1   第四趟 6 4 3 2 1   第五趟 6 4 3 2 1    从右往左，每一趟确定">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Buscar"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-算法/冒泡排序" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/01/31/算法/冒泡排序/" class="article-date">
+  <time datetime="2020-01-31T01:58:26.564Z" itemprop="datePublished">2020-01-31</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="冒泡排序"><a href="#冒泡排序" class="headerlink" title="冒泡排序"></a>冒泡排序</h3><p>每次比较两个相邻的元素，如果顺序错误则交换，一趟结束只能将一个数归位，给入的数组有多长就需要循环多少趟</p>
+<p>例如 [4, 2, 6, 3, 1] 按从大到小排序，则顺序为：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">输入</th>
+<th style="text-align:center">4</th>
+<th style="text-align:center">2</th>
+<th style="text-align:center">6</th>
+<th style="text-align:center">3</th>
+<th style="text-align:center">1</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">第一趟</td>
+<td style="text-align:center">4</td>
+<td style="text-align:center">6</td>
+<td style="text-align:center">3</td>
+<td style="text-align:center">2</td>
+<td style="text-align:center">1</td>
+</tr>
+<tr>
+<td style="text-align:center">第二趟</td>
+<td style="text-align:center">6</td>
+<td style="text-align:center">4</td>
+<td style="text-align:center">3</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">1</td>
+</tr>
+<tr>
+<td style="text-align:center">第三趟</td>
+<td style="text-align:center">6</td>
+<td style="text-align:center">4</td>
+<td style="text-align:center">3</td>
+<td style="text-align:center">2</td>
+<td style="text-align:center">1</td>
+</tr>
+<tr>
+<td style="text-align:center">第四趟</td>
+<td style="text-align:center">6</td>
+<td style="text-align:center">4</td>
+<td style="text-align:center">3</td>
+<td style="text-align:center">2</td>
+<td style="text-align:center">1</td>
+</tr>
+<tr>
+<td style="text-align:center">第五趟</td>
+<td style="text-align:center">6</td>
+<td style="text-align:center">4</td>
+<td style="text-align:center">3</td>
+<td style="text-align:center">2</td>
+<td style="text-align:center">1</td>
+</tr>
+</tbody>
+</table>
+<p>从右往左，每一趟确定一个最小值，第一趟是1，第二趟是2，第三趟是3，第四趟是4，第五趟是6，这样五趟完成以后，整个排序就结束了。</p>
+<p>代码实现：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">int[] list = &#123;1, 3, 2, 6, 4, 7&#125;;</span><br><span class="line">int value = list[0];</span><br><span class="line">            </span><br><span class="line">for (int i = 0; i &lt; list.Length; i++)&#123;</span><br><span class="line">    // Console.WriteLine(&quot; i: &quot; + list[i]);</span><br><span class="line">    value = list[i];</span><br><span class="line">    for (int j = 0; j &lt; list.Length; j++)&#123;</span><br><span class="line">        if(list[i] &gt; list[j]) &#123;</span><br><span class="line">        	value = list[j];</span><br><span class="line">        	list[j] = list[i];</span><br><span class="line">        	list[i] = value;</span><br><span class="line">    	&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">for (int i = 0; i &lt; list.Length; i++)&#123;</span><br><span class="line">    Console.WriteLine(&quot;index:&#123;0&#125;: &#123;1&#125; &quot;, i, list[i]);  // 输出7，6，4，3，2，1</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看出来，冒泡排序很明显的问题是：</p>
+<ol>
+<li>for循环的嵌套，使得其时间复杂度为 $O(N^2)$</li>
+<li>有可能已经提前拍好序了，但是还是继续循环下去直至结束</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/01/31/算法/冒泡排序/" data-id="ck61jk6dr0006ywkluqvdgirc" class="article-share-link">Compartir</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/01/31/算法/快速排序/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Nuevo</strong>
+      <div class="article-nav-title">
+        
+          (no title)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/01/31/设计模式/门面模式/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Viejo</strong>
+      <div class="article-nav-title"></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archivos</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Posts recientes</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/01/31/算法/快速排序/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/01/31/算法/冒泡排序/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/01/31/设计模式/门面模式/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/01/31/设计模式/订阅者模式/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/01/31/Lua/Lua面向对象/">(no title)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 John Doe<br>
+      Construido por <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

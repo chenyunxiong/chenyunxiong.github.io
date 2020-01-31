@@ -48,9 +48,9 @@
       </nav>
       <nav id="sub-nav">
         
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS"></a>
         
-        <a id="nav-search-btn" class="nav-icon" title="Suche"></a>
+        <a id="nav-search-btn" class="nav-icon" title="Buscar"></a>
       </nav>
       <div id="search-form-wrap">
         <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
@@ -60,6 +60,387 @@
 </header>
       <div class="outer">
         <section id="main">
+  
+    <article id="post-算法/快速排序" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/01/31/算法/快速排序/" class="article-date">
+  <time datetime="2020-01-31T01:58:26.566Z" itemprop="datePublished">2020-01-31</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="快速排序"><a href="#快速排序" class="headerlink" title="快速排序"></a>快速排序</h3><p>快速排序采用二分法进行排序，先选择一个基数，这个基数一般是数组下标为0的数，然后从数组尾巴开始往前比较，如果存在一个数小于基数，则停止查找，然后从数组头部开始查找，如果存在一个数大于基数则停止查找，然后交换这两个数的位置。重复比较跟交换直到头尾两个位置重合，最后将基数与最终的交叉点的数字位置交换，表示一轮排序结束。</p>
+<p>一轮结束并不代表这些数字已经排序完成，只表示以基数为中心，基数左边的数字必然小于基数，基数右边的必然大于基数，但是基数左边跟基数右边的数字并不一定是拍好的，这时就需要重新定义基数，分别对左边跟右边的数进行排序，如此反复，则最后到没有数字可以遍历时结束，此时，数组必然是有序的</p>
+<p>可见，这是一个不断深入的相同的重复的操作，这种操作可以用递归来实现。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">static void quickSort(int left, int right, int[] list)&#123;</span><br><span class="line">    int i, j, temp;</span><br><span class="line">    i = left;</span><br><span class="line">    j = right;</span><br><span class="line">    if(i &gt; j) return;</span><br><span class="line">    // Console.WriteLine(&quot;.....length: &#123;0&#125;-&#123;1&#125;&quot;, left, right);</span><br><span class="line">    temp = list[left];</span><br><span class="line">    while(i != j)&#123;                </span><br><span class="line">         while(list[j] &gt;= temp &amp;&amp; i &lt; j)&#123;</span><br><span class="line">              j --;</span><br><span class="line">         &#125;</span><br><span class="line">         while(list[i] &lt;= temp &amp;&amp; i &lt; j)&#123;</span><br><span class="line">              i ++;</span><br><span class="line">         &#125;</span><br><span class="line">         if(i &lt; j)&#123;</span><br><span class="line">              int t = list[i];</span><br><span class="line">              list[i] = list[j];</span><br><span class="line">              list[j] = t;</span><br><span class="line">         &#125;</span><br><span class="line">   &#125;</span><br><span class="line">   list[left] = list[i];</span><br><span class="line">   list[i] = temp;</span><br><span class="line"></span><br><span class="line">   string s = &quot;&quot;;</span><br><span class="line">   for (int k = 0; k &lt; list.Length; k++)&#123;</span><br><span class="line">        s += list[k];</span><br><span class="line">        s += &quot;_&quot;;</span><br><span class="line">   &#125;</span><br><span class="line">   Console.WriteLine(&quot;.......i: &#123;0&#125;:&#123;1&#125;:&#123;2&#125;:&#123;3&#125;&quot;, s, left, right, temp);</span><br><span class="line"></span><br><span class="line">   quickSort(left, i - 1, list);</span><br><span class="line">   quickSort(i+1, right, list);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">static void Main(string[] args)&#123;</span><br><span class="line">     int[] list = &#123;1, 45, 4, 7&#125;;</span><br><span class="line">     quickSort(0, list.Length - 1, list);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如上的代码，快速排序的过程为：（一行表示一次排序结束）</p>
+<table>
+<thead>
+<tr>
+<th>下标0</th>
+<th>下标0</th>
+<th>下标0</th>
+<th>下标0</th>
+<th>left</th>
+<th>right</th>
+<th>temp基数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>45</td>
+<td>4</td>
+<td>7</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>1</td>
+<td>7</td>
+<td>4</td>
+<td>45</td>
+<td>1</td>
+<td>3</td>
+<td>45</td>
+</tr>
+<tr>
+<td>1</td>
+<td>7</td>
+<td>7</td>
+<td>45</td>
+<td>1</td>
+<td>2</td>
+<td>7</td>
+</tr>
+<tr>
+<td></td>
+<td>4</td>
+<td>7</td>
+<td>45</td>
+<td>1</td>
+<td>1</td>
+<td>4</td>
+</tr>
+</tbody>
+</table>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/01/31/算法/快速排序/" data-id="ck61jk6dv0007ywkllf3n5s90" class="article-share-link">Compartir</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-算法/冒泡排序" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/01/31/算法/冒泡排序/" class="article-date">
+  <time datetime="2020-01-31T01:58:26.564Z" itemprop="datePublished">2020-01-31</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="冒泡排序"><a href="#冒泡排序" class="headerlink" title="冒泡排序"></a>冒泡排序</h3><p>每次比较两个相邻的元素，如果顺序错误则交换，一趟结束只能将一个数归位，给入的数组有多长就需要循环多少趟</p>
+<p>例如 [4, 2, 6, 3, 1] 按从大到小排序，则顺序为：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">输入</th>
+<th style="text-align:center">4</th>
+<th style="text-align:center">2</th>
+<th style="text-align:center">6</th>
+<th style="text-align:center">3</th>
+<th style="text-align:center">1</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">第一趟</td>
+<td style="text-align:center">4</td>
+<td style="text-align:center">6</td>
+<td style="text-align:center">3</td>
+<td style="text-align:center">2</td>
+<td style="text-align:center">1</td>
+</tr>
+<tr>
+<td style="text-align:center">第二趟</td>
+<td style="text-align:center">6</td>
+<td style="text-align:center">4</td>
+<td style="text-align:center">3</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">1</td>
+</tr>
+<tr>
+<td style="text-align:center">第三趟</td>
+<td style="text-align:center">6</td>
+<td style="text-align:center">4</td>
+<td style="text-align:center">3</td>
+<td style="text-align:center">2</td>
+<td style="text-align:center">1</td>
+</tr>
+<tr>
+<td style="text-align:center">第四趟</td>
+<td style="text-align:center">6</td>
+<td style="text-align:center">4</td>
+<td style="text-align:center">3</td>
+<td style="text-align:center">2</td>
+<td style="text-align:center">1</td>
+</tr>
+<tr>
+<td style="text-align:center">第五趟</td>
+<td style="text-align:center">6</td>
+<td style="text-align:center">4</td>
+<td style="text-align:center">3</td>
+<td style="text-align:center">2</td>
+<td style="text-align:center">1</td>
+</tr>
+</tbody>
+</table>
+<p>从右往左，每一趟确定一个最小值，第一趟是1，第二趟是2，第三趟是3，第四趟是4，第五趟是6，这样五趟完成以后，整个排序就结束了。</p>
+<p>代码实现：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">int[] list = &#123;1, 3, 2, 6, 4, 7&#125;;</span><br><span class="line">int value = list[0];</span><br><span class="line">            </span><br><span class="line">for (int i = 0; i &lt; list.Length; i++)&#123;</span><br><span class="line">    // Console.WriteLine(&quot; i: &quot; + list[i]);</span><br><span class="line">    value = list[i];</span><br><span class="line">    for (int j = 0; j &lt; list.Length; j++)&#123;</span><br><span class="line">        if(list[i] &gt; list[j]) &#123;</span><br><span class="line">        	value = list[j];</span><br><span class="line">        	list[j] = list[i];</span><br><span class="line">        	list[i] = value;</span><br><span class="line">    	&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">for (int i = 0; i &lt; list.Length; i++)&#123;</span><br><span class="line">    Console.WriteLine(&quot;index:&#123;0&#125;: &#123;1&#125; &quot;, i, list[i]);  // 输出7，6，4，3，2，1</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看出来，冒泡排序很明显的问题是：</p>
+<ol>
+<li>for循环的嵌套，使得其时间复杂度为 $O(N^2)$</li>
+<li>有可能已经提前拍好序了，但是还是继续循环下去直至结束</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/01/31/算法/冒泡排序/" data-id="ck61jk6dr0006ywkluqvdgirc" class="article-share-link">Compartir</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-设计模式/门面模式" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/01/31/设计模式/门面模式/" class="article-date">
+  <time datetime="2020-01-31T01:58:26.556Z" itemprop="datePublished">2020-01-31</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="门面模式（Facade）"><a href="#门面模式（Facade）" class="headerlink" title="门面模式（Facade）"></a>门面模式（Facade）</h3><p>门面模式顾名思义就是一个统一对外的门面，而不需要知道门面内部的实现。它可以是子系统对外的统一入口，也可以是</p>
+<p>门面模式其实就是一个管理中心，管理其他类的统一入口，或者管理其他关联类的入口。游戏中经常有各种管理器，这些基本上都是属于门面模式的运用。比如最常见的Manager框架（也就是各种Manager控制器）中的页面管理器，包含了所有的页面的引用，需要调用页面脚本的时候，通过这个管理器进行调用，而不是直接调用页面脚本。</p>
+<p>作为关联类入口</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">namespace VSCode&#123;</span><br><span class="line">    class MenuPage&#123;</span><br><span class="line">        public void Name()&#123;            </span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    class LoginPage&#123;&#125;</span><br><span class="line">    class BackPakePage&#123;&#125;</span><br><span class="line"></span><br><span class="line">    class PageManager&#123;</span><br><span class="line">        MenuPage menuPage = new MenuPage();</span><br><span class="line">        LoginPage loginPage = new LoginPage();</span><br><span class="line">        BackPakePage backPakePage = new BackPakePage();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>PageManager就是页面的门面，调用的时候，直接使用PageManager调用menuPage、loginPage跟backPackPage，一般情况下，PageManager是单例模式，这样便于调用同时保证游戏中只有一个控制器。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/01/31/设计模式/门面模式/" data-id="ck61jk6dy0009ywkljdzwjt8c" class="article-share-link">Compartir</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-设计模式/订阅者模式" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/01/31/设计模式/订阅者模式/" class="article-date">
+  <time datetime="2020-01-31T01:58:26.542Z" itemprop="datePublished">2020-01-31</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="观察者模式（Observer）"><a href="#观察者模式（Observer）" class="headerlink" title="观察者模式（Observer）"></a>观察者模式（Observer）</h3><p>观察者模式的主要作用是用于解耦，是一种一对多的关系。多个观察者同时监听一个数据或者对象状态，当这个数据或者对象状态变化的时候，通知所有的观察者，进而所有的观察者做出对应的响应。</p>
+<p>举个例子，游戏中一般都有货币系统，当同时多个地方需要显示货币数量，而又不在一个页面，且又需要进行刷新的时候，这时候一个一个去通知刷新是很难受的，而且会有很严重的耦合。而观察者模式能完美的解决这个问题。</p>
+<p>观察者模式有多种不同的实现方式，看项目或者个人需要。这里说两种实现方式：</p>
+<h4 id="抽象模式"><a href="#抽象模式" class="headerlink" title="抽象模式"></a>抽象模式</h4><p>抽象模式多使用与框架中，比如PureMVC整个框架的消息机制就使用了抽象模式。</p>
+<p>抽象模式通常需要一个中介，也就是一个控制类，它保存着所有的订阅者跟订阅者所对应的事件ID。然后定义一个抽象类或者接口，将需要的方法抽象进这个接口或者抽象类中，供其他类进行继承。继承者重写各自的接受消息的方法。</p>
+<p>使用的时候，订阅者通过中介订阅事件，其他类告诉中介应该通知哪些消息，然后中介内部自动分发对应的订阅者。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">namespace VSCode&#123;</span><br><span class="line">    interface IObserver    </span><br><span class="line">    &#123;</span><br><span class="line">        void Receive();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    class ObserverA : IObserver</span><br><span class="line">    &#123;</span><br><span class="line">        public void Receive()</span><br><span class="line">        &#123;</span><br><span class="line">            Console.WriteLine(&quot;A&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    class ObserverB : IObserver</span><br><span class="line">    &#123;</span><br><span class="line">        public void Receive()</span><br><span class="line">        &#123;</span><br><span class="line">            Console.WriteLine(&quot;B&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    class MessageCtrl&#123;</span><br><span class="line">        public static Dictionary&lt;string, IObserver&gt; observerDict = new Dictionary&lt;string, IObserver&gt;();</span><br><span class="line">        public static void Add(string type, IObserver ob)&#123;</span><br><span class="line">            if(!observerDict.ContainsKey(type))&#123;</span><br><span class="line">                observerDict.Add(type, ob);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public static void Remove(string type, IObserver ob)&#123;</span><br><span class="line">            if(observerDict.ContainsKey(type))&#123;</span><br><span class="line">                observerDict.Remove(type);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public static void Dispatch(string type)&#123;</span><br><span class="line">            if(observerDict.ContainsKey(type))&#123;</span><br><span class="line">                observerDict[type].Receive();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    class Main&#123;</span><br><span class="line">        public void Create()&#123;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="事件-委托模式"><a href="#事件-委托模式" class="headerlink" title="事件/委托模式"></a>事件/委托模式</h4><p>事件/委托类型则简单许多，因为事件跟委托本身就支持一对多的关系。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">static int count = 0;</span><br><span class="line">static int Count&#123;</span><br><span class="line">    set&#123;</span><br><span class="line">            count = value;</span><br><span class="line">            Event_Currency_Count_Changed();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">    private static Action Event_Currency_Count_Changed;</span><br><span class="line">    static void RefreshCurrencyImage()&#123;</span><br><span class="line">        Console.WriteLine(&quot;RefreshCurrencyImage&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    static void RefreshCurrencyCount()&#123;</span><br><span class="line">        Console.WriteLine(&quot;RefreshCurrencyCount&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    static void EventObserver()&#123;</span><br><span class="line">        Event_Currency_Count_Changed += RefreshCurrencyCount;</span><br><span class="line">        Event_Currency_Count_Changed += RefreshCurrencyImage;</span><br><span class="line"></span><br><span class="line">        Count = 10;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>Count 属性中直接调用了Event_Currency_Count_Changed 事件，在EventObserver中两个方法订阅了这个事件，当Count改变时，就会通知Event_Currency_Count_Changed，进而通知 RefreshCurrencyImage()、RefreshCurrencyCount()，这样金币数量改变的时候，就会刷新金币数量的显示跟金币图标的显示。这里只是做个示范，简单的刷新同一个类内的方法，更大的意义是其他类订阅这个事件，然后就可以刷新其他类的方法，以达到实现解耦的作用。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/01/31/设计模式/订阅者模式/" data-id="ck61jk6dw0008ywklgpqnosnn" class="article-share-link">Compartir</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Lua/Lua面向对象" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/01/31/Lua/Lua面向对象/" class="article-date">
+  <time datetime="2020-01-31T01:58:26.513Z" itemprop="datePublished">2020-01-31</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="Lua面向对象"><a href="#Lua面向对象" class="headerlink" title="Lua面向对象"></a>Lua面向对象</h3><p>Lua本身是没有面向对象这个概念的，但是table的各种用法却可以模拟出类似面向对象的东西。Lua中唯一的数据结构就是Table，那么自然，一个类自然也就是一个Table。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Person = &#123;</span><br><span class="line">    age = 10,</span><br><span class="line">    name  = &quot;ee&quot;;</span><br><span class="line">    Init = function(age, name)</span><br><span class="line">        Person.age = age;</span><br><span class="line">        Person.name = name;</span><br><span class="line">    end</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">print(Person.age, Person.name) -- 输出 10 &quot;ee&quot;</span><br><span class="line">Person.Init(1, &quot;面向对象&quot;)</span><br><span class="line">print(Person.age, Person.name) -- 输出 1 &quot;面向对象&quot;</span><br></pre></td></tr></table></figure>
+<p>如上，Person就是一张简单的Table，也可以看作一个基本类，拥有age跟name两个字段，Init方法。直接以Person开头调用表中的方法跟字段</p>
+<p>当然，这只是简单的类的模拟，只能有一个，而无法以Person为模板，创建多个Person实例。这时候就需要用到Lua的元表（mateTable）跟元方法(metaMethod)。</p>
+<h4 id="元表与元方法"><a href="#元表与元方法" class="headerlink" title="元表与元方法"></a>元表与元方法</h4><p>元表的作用在于以一个表作为模板，使对象克隆多个实例成为可能。元表可以使关联该元表生成的表都可以共享元表的方法跟属性。而原方法的作用在于，可以使Table表之间的操作变的更自由跟定制。将上面的Person进行修改如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">function Person:New(age, name)</span><br><span class="line">    local o = &#123;&#125;</span><br><span class="line">    setmetatable(o, self)</span><br><span class="line">    self.__index = self</span><br><span class="line">    o.age = age</span><br><span class="line">    o.name = name</span><br><span class="line">    return o</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">function Person:Print()</span><br><span class="line">    print(self.age, self.name)</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">local p = Person:New( 2, &quot;tt3&quot;)</span><br><span class="line">p:Print()</span><br><span class="line">local p2 = Person:New( 3, &quot;ttt&quot;)</span><br><span class="line">p:Print() -- 输出 2 tt3</span><br><span class="line">p2:Print() -- 输出 3 ttt</span><br><span class="line">print(getmetatable(p), Person) -- 输出两个同样的数值</span><br></pre></td></tr></table></figure>
+<p>setmetatable(t, mt) 表示将一个表 t 的元表关联为 mt，这样每一个调用New方法以后，返回的表都是关联的同一个元表，仅仅是这样还不够，返回的表虽然已经关联到元表Person，但也只是关联了而已，新生成的 p 跟 p2 还是无法调用Person中的方法，因为这是表与表之间的操作。</p>
+<p>此时就需要用到原方法。__index 元方法定义了元表与关联便之间的关系：如果关联表中自己找得到调用的方法跟字段的 话，则调用关联表中的。如果关联表中找不到的方法跟字段，则会去元表中查找对应的方法跟字段，如果有则调用。没有则提示不存在的方法跟字段</p>
+<p>如此，当调用 p:Pring() 跟 p2:Pring() 的时候，p跟p2中其实并没有Print()方法，但是还是正确的输出了，正是调用了元表的Print()方法。这也就正确的模拟了对象生成实例的过程。</p>
+<h4 id="类的继承"><a href="#类的继承" class="headerlink" title="类的继承"></a>类的继承</h4><p>面向对象的一大特点就是继承，Lua的元表跟元方法也能模拟，Teacher继承了Person，并重写了Print()方法。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">Person = &#123;&#125;</span><br><span class="line"></span><br><span class="line">function Person:New(age, name)</span><br><span class="line">    local o = &#123;&#125;</span><br><span class="line">    setmetatable(o, self)</span><br><span class="line">    self.__index = self</span><br><span class="line">    o.age = age</span><br><span class="line">    o.name = name</span><br><span class="line"></span><br><span class="line">    return o</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">function Person:GetAge()</span><br><span class="line">    return self.age</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">function Person:Print()</span><br><span class="line">    print(self.age, self.name)</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">Teacher = Person:New()</span><br><span class="line">function Teacher:New(age, name, course)</span><br><span class="line">    local t = Person:New(age, name)</span><br><span class="line">    setmetatable(t, self)</span><br><span class="line">    self.__index = self</span><br><span class="line">    t.course = course</span><br><span class="line">    return t</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">function Teacher:Print()</span><br><span class="line">    print(self.age, self.name, self.course)</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">local t1 = Teacher:New(33, &quot;王老师&quot;, &quot;语文&quot;)</span><br><span class="line">t1:Print() -- 输出 33 王老师 语文</span><br><span class="line">print(&quot;age:&quot;, t1:GetAge()) -- 输出 age:33</span><br></pre></td></tr></table></figure>
+<p>Teacher并没有重写GetAge()方法，然后 t1:GetAge() 却正确的输出了，可见是正确的继承了这个方法。而重写的Print()方法，多输出了一个课程，也正常输出，可见重写也是可以的。</p>
+<h4 id="方法访问权限（私有公有）"><a href="#方法访问权限（私有公有）" class="headerlink" title="方法访问权限（私有公有）"></a>方法访问权限（私有公有）</h4><p>冒号的作用是省略了self的传递，也就是说，如果我们不想写冒号改为写等号的话，那么每个方法的第一个参数必然是self：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">function Person.Print()</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">function Person:Console()</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">p = Person:New()</span><br><span class="line">p.Print(self)</span><br><span class="line">p:Console()</span><br></pre></td></tr></table></figure>
+<p>可以看上图的Print方法跟Console方法，self是为了找到对应的表中的方法，不传的话，必然会报错。冒号相当于语法糖，可以忽略self的传递，使得方法更加简洁明了。</p>
+<p>以上两种方法都可以说是Public方法，实例p是可以正常访问到的。</p>
+<p>私有方法同样需要传递这个self，区别在于，私有方法是用local写的。跟其他语言不同之处在于，Lua中模拟的私有方法并没有确定的归属，换句话说，它只属于其所写的Lua文件，而不是写在文件中的某个Table表，当然只要控制号一个文件只写一个类则不存在这个问题。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">local function Console(self)  -- 私有方法 Console</span><br><span class="line">    print(self.age, self.name, self.course)</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">local t1 = Teacher:New(33, &quot;王老师&quot;, &quot;语文&quot;)</span><br><span class="line">Console(t1)  -- 输出为：33 王老师  语文</span><br><span class="line">local p = Person:New( 2, &quot;tt3&quot;)</span><br><span class="line">Console(p) -- 输出为：2 tt3 nil</span><br></pre></td></tr></table></figure>
+<p>可以看出来，Console是私有方法，外部无法访问。但是Person跟Teacher都可以访问，也就是说Console方法既不属于Person也不属于Teacher，它只管你输入的self是谁，但是如果我们只写了一个Person方法，而没有写继承的Teacher，则不用考虑这个问题。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/01/31/Lua/Lua面向对象/" data-id="ck61jk6e2000bywklsa6iw376" class="article-share-link">Compartir</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Lua/Lua事件系统" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/01/31/Lua/Lua事件系统/" class="article-date">
+  <time datetime="2020-01-31T01:58:26.497Z" itemprop="datePublished">2020-01-31</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="Lua事件系统（EventManager-lua）"><a href="#Lua事件系统（EventManager-lua）" class="headerlink" title="Lua事件系统（EventManager.lua）"></a>Lua事件系统（EventManager.lua）</h3><p>在使用LuaFrameWork的时候，苦于没有事件系统传递消息，于是写了这个事件管理器，进行多个模块之间、单个模块内部的消息传递。</p>
+<p>作为事件管理器，那么就是需要管理事件，因此我选择function作为参数进行传递。事件需要一个唯一标识符，无论是数字还是string都可以，我选择string作为标识符，因为这样更容易辨识。事件有可能需要传递参数，lua的可变参数为 ‘…’三个点。</p>
+<p>用string作为唯一标识符的问题在于可能会不小心出现两个同样的标识符，这样就会导致出现错误调用的问题，因此我添加了一个tag标签，用于区分不同模块的事件。</p>
+<h4 id="保存事件"><a href="#保存事件" class="headerlink" title="保存事件"></a>保存事件</h4><p>事件我用两个变量进行保存，一个是带tag的表示模块内部的事件容器 <em>eventsWithTag</em>，一个是不带tag的，表示通用的事件的容器 <em>events</em></p>
+<h4 id="添加事件"><a href="#添加事件" class="headerlink" title="添加事件"></a>添加事件</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">local function AddListener(list, name, func)</span><br><span class="line">    if list[tostring(name)] == nil then</span><br><span class="line">        list[tostring(name)] = &#123;&#125;</span><br><span class="line">        table.insert(list[tostring(name)], func)</span><br><span class="line">    else</span><br><span class="line">        local eventList = list[tostring(name)]</span><br><span class="line">        if not CheckContainFunc(eventList, func) then</span><br><span class="line">            table.insert(eventList, func)</span><br><span class="line">        else</span><br><span class="line">            print(string.format(&quot;Events Contains A Same Key %s&quot;, name))</span><br><span class="line">        end</span><br><span class="line">    end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">local function AddListenerWithTag(tag, name, func)</span><br><span class="line">    if eventsWithTag[tostring(tag)] then</span><br><span class="line">        local tagEvents = eventsWithTag[tostring(tag)]</span><br><span class="line">        AddListener(tagEvents, name, func)</span><br><span class="line">    else</span><br><span class="line">        eventsWithTag[tostring(tag)] = &#123;&#125; -- add a new tag to keep events</span><br><span class="line">        AddListener(eventsWithTag[tostring(tag)], name, func)</span><br><span class="line">    end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<p>tag 表示模块的唯一标识符，lua中没有过多的数据格式限制，如果需要的话，可以改为其他的数据格式，比如数字、table等等，管理器通过这个tag查找事件属于哪个模块的事件</p>
+<p>name 表示事件的唯一标识符，管理器通过这个name查找对应的事件</p>
+<p>func 表示回调函数，事件最终会调用这些方法，方法可以带参数，调用的时候如果不传递则为nil</p>
+<h4 id="删除事件"><a href="#删除事件" class="headerlink" title="删除事件"></a>删除事件</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">local function RemoveListener(list, name, func)</span><br><span class="line">    if list ~= nil then</span><br><span class="line">        local eventList = list[tostring(name)]</span><br><span class="line">        local index = CheckContainFunc(eventList, func)</span><br><span class="line">        if index then</span><br><span class="line">            print(&quot;Remove &quot; .. name .. &quot; Succeed !&quot;)</span><br><span class="line">            table.remove(eventList, index)</span><br><span class="line">        else</span><br><span class="line">            print(&quot;Attempt To Remove A UnRegister Event: &quot; .. name)</span><br><span class="line">        end</span><br><span class="line">    end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">local function RemoveListenerWithTag(tag, name, func)</span><br><span class="line">    local tmpEventTag = eventsWithTag[tostring(tag)]</span><br><span class="line">    if tmpEventTag then</span><br><span class="line">        RemoveListener(tmpEventTag, name, func)</span><br><span class="line">    end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<p>同样的，怎么添加事件就需要怎么样删除事件。通过tag跟name查找并删除即可。</p>
+<h4 id="调用事件"><a href="#调用事件" class="headerlink" title="调用事件"></a>调用事件</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">local function DispatchListener(list, name, ...)</span><br><span class="line">    if list[tostring(name)] ~= nil then</span><br><span class="line">        local events = list[tostring(name)]</span><br><span class="line">        for i, v in pairs(events) do</span><br><span class="line">            if v ~= nil then</span><br><span class="line">                v(...)</span><br><span class="line">            end</span><br><span class="line">        end</span><br><span class="line">    else</span><br><span class="line">        print(string.format(&quot;event is not registed %s&quot;, name))</span><br><span class="line">    end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">local function DispatchListenerByTag(tag, name, ...)</span><br><span class="line">    local eventsList = eventsWithTag[tostring(tag)]</span><br><span class="line">    DispatchListener(eventsList, name, ...)</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<p>调用的时候，根据传入的tag跟name查找事件，遍历name下所有的事件并调用。</p>
+<p>具体方法可以看Scripts目录下的EventManager.lua文件，事件跟模块的唯一标识符最好也能够放在一个全局类中，这样模块之间调用事件不会出现不必要的交叉</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/01/31/Lua/Lua事件系统/" data-id="ck61jk6dz000aywkliusougqj" class="article-share-link">Compartir</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Cmd/01" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/01/31/Cmd/01/" class="article-date">
+  <time datetime="2020-01-31T01:58:26.491Z" itemprop="datePublished">2020-01-31</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Windows批处理命令"><a href="#Windows批处理命令" class="headerlink" title="Windows批处理命令"></a>Windows批处理命令</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>Windows批处理命令是使用一些含有特殊意义的符号和一些完成指定功能的命令组合而成</p>
+<h2 id="常见批处理命令"><a href="#常见批处理命令" class="headerlink" title="常见批处理命令"></a>常见批处理命令</h2><ol>
+<li><p>REM 和 ::</p>
+<p>为注释命令，后面的内容不显示不执行</p>
+</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/01/31/Cmd/01/" data-id="ck61jk6do0005ywkl43j4xgvr" class="article-share-link">Compartir</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Unity_SmartMerge" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/07/24/Unity_SmartMerge/" class="article-date">
+  <time datetime="2018-07-24T15:33:57.552Z" itemprop="datePublished">2018-07-24</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/07/24/Unity_SmartMerge/" data-id="ck61jk6b80000ywklqfyymhgu" class="article-share-link">Compartir</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
   
     <article id="post-test2" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
@@ -88,7 +469,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/03/28/test2/" data-id="cjfb7g65j00035curak90uzqs" class="article-share-link">Teilen</a>
+      <a data-url="http://yoursite.com/2018/03/28/test2/" data-id="ck61jk6bt0003ywklmalhq44b" class="article-share-link">Compartir</a>
       
       
     </footer>
@@ -124,90 +505,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/03/28/Article-title/" data-id="cjfb7g65e00015cur2vf38sb0" class="article-share-link">Teilen</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-new-index" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/03/28/new-index/" class="article-date">
-  <time datetime="2018-03-27T16:19:46.000Z" itemprop="datePublished">2018-03-28</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/03/28/new-index/">new index</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <html><br> 这是一个传说。。。。。。。。。。。  哈哈哈  test1<br></html>
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/03/28/new-index/" data-id="cjfb7g65h00025cura9he5yaz" class="article-share-link">Teilen</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/03/27/hello-world/" class="article-date">
-  <time datetime="2018-03-27T15:14:34.612Z" itemprop="datePublished">2018-03-27</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/03/27/hello-world/">Hello World</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/03/27/hello-world/" data-id="cjfb7g65500005curmwg3hzfb" class="article-share-link">Teilen</a>
+      <a data-url="http://yoursite.com/2018/03/28/Article-title/" data-id="ck61jk6bq0001ywkl52no0bvz" class="article-share-link">Compartir</a>
       
       
     </footer>
@@ -218,6 +516,11 @@
 
   
 
+
+  <nav id="page-nav">
+    
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Siguiente &raquo;</a>
+  </nav>
 
 </section>
         
@@ -233,9 +536,9 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Archiv</h3>
+    <h3 class="widget-title">Archivos</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li></ul>
     </div>
   </div>
 
@@ -243,24 +546,28 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">letzter Beitrag</h3>
+    <h3 class="widget-title">Posts recientes</h3>
     <div class="widget">
       <ul>
         
           <li>
-            <a href="/2018/03/28/test2/">test2</a>
+            <a href="/2020/01/31/算法/快速排序/">(no title)</a>
           </li>
         
           <li>
-            <a href="/2018/03/28/Article-title/">Article title</a>
+            <a href="/2020/01/31/算法/冒泡排序/">(no title)</a>
           </li>
         
           <li>
-            <a href="/2018/03/28/new-index/">new index</a>
+            <a href="/2020/01/31/设计模式/门面模式/">(no title)</a>
           </li>
         
           <li>
-            <a href="/2018/03/27/hello-world/">Hello World</a>
+            <a href="/2020/01/31/设计模式/订阅者模式/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/01/31/Lua/Lua面向对象/">(no title)</a>
           </li>
         
       </ul>
@@ -275,8 +582,8 @@
   
   <div class="outer">
     <div id="footer-info" class="inner">
-      &copy; 2018 John Doe<br>
-      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+      &copy; 2020 John Doe<br>
+      Construido por <a href="http://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>
 </footer>
