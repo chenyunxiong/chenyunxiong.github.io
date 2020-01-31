@@ -1,0 +1,507 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>NGUI渲染流程 | </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+
+    
+    <meta name="description" content="NGUI渲染流程NGUI是以 depth 的参数控制各个 UIWidget 的前后关系的。所有继承自 UIWidget 的包括 UISprite 、 UILabel 等这些继承自 UIWidget 的组件（为方便，下方说到 UIWidget 包括UISprite等继承自 UIWidget 的类），UIPanel 也有 depth，UIPanel是调整整个Panel与Panel之间的层级关系。而UI">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NGUI渲染流程">
+<meta property="og:url" content="http://yoursite.com/2019/04/09/NGUI/NGUI-渲染流程研究/index.html">
+<meta property="og:site_name">
+<meta property="og:description" content="NGUI渲染流程NGUI是以 depth 的参数控制各个 UIWidget 的前后关系的。所有继承自 UIWidget 的包括 UISprite 、 UILabel 等这些继承自 UIWidget 的组件（为方便，下方说到 UIWidget 包括UISprite等继承自 UIWidget 的类），UIPanel 也有 depth，UIPanel是调整整个Panel与Panel之间的层级关系。而UI">
+<meta property="og:updated_time" content="2020-01-31T06:15:17.267Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="NGUI渲染流程">
+<meta name="twitter:description" content="NGUI渲染流程NGUI是以 depth 的参数控制各个 UIWidget 的前后关系的。所有继承自 UIWidget 的包括 UISprite 、 UILabel 等这些继承自 UIWidget 的组件（为方便，下方说到 UIWidget 包括UISprite等继承自 UIWidget 的类），UIPanel 也有 depth，UIPanel是调整整个Panel与Panel之间的层级关系。而UI">
+
+    
+    <link rel="alternative" href="/atom.xml" title="" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="" title=""/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title=""></a></h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:yoursite.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2019/04/09/NGUI/NGUI-渲染流程研究/" title="NGUI渲染流程" itemprop="url">NGUI渲染流程</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="" target="_blank" itemprop="author"></a>
+		
+  <p class="article-time">
+    <time datetime="2019-04-09T14:47:05.000Z" itemprop="datePublished"> Published 2019-04-09</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#NGUI渲染流程"><span class="toc-number">1.</span> <span class="toc-text">NGUI渲染流程</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#渲染先后关系"><span class="toc-number">1.1.</span> <span class="toc-text">渲染先后关系</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#UIPanel内部"><span class="toc-number">1.1.1.</span> <span class="toc-text">UIPanel内部</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#UIPanel之间"><span class="toc-number">1.1.2.</span> <span class="toc-text">UIPanel之间</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#扩展"><span class="toc-number">1.2.</span> <span class="toc-text">扩展</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#控制UIDrawCall数量"><span class="toc-number">1.2.1.</span> <span class="toc-text">控制UIDrawCall数量</span></a></li></ol></li></ol></li></ol>
+		
+		</div>
+		
+		<h3 id="NGUI渲染流程"><a href="#NGUI渲染流程" class="headerlink" title="NGUI渲染流程"></a>NGUI渲染流程</h3><p>NGUI是以 <em>depth</em> 的参数控制各个 <em>UIWidget</em> 的前后关系的。所有继承自 <em>UIWidget</em> 的包括 <em>UISprite</em> 、 <em>UILabel</em> 等这些继承自 <em>UIWidget</em> 的组件（为方便，下方说到 <em>UIWidget</em> 包括UISprite等继承自 <em>UIWidget</em> 的类），<em>UIPanel</em> 也有 <em>depth</em>，UIPanel是调整整个Panel与Panel之间的层级关系。而UIWidget的depth是调整UIWidget之间的层级关系。首先我们看UIWidget的<em>depth</em>的 set 代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">set&#123;</span><br><span class="line">    if (mDepth != value) &#123;</span><br><span class="line">	if (panel != null) panel.RemoveWidget(this);</span><br><span class="line">	mDepth = value;</span><br><span class="line">	if (panel != null)&#123;</span><br><span class="line">	    panel.AddWidget(this);</span><br><span class="line">	    if (!Application.isPlaying)&#123;</span><br><span class="line">	    panel.SortWidgets();</span><br><span class="line">	    panel.RebuildAllDrawCalls();</span><br><span class="line">	&#125;</span><br><span class="line">    &#125;</span><br><span class="line">#if UNITY_EDITOR</span><br><span class="line">	NGUITools.SetDirty(this);</span><br><span class="line">#endif</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可看出一旦 <em>UIWidget</em> 的 <em>depth</em> 变化以后，<em>UIWidget</em> 所属的 <em>UIPanel</em> 会更新保存的 <em>UIWidget</em> 列表（先删除后插入），这是因为UIPanel中的UIWiidget顺序影响到渲染先后顺序。关于 <em>UIPanel</em> 可参考《UIPanel》。</p>
+<p>UIPanel 保存了子节点下的所有UIWidget元素，这里 <em>depth</em> 变化以后，进行了删除跟插入操作。而这个删除跟增加UIwidget 也干了一堆事，且看：</p>
+<ol>
+<li><p>RemoveWidget()</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">public void RemoveWidget (UIWidget w) &#123;</span><br><span class="line">	if (widgets.Remove(w) &amp;&amp; w.drawCall != null) &#123;</span><br><span class="line">	    int depth = w.depth;</span><br><span class="line">	    if (depth == w.drawCall.depthStart || depth == w.drawCall.depthEnd)</span><br><span class="line">	    mRebuild = true;</span><br><span class="line">	    w.drawCall.isDirty = true;</span><br><span class="line">	    w.drawCall = null;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>一旦满足条件则将 <em>mRebuilt</em> 值设置为 true，在UIPanel的 <em>LateUpdate()</em> 方法中，会遍历所有的UIPanel并更新新每个UIPanel的UIWidget跟DrawCall。而一旦 <em>mRebuild</em> 为true以后，会重新构建全部的DrawCall</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">if (mRebuild)&#123;</span><br><span class="line">	mRebuild = false;</span><br><span class="line">	FillAllDrawCalls();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>AddWidget()</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">public void AddWidget (UIWidget w) &#123;        </span><br><span class="line">	... 省略一堆插入代码</span><br><span class="line">	FindDrawCall(w);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>插入一个新的 <em>UIWidget</em> 必然会调用一次 <em>FindDrawCall()</em> 方法，根据 <em>UIWidget</em> 的 <em>depth</em> 将新插入的 <em>UIWidget</em> 放入到合适的 DrawCall 中。</p>
+<ol start="3">
+<li>FindDrawCall()</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">   public UIDrawCall FindDrawCall (UIWidget w)&#123;</span><br><span class="line">       .... //省略部分</span><br><span class="line">       for (int i = 0; i &lt; drawCalls.Count; ++i)&#123;</span><br><span class="line">           UIDrawCall dc = drawCalls[i];</span><br><span class="line">   	   int dcStart = (i == 0) ? int.MinValue : drawCalls[i - 1].depthEnd + 1;</span><br><span class="line">   	   int dcEnd = (i + 1 == drawCalls.Count) ? int.MaxValue : drawCalls[i + 1].depthStart - 1;</span><br><span class="line">   	   if (dcStart &lt;= depth &amp;&amp; dcEnd &gt;= depth) &#123;</span><br><span class="line">   	       if (dc.baseMaterial == mat &amp;&amp; dc.shader == shader &amp;&amp; dc.mainTexture == tex) &#123;</span><br><span class="line">   	           if (w.isVisible)&#123;</span><br><span class="line">   		       w.drawCall = dc;</span><br><span class="line">   		       if (w.hasVertices) dc.isDirty = true;</span><br><span class="line">   		           return dc;</span><br><span class="line">   		   &#125;</span><br><span class="line">   	       &#125;</span><br><span class="line">   	       else mRebuild = true;</span><br><span class="line">   	       return null;</span><br><span class="line">   	   &#125;</span><br><span class="line">     &#125;</span><br><span class="line">     mRebuild = true;</span><br><span class="line">     return null;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>遍历所属 <em>UIPanel</em> 所有的 <em>DrawCall</em>，如果当前 <em>UIWidget</em> 的 <em>depth</em> 在其中一个 drawCall的范围之内，则将此DrawCall赋值给当前 <em>UIWidget</em></p>
+<p>以上可知：增删 <em>UIWidget</em> 以后，UIPanel 保存的 UIDrawCall 跟 widgets list 都会跟着刷新一遍。那么什么情况下会有<em>UIWidget</em> 增删操作呢。有两种：</p>
+<ol>
+<li><p>新建 <em>UIWidget</em> </p>
+<p>由于 <em>UIWidget</em> 都使用了[ExecuteInEditMode] 特性（在每个类的顶部），这个特性的作用是在Editor模式（编辑模式）下能够运行。因此我们新建 <em>UIWidget</em> 的时候，Awake()、 Start()、Update()等这些方法会自动调用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">protected void Start ()&#123; // 在父类 UIRect.cs 中</span><br><span class="line">	mStarted = true;</span><br><span class="line">	OnInit();</span><br><span class="line">	OnStart();</span><br><span class="line">&#125;</span><br><span class="line">protected override void OnInit ()&#123;</span><br><span class="line">    ...</span><br><span class="line">    RemoveFromPanel();</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br><span class="line">protected override void OnStart ()&#123;</span><br><span class="line">    ...</span><br><span class="line">    CreatePanel();</span><br><span class="line">&#125;</span><br><span class="line">public UIPanel CreatePanel ()&#123;</span><br><span class="line">    ...</span><br><span class="line">    panel.AddWidget(this);</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Start() 方法写在父类 <em>UIRect.cs</em> 中, 里面会调用两个方法 <em>OnInit()</em>、<em>OnStart</em>，最后都有增删操作</p>
+</li>
+<li><p>更改已有的 <em>UIWidget</em> 的 <em>depth</em></p>
+<p>更改 <em>depth</em> 的过程就是上面的流程，最终也会有增删操作</p>
+</li>
+</ol>
+<p>UIPanel的静态变量 <em>list</em> 保存了当前所有激活状态的UIPanel。在UIPanel的LateUpdate方法中，遍历 <em>list</em> 并调用每个UIPanel自己的 <em>UpdateSelf()</em> 方法。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">void UpdateSelf ()&#123;</span><br><span class="line">	mHasMoved = cachedTransform.hasChanged;</span><br><span class="line">	UpdateTransformMatrix();</span><br><span class="line">	UpdateLayers();</span><br><span class="line">	UpdateWidgets();</span><br><span class="line">	if (mRebuild)&#123;</span><br><span class="line">		mRebuild = false;</span><br><span class="line">		FillAllDrawCalls();</span><br><span class="line">	&#125;</span><br><span class="line">	else</span><br><span class="line">	&#123;  ... &#125; // 省略</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>UpdataLayer() 是保证UIPanel下的 <em>UIWidget</em> 的Layer都跟UIPanel保持一致。</p>
+<p>UpdateWidgets() 是刷新UIPanel下的可见 <em>UIWidget</em> 的位置信息，并将数据更新到 <em>UIWidget</em> 对应的 <em>UIGeometry</em> 中。<em>UIGeometry</em> 是 <em>UIWidget</em> 的数据类，每个 <em>UIWidget</em> 都存在一个对应的 <em>UIGeometry</em>，保存了<em>UIWidget</em> 的顶点、UV、颜色数据，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">void UpdateWidgets()&#123;</span><br><span class="line">    for (int i = 0, imax = widgets.Count; i &lt; imax; ++i)&#123;</span><br><span class="line">	UIWidget w = widgets[i];</span><br><span class="line">	... 省略</span><br><span class="line">	if (w.UpdateTransform(frame) || mResized || (mHasMoved &amp;&amp; !alwaysOnScreen))&#123;</span><br><span class="line">        ... 省略</span><br><span class="line">	&#125;</span><br><span class="line">	if (w.UpdateGeometry(frame))&#123;</span><br><span class="line">	    if (!mRebuild) &#123;</span><br><span class="line">		... 省略</span><br><span class="line">		if (w.drawCall != null) w.drawCall.isDirty = true;</span><br><span class="line">		else FindDrawCall(w);</span><br><span class="line">	    &#125;</span><br><span class="line">	&#125;</span><br><span class="line">	...  省略</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>UpdageWigets() 刷新每个 <em>UIWidget</em> 的 <em>Geometry</em> 的顶点、UV、颜色数据，同时如果mBuild为false， 则更新 <em>UIWidget</em> 的DrwaCall。</p>
+<p>继而就是 FillAllDrawCalls() 方法，这个方法销毁再重建对应UIPanel下的所有DrawCall，并将每个<em>UIWidget</em> 下面的 <em>Geometry</em>  数据传入DrawCall 中。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">void FillAllDrawCalls ()&#123;</span><br><span class="line">    for (int i = 0; i &lt; drawCalls.Count; ++i) // 清空所有旧drawcall</span><br><span class="line">		UIDrawCall.Destroy(drawCalls[i]);</span><br><span class="line">	drawCalls.Clear();</span><br><span class="line">	...</span><br><span class="line">	if (mSortWidgets) SortWidgets(); // 按照widget的depth大小重新排序所有widgets</span><br><span class="line">	for (int i = 0; i &lt; widgets.Count; ++i)&#123;</span><br><span class="line">	    ...</span><br><span class="line">	    if (dc == null)&#123; // 没有对应的则新增drawcall</span><br><span class="line">                dc = UIDrawCall.Create(this, mat, tex, sdr);</span><br><span class="line">		dc.depthStart = w.depth;</span><br><span class="line">		dc.depthEnd = dc.depthStart;</span><br><span class="line">		...</span><br><span class="line">	    &#125;</span><br><span class="line">	    else&#123; // 没有对应的drawcall 则更新drawcall的depth范围</span><br><span class="line">                int rd = w.depth;</span><br><span class="line">		if (rd &lt; dc.depthStart) dc.depthStart = rd;</span><br><span class="line">		if (rd &gt; dc.depthEnd) dc.depthEnd = rd;</span><br><span class="line">	    &#125;		</span><br><span class="line">            w.drawCall = dc;</span><br><span class="line">	    ++count; // 当前drawcall的widget个数</span><br><span class="line">	    if (generateNormals) w.WriteToBuffers(dc.verts, dc.uvs, dc.cols, dc.norms, dc.tans, 			generateUV2 ? dc.uv2 : null); // 更新drawcall的顶点、uv等数据</span><br><span class="line">	    else w.WriteToBuffers(dc.verts, dc.uvs, dc.cols, null, null, generateUV2 ? dc.uv2 : null);</span><br><span class="line">	    ...</span><br><span class="line">	&#125;</span><br><span class="line">	// 新增drawcall -&gt; </span><br><span class="line">	if (dc != null &amp;&amp; dc.verts.Count != 0)&#123;</span><br><span class="line">            drawCalls.Add(dc);</span><br><span class="line">	    dc.UpdateGeometry(count); // count为当前drawcall的widget个数 更新drawcall的数据，并渲染（包括材质、贴图、shader）</span><br><span class="line">	...</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面的脚本主要做了几件事：</p>
+<ol>
+<li>删除当前UIPanel旧的所有drawcall</li>
+<li>排序当前UIPanel的所有子 <em>UIWidget</em></li>
+<li>根据 <em>UIWidget</em> 的 <em>depth</em> 创建和更新 DrawCall</li>
+<li>所有DrawCall更新uv、法线、材质 等数据</li>
+<li>UIDrawCall.OnWillRenderObject () 渲染UIDrawCall</li>
+</ol>
+<p>UIDrawCall.UpdateGeometry() 更新了UIDrawCall 的材质、贴图、shader等数据，然后UIDrawCall.OnWillRenderObject ()自动调用渲染</p>
+<h4 id="渲染先后关系"><a href="#渲染先后关系" class="headerlink" title="渲染先后关系"></a>渲染先后关系</h4><h5 id="UIPanel内部"><a href="#UIPanel内部" class="headerlink" title="UIPanel内部"></a>UIPanel内部</h5><p>由上面的分析可知，UIPanel内部的 <em>UIWidget</em> 的先后顺序是由对应的 <em>UIDrawCall</em> 决定的</p>
+<p>而 <em>UIDrawCall</em> 的最终的渲染却是MeshFilter组件。也就是说，最终决定渲染先后的还是SortingLayerName、SortingOrder、RenderQueue这几个参数。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Material RebuildMaterial () &#123;</span><br><span class="line">	...</span><br><span class="line">	// Create a new material</span><br><span class="line">	CreateMaterial();</span><br><span class="line">	mDynamicMat.renderQueue = mRenderQueue;		</span><br><span class="line">	if (mRenderer != null)&#123; // Update the renderer		</span><br><span class="line">		mRenderer.sharedMaterials = new Material[] &#123; mDynamicMat &#125;;</span><br><span class="line">		mRenderer.sortingLayerName = mSortingLayerName;</span><br><span class="line">		mRenderer.sortingOrder = mSortingOrder;</span><br><span class="line">	&#125;</span><br><span class="line">	return mDynamicMat;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>UIDrawCall.UpdateGeometry() 中会走到 RebuildMaterial()，将UIDrawCall的SortingLayerName、SortingOrder、RenderQueue赋值给Rederer，而UIDrawCall的这些参数却是在 <em>UIPanel</em> 的 <em>LateUpdate()</em> 方法中更新的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">void LateUpdate ()&#123;</span><br><span class="line">    ... </span><br><span class="line">    int rq = 3000;</span><br><span class="line">    for (int i = 0, imax = list.Count; i &lt; imax; ++i)&#123;</span><br><span class="line">        UIPanel p = list[i];</span><br><span class="line">       if (p.renderQueue == RenderQueue.Automatic)&#123;       		</span><br><span class="line">        	p.startingRenderQueue = rq;    // 更新起始renderqueue</span><br><span class="line">        	p.UpdateDrawCalls(i);</span><br><span class="line">		rq += p.drawCalls.Count;</span><br><span class="line">       &#125;</span><br><span class="line">       ...</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>同样在LateUpdate() 中，遍历了所有的UIPanel，并更新其起始RederQueue(p.startingRenderQueue)，然后在 UIDrawCall.UpdateDrawCalls()中更新了UIDrawCall的SortingLayerName、SortingOrder、RenderQueue</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">void UpdateDrawCalls (int sortOrder)&#123;</span><br><span class="line">    ...</span><br><span class="line">    for (int i = 0; i &lt; drawCalls.Count; ++i)&#123;</span><br><span class="line">        UIDrawCall dc = drawCalls[i];</span><br><span class="line">        ...</span><br><span class="line">        dc.renderQueue = (renderQueue == RenderQueue.Explicit) ? startingRenderQueue : startingRenderQueue + i;</span><br><span class="line">        dc.sortingOrder = useSortingOrder ? ((mSortingOrder == 0 &amp;&amp; renderQueue == RenderQueue.Automatic) ? sortOrder : mSortingOrder) : 0;</span><br><span class="line">	dc.sortingLayerName = useSortingOrder ? mSortingLayerName : null;</span><br><span class="line">	...</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>SortingOrder跟SortingLayerName是否起作用取决于 <em>useSortingOrder</em> 变量，这个变量在UIPanel的Inspector面板上可以更改。”Advanced Options” 下方的”Sort Order”勾选框，勾选表示使用，反之则弃用。默认是弃用。</p>
+<p>弃用的话，材质上的SortingLayerName会被赋值为默认层”Default”，而DrawCall的Rederer</p>
+<p>因此在未勾选 <em>“Sort Order”</em> 时，同UIPanel下的UI元素，渲染的先后顺序只跟RenderQueue有关。而RenderQueue的大小是根据UIDrawCall的list遍历得来的。再往前推，UIDrawCall的顺序是由 <em>UIPanel</em> 中 <em>UIWidget</em> 的 <em>list</em> 的 <em>depth</em> 决定的。</p>
+<p>这就是为什么修改 <em>UIWidget</em> 的 <em>depth</em> 可以调整其前后关系！（此前提到的 <em>UIWidget</em> 包括继承的类UILabel、UISprite之类）</p>
+<h5 id="UIPanel之间"><a href="#UIPanel之间" class="headerlink" title="UIPanel之间"></a>UIPanel之间</h5><p>UIPanel也存在一个depth属性，修改depth没有<em>UIWidget</em>那么复杂</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">public int depth&#123;</span><br><span class="line">    ...</span><br><span class="line">    set&#123;</span><br><span class="line">        ...</span><br><span class="line">        ist.Sort(CompareFunc);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">static public int CompareFunc (UIPanel a, UIPanel b)&#123;</span><br><span class="line">    if (a != b &amp;&amp; a != null &amp;&amp; b != null)&#123;</span><br><span class="line">	if (a.mDepth &lt; b.mDepth) return -1;</span><br><span class="line">	if (a.mDepth &gt; b.mDepth) return 1;</span><br><span class="line">	    return (a.GetInstanceID() &lt; b.GetInstanceID()) ? -1 : 1;</span><br><span class="line">    &#125;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>一旦UIPanel的 <em>depth</em> 改变，则重新排列所有的UIPanel的顺序，这样在 <em>LateUpdate()</em> 中遍历时顺序就变了，那么对应的RenderQueue也会变化，其底下的 <em>DrawCall</em> 跟 <em>UIWidget</em> 的RenderQueue也会跟着变化，这就实现了整个UIPanel下的 <em>UIWidget</em> 跟着变得原因</p>
+<h4 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h4><h5 id="控制UIDrawCall数量"><a href="#控制UIDrawCall数量" class="headerlink" title="控制UIDrawCall数量"></a>控制UIDrawCall数量</h5><p>在新增 <em>UIWidget</em> 或者调整 <em>UIWidget</em> 的 <em>depth</em> 的时候，会刷新UIPanel的UIDrawCall，而是新增一个UIDrawCall 还是 将<em>UIWidget</em> 添加到已有的 UIDrawCall 中，是可以控制的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">void FillAllDrawCalls ()&#123;</span><br><span class="line">    ...</span><br><span class="line">    if (mSortWidgets) SortWidgets();</span><br><span class="line">    for (int i = 0; i &lt; widgets.Count; ++i)&#123;</span><br><span class="line">        if (mat != mt || tex != tx || sdr != sd)&#123;  // 如果跟上一个widget的材质、贴图等不同</span><br><span class="line">            // 添加上一个widget到drawcall中</span><br><span class="line">        &#125;</span><br><span class="line">        if (mat != null || sdr != null || tex != null)&#123;</span><br><span class="line">            if (dc == null)&#123;</span><br><span class="line">                // 新建一个drawcall</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上图可知，遍历UIPanel的 <em>UIWidget</em> 列表，一旦当前 <em>UIWidget</em> 的材质（mt / mat）、贴图（tex / tx）、shader（sdr / sd）跟上一个 <em>UIWidget</em> 的有所不同，则保存当前UIDrawCall 并 新建一个UIDrawCall 用以保存当前的 <em>UIWidget</em>。</p>
+<p>因此，创建UI元素时，可采取方法减少不必要的DrawCall数量：</p>
+<ol>
+<li>同个图集的<em>UIWidget</em> 的 <em>depth</em> 尽量连续，所谓连续并不是不断开，而是不插入其他图集的<em>UIWidget</em></li>
+<li>不同Shader的两个同样图集，depth也应该尽量不交叉</li>
+</ol>
+<p>一旦不同材质、贴图、shader的图集的两个 <em>UIWidget</em> 的 <em>depth</em> 进行交叉，那么就会以插入的 <em>depth</em> 为分界，生成三个DrawCall，这是不必要的</p>
+<p>NGUI提供了 DrawCallTool 进行监控每个UIPanel上的DrawCall数量。在每个UIPanel的Inspector的底部有一个 <em>Show Draw Calls</em> 按钮，点击可以打开 DrawCallTool 面板。 里面列出了所有DrawCall 的 <em>UIWidget</em>，因此我们可以使用这个工具更好的搭建UI页面，在开发前期就控制好DrawCall，免得后期耗费大量人力调整</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://yoursite.com/2019/04/09/NGUI/NGUI-渲染流程研究/" data-title="NGUI渲染流程 | " data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2019/05/01/设计模式/订阅者模式/" title="观察者模式（Observer）">
+  <strong>上一篇：</strong><br/>
+  <span>
+  观察者模式（Observer）</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2019/04/03/NGUI/NGUI-WrapContent研究/"  title="UIWrapContent">
+ <strong>下一篇：</strong><br/> 
+ <span>UIWrapContent
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#NGUI渲染流程"><span class="toc-number">1.</span> <span class="toc-text">NGUI渲染流程</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#渲染先后关系"><span class="toc-number">1.1.</span> <span class="toc-text">渲染先后关系</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#UIPanel内部"><span class="toc-number">1.1.1.</span> <span class="toc-text">UIPanel内部</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#UIPanel之间"><span class="toc-number">1.1.2.</span> <span class="toc-text">UIPanel之间</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#扩展"><span class="toc-number">1.2.</span> <span class="toc-text">扩展</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#控制UIDrawCall数量"><span class="toc-number">1.2.1.</span> <span class="toc-text">控制UIDrawCall数量</span></a></li></ol></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+
+
+  
+
+  
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://coderq.com" target="_blank" title="一个面向程序员交流分享的新一代社区">码农圈</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">Weibo</p>
+    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=&verifier=&dpc=1"></iframe>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> 人生如逆旅 <br/>
+			我亦是行人</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2020 
+		
+		<a href="http://yoursite.com" title=""></a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?e6d1f421bbc9962127a50488f9ed37d1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

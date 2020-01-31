@@ -1,0 +1,509 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>Lua表（table） | </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+
+    
+    <meta name="description" content="Lua表（table）表示lua独有的一种数据结构，地位就像字典之于C#。不同的是，lua出来string、number这些基本类型之外，只有一个table表数据结构，而它丰富的自由度，也能任意扩展跟模拟一些其他语言的数据结构 表的创建 myTable = {}  创建一个张空表  myTable = {key1 = value1, key2 = value2} 这种情况下有多种方式可以创建，却决">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Lua表（table）">
+<meta property="og:url" content="http://yoursite.com/2019/03/28/Lua/Table/index.html">
+<meta property="og:site_name">
+<meta property="og:description" content="Lua表（table）表示lua独有的一种数据结构，地位就像字典之于C#。不同的是，lua出来string、number这些基本类型之外，只有一个table表数据结构，而它丰富的自由度，也能任意扩展跟模拟一些其他语言的数据结构 表的创建 myTable = {}  创建一个张空表  myTable = {key1 = value1, key2 = value2} 这种情况下有多种方式可以创建，却决">
+<meta property="og:updated_time" content="2020-01-31T06:12:58.878Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Lua表（table）">
+<meta name="twitter:description" content="Lua表（table）表示lua独有的一种数据结构，地位就像字典之于C#。不同的是，lua出来string、number这些基本类型之外，只有一个table表数据结构，而它丰富的自由度，也能任意扩展跟模拟一些其他语言的数据结构 表的创建 myTable = {}  创建一个张空表  myTable = {key1 = value1, key2 = value2} 这种情况下有多种方式可以创建，却决">
+
+    
+    <link rel="alternative" href="/atom.xml" title="" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="" title=""/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title=""></a></h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:yoursite.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2019/03/28/Lua/Table/" title="Lua表（table）" itemprop="url">Lua表（table）</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="" target="_blank" itemprop="author"></a>
+		
+  <p class="article-time">
+    <time datetime="2019-03-28T14:47:05.000Z" itemprop="datePublished"> Published 2019-03-28</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Lua表（table）"><span class="toc-number">1.</span> <span class="toc-text">Lua表（table）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#表的创建"><span class="toc-number">1.1.</span> <span class="toc-text">表的创建</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#表的操作"><span class="toc-number">1.2.</span> <span class="toc-text">表的操作</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#插入元素"><span class="toc-number">1.2.1.</span> <span class="toc-text">插入元素</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#删除元素"><span class="toc-number">1.3.</span> <span class="toc-text">删除元素</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#排序元素"><span class="toc-number">1.4.</span> <span class="toc-text">排序元素</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#迭代器"><span class="toc-number">1.5.</span> <span class="toc-text">迭代器</span></a></li></ol></li></ol>
+		
+		</div>
+		
+		<h3 id="Lua表（table）"><a href="#Lua表（table）" class="headerlink" title="Lua表（table）"></a>Lua表（table）</h3><p>表示lua独有的一种数据结构，地位就像字典之于C#。不同的是，lua出来string、number这些基本类型之外，只有一个table表数据结构，而它丰富的自由度，也能任意扩展跟模拟一些其他语言的数据结构</p>
+<h4 id="表的创建"><a href="#表的创建" class="headerlink" title="表的创建"></a>表的创建</h4><ol>
+<li><p>myTable = {}  创建一个张空表</p>
+</li>
+<li><p>myTable = {key1 = value1, key2 = value2}</p>
+<p>这种情况下有多种方式可以创建，却决于你需要用的是那种形式的数据格式，比如：</p>
+<ul>
+<li>数组型：myTable = {[1] = “小A”, [2] = “小B”, [3] = “小C”, [4] = “小D”} 或者myTable = {1, 2, 3, 4}</li>
+<li>字典型：myTable = {[“name1”] = “小A”,  [“name1”] = “小B”}，或者直接myTable = {name1 = “小A”，name2 = “小B”}</li>
+<li>混合型：myTable = { {[1] = {[“name”] = “小A”;  “age” = 5}},   {[2] = {[“name”] = “小B”;  “age” = 5}}}</li>
+<li>自由组合型：myTable = {[‘name’] = “小A”,  [‘age’] = 10; [‘favor’] = {}; GetAge = function() return 10 end }</li>
+</ul>
+</li>
+</ol>
+<p>数组型的表以数组下标来进行读取。</p>
+<ul>
+<li>赋值直接根据下标读取然后修改值：myTable[1] = “小F”，可直接修改元素。</li>
+<li>删除元素则直接将对应的值赋值为nil即可：myTable[1] = nil</li>
+<li>lua中数组是无序的，只是下标对应了值，因此能根据下标进行取值/赋值操作</li>
+</ul>
+<p>字典型，跟C#的Dictionary一样，一个key对应一个value值，key可以是任意类型，而value则不定，但是为了保持数据一致性，通常key是同类型，value也都是同类型，否则容易出现一些数据类型错误。当然如果自信能够任意掌控，则没有这么多限制</p>
+<ul>
+<li>取值跟赋值的时候，直接根据key进行操作：myTable[“name1”] = “小C”</li>
+<li>删除元素，直接将value赋值为nil表示删除元素：myTable[“name1”] = nil</li>
+<li></li>
+</ul>
+<p>需要注意的是，一旦删除元素，也就是将元素的值设置为nil，字典型的是没有什么问题的。但是数组型的就需要谨慎了，如果将数组中间的值赋值为nil，则在以ipairs进行遍历的时候，以nil之后的都将遍历不出来，也就是说，ipairs遍历到值为nil的时候，直接中断了循环。但是不影响直接以下标读取nil后面的值，这点比较容易坑到自己。而以pairs进行遍历则没有这个问题，pairs遍历数组时遇到中间删除的它会输出nil，pairs遍历字典型的则会直接跳过nil值的。具体原理在于table的存储方式跟两种遍历之间的差别，后面再说。</p>
+<p>混合型跟自由组合型是字典的扩展类型，纯属个人归纳，操作都跟字典差不多，只是在细节上有些区别，更自由一些</p>
+<h4 id="表的操作"><a href="#表的操作" class="headerlink" title="表的操作"></a>表的操作</h4><h5 id="插入元素"><a href="#插入元素" class="headerlink" title="插入元素"></a>插入元素</h5><ul>
+<li><p>数组型插入</p>
+<p>lua内置了数组型table的增删方法。数组型table的插入使用的是 table.insert(t, pos, value)，t为需要插入的表，pos为需要的下标，如果不填pos的话，则默认插入数组的尾部，value为需要插入的值。例如：myTable = {1, 2, 3, 5}, 在下标4的位置插入4：table.insert(myTable, 4, 4)。如果不写pos：table.insert(myTable, 4)则表示将值4填入下标为5的位置（因为数组长度为4），插入的话，目标位置前的不变化，目标位置之后的顺位移动一位。</p>
+</li>
+<li><p>字典型插入</p>
+<p>字典型由于没有下标一说，因此想要插入一个值，直接添加相应的key跟value即可：t = {[1001] = “小A”，[1002] = “小B”}，插入一个1003，则 t[1003] = “小C” 就可以了。如果字典的key是string格式的，则也可以用“table.key”的方式进行插入，</p>
+</li>
+<li><p>混合型/自由型插入</p>
+<p>自有型的可以使用字典型的插入方式进行插入，也可以直接以“table.key”的方式进行加入，比如 t ={ name = “小A”， age = 10 }，那么加入我们需要在t中插入小A的爱好，那么就可以写为：t.favor = “斗地主”，这样会方便一点，就是看上去随意了些</p>
+</li>
+</ul>
+<h4 id="删除元素"><a href="#删除元素" class="headerlink" title="删除元素"></a>删除元素</h4><ul>
+<li><p>数组型删除</p>
+<p>同样使用内置的方法进行删除元素，table.remove(t, pos)。t 是需要删除的表，pos是需要删除的位置：myTable[1] = nil</p>
+</li>
+<li><p>字典型删除</p>
+<p>字典型的table删除则直接赋值为nil即可：myTable[1001] = nil  删除key为1001的元素，或者使用”table.key”进行方式删除： t ={ name = “小A”， age = 10 },  t.age = nil，同样可以达到效果</p>
+</li>
+<li><p>混合型/自由型删除 </p>
+<p>跟字典型一样，直接赋值为nil即可，例如有一个表为 t ={ name = “小A”， age = 10 }，我们需要删除t的age：t [“age”] = nil，当然，也可以使用”table.key”进行删除：t.age = nil，两种删除方式都可以</p>
+</li>
+</ul>
+<h4 id="排序元素"><a href="#排序元素" class="headerlink" title="排序元素"></a>排序元素</h4><ul>
+<li><p>数组型</p>
+<p>数组型的排序使用的是内置的table.sort(t, comp)，t是需要排序的数组table，comp是排序函数。comp排序函数可以不传递，默认采用 ‘&lt;’ 排序。传入排序函数则表示使用自定义排序方式。例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">t = &#123;3,5,1,6,2&#125; </span><br><span class="line">print(table.concat(t, &quot;_&quot;))  -- 输出：3_5_1_6_2</span><br><span class="line">table.sort(t) </span><br><span class="line">print(table.concat(t, &quot;_&quot;))  -- 输出：1_2_3_5_6</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>非数组型无法排序</p>
+</li>
+</ul>
+<h4 id="迭代器"><a href="#迭代器" class="headerlink" title="迭代器"></a>迭代器</h4><p>lua迭代器分为无状态迭代器，多状态迭代器。无状态迭代器不保存任何迭代状态，多状态的迭代器保存迭代状态。两者的区别在于是否会在迭代函数内部创建并返回闭包。两者各有优劣，无状态的避免了创建闭包，有状态则可以遍历非数组table；</p>
+<p>lua中的迭代器典型的为ipairs跟pairs，ipairs是无状态迭代器；迭代器调用时，返回下一个元素的值跟对应的下标，比如调用 t[1] 时，返回的为 t[2], 2，如果下个元素为nil，则结束循环</p>
+<ul>
+<li><p>ipairs </p>
+<p>模拟lua的ipairs，迭代函数为iterator，传入表t 跟下标index，每次index加1，然后根据index去表中取值，取到则返回对应的下标跟值，没取到则结束循环</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">function iterator(t, index)</span><br><span class="line">    index = index + 1</span><br><span class="line">    if t[index] then</span><br><span class="line">        return index, t[index]</span><br><span class="line">    end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">function cIpairs(t)</span><br><span class="line">    return iterator, t, 0</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">t3 = &#123;2, 1, 4, 5, 6&#125;</span><br><span class="line">for i, v in cIpairs(t3) do</span><br><span class="line">    print(i,v)</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>pairs </p>
+<p>pairs 是非数组型表的遍历，当然也可以遍历数组型，为多状态迭代器。每次循环返回一个闭包函数，在闭包函数里面计算并返回对应的key的值或者nil，如果返回值是nil则结束循环。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">function iterator(t)</span><br><span class="line">    local index = 0</span><br><span class="line">    return function()</span><br><span class="line">        index = index + 1</span><br><span class="line">        if index &lt;= #t then</span><br><span class="line">            return index, t[index]</span><br><span class="line">        end</span><br><span class="line">    end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">function iterator2(t)</span><br><span class="line">    local index = 0</span><br><span class="line">    return function()</span><br><span class="line">        index = index + 1</span><br><span class="line">        return next(t, index)</span><br><span class="line">    end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">t3 = &#123;2, 1, 4, 5, 6&#125;</span><br><span class="line">for i, v in iterator2(t3) do</span><br><span class="line">    print(i, v)</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<p>iterator跟iterator2都包含一个闭包函数，里面计算下一个元素是否是nil。pairs是根据next的返回值判断是否还有下一个元素，相当于iterator2。区别在于我们使用的table隔了一层，无法直接取到key进行判断，所以只能遍历数组tabl</p>
+</li>
+</ul>
+<p>需要注意的是，数组的插入跟删除不建议使用直接赋值为nil的方式，因为这样一来，势必导致数组的长度出现诡异的问题，而导致无法遍历到需要的内容，比如一个表中间的下标对应的值被赋值为nil，那么，有可能这个下标之后的所有元素都无法正常遍历到，因为ipairs遍历到第一个元素为nil时就结束循环了。</p>
+<p>还可能引起数组排序遇到问题，即传入的元素为nil，会直接导致排序出错</p>
+<p>正确的方式应该是使用table.insert 跟 table.remove 进行增删操作。</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://yoursite.com/2019/03/28/Lua/Table/" data-title="Lua表（table） | " data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2019/03/29/Lua/Lua面向对象/" title="Lua面向对象">
+  <strong>上一篇：</strong><br/>
+  <span>
+  Lua面向对象</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2019/03/26/NGUI/NGUI-UIPanel研究/"  title="UIPanel 面板">
+ <strong>下一篇：</strong><br/> 
+ <span>UIPanel 面板
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Lua表（table）"><span class="toc-number">1.</span> <span class="toc-text">Lua表（table）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#表的创建"><span class="toc-number">1.1.</span> <span class="toc-text">表的创建</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#表的操作"><span class="toc-number">1.2.</span> <span class="toc-text">表的操作</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#插入元素"><span class="toc-number">1.2.1.</span> <span class="toc-text">插入元素</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#删除元素"><span class="toc-number">1.3.</span> <span class="toc-text">删除元素</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#排序元素"><span class="toc-number">1.4.</span> <span class="toc-text">排序元素</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#迭代器"><span class="toc-number">1.5.</span> <span class="toc-text">迭代器</span></a></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+
+
+  
+
+  
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://coderq.com" target="_blank" title="一个面向程序员交流分享的新一代社区">码农圈</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">Weibo</p>
+    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=&verifier=&dpc=1"></iframe>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> 人生如逆旅 <br/>
+			我亦是行人</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2020 
+		
+		<a href="http://yoursite.com" title=""></a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?e6d1f421bbc9962127a50488f9ed37d1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>
