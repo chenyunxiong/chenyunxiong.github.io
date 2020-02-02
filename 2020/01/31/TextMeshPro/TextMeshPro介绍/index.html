@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next gemini use-motion" lang="">
+<html class="theme-next gemini use-motion" lang="zh-Hans">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -86,6 +86,7 @@
 <meta property="og:url" content="http://yoursite.com/2020/01/31/TextMeshPro/TextMeshPro介绍/index.html">
 <meta property="og:site_name" content="人生如逆旅">
 <meta property="og:description" content="TextMesh介绍  转至元数据起始TextMeshPro原来是一款Unity字体插件，由于其优异的字体渲染跟字体特效表现方式，从2018.3以后正式引入Unity的资源包，可以通过Window - PackageManager面板进行查看跟引入当前TextMeshPro的版本 TextMeshPro支持图文混排，只需要创建对应的Sprite Asset，就可以进行丰富的图文混排，可以满足大部">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:updated_time" content="2020-01-31T13:25:54.927Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="TextMeshPro">
@@ -105,7 +106,7 @@
     motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
     duoshuo: {
       userId: '0',
-      author: 'Author'
+      author: '博主'
     },
     algolia: {
       applicationID: '',
@@ -137,7 +138,7 @@
 
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="">
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
 
   
   
@@ -185,7 +186,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
-            Startseite
+            首页
           </a>
         </li>
       
@@ -195,7 +196,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
             
-            Tags
+            标签
           </a>
         </li>
       
@@ -205,7 +206,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
-            Archiv
+            归档
           </a>
         </li>
       
@@ -218,7 +219,7 @@
             
               <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
             
-            Suche
+            搜索
           </a>
         </li>
       
@@ -307,9 +308,9 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Veröffentlicht am</span>
+                <span class="post-meta-item-text">发表于</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-01-31T21:24:26+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-01-31T21:24:26+08:00">
                 2020-01-31
               </time>
             
@@ -397,8 +398,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2020/01/31/Shader/顶点片段着色器框架/" rel="next" title="顶点片段着色器（Vertex & Fragment Shader)">
-                <i class="fa fa-chevron-left"></i> 顶点片段着色器（Vertex & Fragment Shader)
+              <a href="/2019/11/28/Cmd/01/" rel="next" title="Windows批处理命令">
+                <i class="fa fa-chevron-left"></i> Windows批处理命令
               </a>
             
           </div>
@@ -406,6 +407,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/01/31/Shader/顶点片段着色器框架/" rel="prev" title="顶点片段着色器（Vertex & Fragment Shader)">
+                顶点片段着色器（Vertex & Fragment Shader) <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -484,7 +489,7 @@
                 <a href="/archives/">
               
                   <span class="site-state-item-count">14</span>
-                  <span class="site-state-item-name">Artikel</span>
+                  <span class="site-state-item-name">日志</span>
                 </a>
               </div>
             
@@ -496,8 +501,8 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">8</span>
-                  <span class="site-state-item-name">Tags</span>
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">标签</span>
                 </a>
               </div>
             
@@ -543,7 +548,7 @@
 </div>
 
 
-  <div class="powered-by">Erstellt mit  <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
 
 
 
@@ -551,7 +556,7 @@
 
 
 
-  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
 
 
 
@@ -727,7 +732,7 @@
     var isfetched = false;
     var isXml = true;
     // Search DB path;
-    var search_path = "";
+    var search_path = "search.xml";
     if (search_path.length === 0) {
       search_path = "search.xml";
     } else if (/json$/i.test(search_path)) {
