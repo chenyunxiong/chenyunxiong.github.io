@@ -276,6 +276,359 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/29/Lua/Lua面向对象/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="人生如逆旅">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/03/29/Lua/Lua面向对象/" itemprop="url">Lua面向对象</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Veröffentlicht am</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-03-29T22:47:05+08:00">
+                2019-03-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/03/29/Lua/Lua面向对象/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2019/03/29/Lua/Lua面向对象/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="Lua面向对象"><a href="#Lua面向对象" class="headerlink" title="Lua面向对象"></a>Lua面向对象</h3><p>Lua本身是没有面向对象这个概念的，但是table的各种用法却可以模拟出类似面向对象的东西。Lua中唯一的数据结构就是Table，那么自然，一个类自然也就是一个Table。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Person = &#123;</span><br><span class="line">    age = 10,</span><br><span class="line">    name  = &quot;ee&quot;;</span><br><span class="line">    Init = function(age, name)</span><br><span class="line">        Person.age = age;</span><br><span class="line">        Person.name = name;</span><br><span class="line">    end</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">print(Person.age, Person.name) -- 输出 10 &quot;ee&quot;</span><br><span class="line">Person.Init(1, &quot;面向对象&quot;)</span><br><span class="line">print(Person.age, Person.name) -- 输出 1 &quot;面向对象&quot;</span><br></pre></td></tr></table></figure>
+<p>如上，Person就是一张简单的Table，也可以看作一个基本类，拥有age跟name两个字段，Init方法。直接以Person开头调用表中的方法跟字段</p>
+<p>当然，这只是简单的类的模拟，只能有一个，而无法以Person为模板，创建多个Person实例。这时候就需要用到Lua的元表（mateTable）跟元方法(metaMethod)。</p>
+<h4 id="元表与元方法"><a href="#元表与元方法" class="headerlink" title="元表与元方法"></a>元表与元方法</h4><p>元表的作用在于以一个表作为模板，使对象克隆多个实例成为可能。元表可以使关联该元表生成的表都可以共享元表的方法跟属性。而原方法的作用在于，可以使Table表之间的操作变的更自由跟定制。将上面的Person进行修改如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">function Person:New(age, name)</span><br><span class="line">    local o = &#123;&#125;</span><br><span class="line">    setmetatable(o, self)</span><br><span class="line">    self.__index = self</span><br><span class="line">    o.age = age</span><br><span class="line">    o.name = name</span><br><span class="line">    return o</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">function Person:Print()</span><br><span class="line">    print(self.age, self.name)</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">local p = Person:New( 2, &quot;tt3&quot;)</span><br><span class="line">p:Print()</span><br><span class="line">local p2 = Person:New( 3, &quot;ttt&quot;)</span><br><span class="line">p:Print() -- 输出 2 tt3</span><br><span class="line">p2:Print() -- 输出 3 ttt</span><br><span class="line">print(getmetatable(p), Person) -- 输出两个同样的数值</span><br></pre></td></tr></table></figure>
+<p>setmetatable(t, mt) 表示将一个表 t 的元表关联为 mt，这样每一个调用New方法以后，返回的表都是关联的同一个元表，仅仅是这样还不够，返回的表虽然已经关联到元表Person，但也只是关联了而已，新生成的 p 跟 p2 还是无法调用Person中的方法，因为这是表与表之间的操作。</p>
+<p>此时就需要用到原方法。__index 元方法定义了元表与关联便之间的关系：如果关联表中自己找得到调用的方法跟字段的 话，则调用关联表中的。如果关联表中找不到的方法跟字段，则会去元表中查找对应的方法跟字段，如果有则调用。没有则提示不存在的方法跟字段</p>
+<p>如此，当调用 p:Pring() 跟 p2:Pring() 的时候，p跟p2中其实并没有Print()方法，但是还是正确的输出了，正是调用了元表的Print()方法。这也就正确的模拟了对象生成实例的过程。</p>
+<h4 id="类的继承"><a href="#类的继承" class="headerlink" title="类的继承"></a>类的继承</h4><p>面向对象的一大特点就是继承，Lua的元表跟元方法也能模拟，Teacher继承了Person，并重写了Print()方法。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">Person = &#123;&#125;</span><br><span class="line"></span><br><span class="line">function Person:New(age, name)</span><br><span class="line">    local o = &#123;&#125;</span><br><span class="line">    setmetatable(o, self)</span><br><span class="line">    self.__index = self</span><br><span class="line">    o.age = age</span><br><span class="line">    o.name = name</span><br><span class="line"></span><br><span class="line">    return o</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">function Person:GetAge()</span><br><span class="line">    return self.age</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">function Person:Print()</span><br><span class="line">    print(self.age, self.name)</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">Teacher = Person:New()</span><br><span class="line">function Teacher:New(age, name, course)</span><br><span class="line">    local t = Person:New(age, name)</span><br><span class="line">    setmetatable(t, self)</span><br><span class="line">    self.__index = self</span><br><span class="line">    t.course = course</span><br><span class="line">    return t</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">function Teacher:Print()</span><br><span class="line">    print(self.age, self.name, self.course)</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">local t1 = Teacher:New(33, &quot;王老师&quot;, &quot;语文&quot;)</span><br><span class="line">t1:Print() -- 输出 33 王老师 语文</span><br><span class="line">print(&quot;age:&quot;, t1:GetAge()) -- 输出 age:33</span><br></pre></td></tr></table></figure>
+<p>Teacher并没有重写GetAge()方法，然后 t1:GetAge() 却正确的输出了，可见是正确的继承了这个方法。而重写的Print()方法，多输出了一个课程，也正常输出，可见重写也是可以的。</p>
+<h4 id="方法访问权限（私有公有）"><a href="#方法访问权限（私有公有）" class="headerlink" title="方法访问权限（私有公有）"></a>方法访问权限（私有公有）</h4><p>冒号的作用是省略了self的传递，也就是说，如果我们不想写冒号改为写等号的话，那么每个方法的第一个参数必然是self：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">function Person.Print()</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">function Person:Console()</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">p = Person:New()</span><br><span class="line">p.Print(self)</span><br><span class="line">p:Console()</span><br></pre></td></tr></table></figure>
+<p>可以看上图的Print方法跟Console方法，self是为了找到对应的表中的方法，不传的话，必然会报错。冒号相当于语法糖，可以忽略self的传递，使得方法更加简洁明了。</p>
+<p>以上两种方法都可以说是Public方法，实例p是可以正常访问到的。</p>
+<p>私有方法同样需要传递这个self，区别在于，私有方法是用local写的。跟其他语言不同之处在于，Lua中模拟的私有方法并没有确定的归属，换句话说，它只属于其所写的Lua文件，而不是写在文件中的某个Table表，当然只要控制号一个文件只写一个类则不存在这个问题。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">local function Console(self)  -- 私有方法 Console</span><br><span class="line">    print(self.age, self.name, self.course)</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">local t1 = Teacher:New(33, &quot;王老师&quot;, &quot;语文&quot;)</span><br><span class="line">Console(t1)  -- 输出为：33 王老师  语文</span><br><span class="line">local p = Person:New( 2, &quot;tt3&quot;)</span><br><span class="line">Console(p) -- 输出为：2 tt3 nil</span><br></pre></td></tr></table></figure>
+<p>可以看出来，Console是私有方法，外部无法访问。但是Person跟Teacher都可以访问，也就是说Console方法既不属于Person也不属于Teacher，它只管你输入的self是谁，但是如果我们只写了一个Person方法，而没有写继承的Teacher，则不用考虑这个问题。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/28/Lua/Table/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="人生如逆旅">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/03/28/Lua/Table/" itemprop="url">Lua表（table）</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Veröffentlicht am</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-03-28T22:47:05+08:00">
+                2019-03-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/03/28/Lua/Table/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2019/03/28/Lua/Table/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="Lua表（table）"><a href="#Lua表（table）" class="headerlink" title="Lua表（table）"></a>Lua表（table）</h3><p>表示lua独有的一种数据结构，地位就像字典之于C#。不同的是，lua出来string、number这些基本类型之外，只有一个table表数据结构，而它丰富的自由度，也能任意扩展跟模拟一些其他语言的数据结构</p>
+<h4 id="表的创建"><a href="#表的创建" class="headerlink" title="表的创建"></a>表的创建</h4><ol>
+<li><p>myTable = {}  创建一个张空表</p>
+</li>
+<li><p>myTable = {key1 = value1, key2 = value2}</p>
+<p>这种情况下有多种方式可以创建，却决于你需要用的是那种形式的数据格式，比如：</p>
+<ul>
+<li>数组型：myTable = {[1] = “小A”, [2] = “小B”, [3] = “小C”, [4] = “小D”} 或者myTable = {1, 2, 3, 4}</li>
+<li>字典型：myTable = {[“name1”] = “小A”,  [“name1”] = “小B”}，或者直接myTable = {name1 = “小A”，name2 = “小B”}</li>
+<li>混合型：myTable = { {[1] = {[“name”] = “小A”;  “age” = 5}},   {[2] = {[“name”] = “小B”;  “age” = 5}}}</li>
+<li>自由组合型：myTable = {[‘name’] = “小A”,  [‘age’] = 10; [‘favor’] = {}; GetAge = function() return 10 end }</li>
+</ul>
+</li>
+</ol>
+<p>数组型的表以数组下标来进行读取。</p>
+<ul>
+<li>赋值直接根据下标读取然后修改值：myTable[1] = “小F”，可直接修改元素。</li>
+<li>删除元素则直接将对应的值赋值为nil即可：myTable[1] = nil</li>
+<li>lua中数组是无序的，只是下标对应了值，因此能根据下标进行取值/赋值操作</li>
+</ul>
+<p>字典型，跟C#的Dictionary一样，一个key对应一个value值，key可以是任意类型，而value则不定，但是为了保持数据一致性，通常key是同类型，value也都是同类型，否则容易出现一些数据类型错误。当然如果自信能够任意掌控，则没有这么多限制</p>
+<ul>
+<li>取值跟赋值的时候，直接根据key进行操作：myTable[“name1”] = “小C”</li>
+<li>删除元素，直接将value赋值为nil表示删除元素：myTable[“name1”] = nil</li>
+<li></li>
+</ul>
+<p>需要注意的是，一旦删除元素，也就是将元素的值设置为nil，字典型的是没有什么问题的。但是数组型的就需要谨慎了，如果将数组中间的值赋值为nil，则在以ipairs进行遍历的时候，以nil之后的都将遍历不出来，也就是说，ipairs遍历到值为nil的时候，直接中断了循环。但是不影响直接以下标读取nil后面的值，这点比较容易坑到自己。而以pairs进行遍历则没有这个问题，pairs遍历数组时遇到中间删除的它会输出nil，pairs遍历字典型的则会直接跳过nil值的。具体原理在于table的存储方式跟两种遍历之间的差别，后面再说。</p>
+<p>混合型跟自由组合型是字典的扩展类型，纯属个人归纳，操作都跟字典差不多，只是在细节上有些区别，更自由一些</p>
+<h4 id="表的操作"><a href="#表的操作" class="headerlink" title="表的操作"></a>表的操作</h4><h5 id="插入元素"><a href="#插入元素" class="headerlink" title="插入元素"></a>插入元素</h5><ul>
+<li><p>数组型插入</p>
+<p>lua内置了数组型table的增删方法。数组型table的插入使用的是 table.insert(t, pos, value)，t为需要插入的表，pos为需要的下标，如果不填pos的话，则默认插入数组的尾部，value为需要插入的值。例如：myTable = {1, 2, 3, 5}, 在下标4的位置插入4：table.insert(myTable, 4, 4)。如果不写pos：table.insert(myTable, 4)则表示将值4填入下标为5的位置（因为数组长度为4），插入的话，目标位置前的不变化，目标位置之后的顺位移动一位。</p>
+</li>
+<li><p>字典型插入</p>
+<p>字典型由于没有下标一说，因此想要插入一个值，直接添加相应的key跟value即可：t = {[1001] = “小A”，[1002] = “小B”}，插入一个1003，则 t[1003] = “小C” 就可以了。如果字典的key是string格式的，则也可以用“table.key”的方式进行插入，</p>
+</li>
+<li><p>混合型/自由型插入</p>
+<p>自有型的可以使用字典型的插入方式进行插入，也可以直接以“table.key”的方式进行加入，比如 t ={ name = “小A”， age = 10 }，那么加入我们需要在t中插入小A的爱好，那么就可以写为：t.favor = “斗地主”，这样会方便一点，就是看上去随意了些</p>
+</li>
+</ul>
+<h4 id="删除元素"><a href="#删除元素" class="headerlink" title="删除元素"></a>删除元素</h4><ul>
+<li><p>数组型删除</p>
+<p>同样使用内置的方法进行删除元素，table.remove(t, pos)。t 是需要删除的表，pos是需要删除的位置：myTable[1] = nil</p>
+</li>
+<li><p>字典型删除</p>
+<p>字典型的table删除则直接赋值为nil即可：myTable[1001] = nil  删除key为1001的元素，或者使用”table.key”进行方式删除： t ={ name = “小A”， age = 10 },  t.age = nil，同样可以达到效果</p>
+</li>
+<li><p>混合型/自由型删除 </p>
+<p>跟字典型一样，直接赋值为nil即可，例如有一个表为 t ={ name = “小A”， age = 10 }，我们需要删除t的age：t [“age”] = nil，当然，也可以使用”table.key”进行删除：t.age = nil，两种删除方式都可以</p>
+</li>
+</ul>
+<h4 id="排序元素"><a href="#排序元素" class="headerlink" title="排序元素"></a>排序元素</h4><ul>
+<li><p>数组型</p>
+<p>数组型的排序使用的是内置的table.sort(t, comp)，t是需要排序的数组table，comp是排序函数。comp排序函数可以不传递，默认采用 ‘&lt;’ 排序。传入排序函数则表示使用自定义排序方式。例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">t = &#123;3,5,1,6,2&#125; </span><br><span class="line">print(table.concat(t, &quot;_&quot;))  -- 输出：3_5_1_6_2</span><br><span class="line">table.sort(t) </span><br><span class="line">print(table.concat(t, &quot;_&quot;))  -- 输出：1_2_3_5_6</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>非数组型无法排序</p>
+</li>
+</ul>
+<h4 id="迭代器"><a href="#迭代器" class="headerlink" title="迭代器"></a>迭代器</h4><p>lua迭代器分为无状态迭代器，多状态迭代器。无状态迭代器不保存任何迭代状态，多状态的迭代器保存迭代状态。两者的区别在于是否会在迭代函数内部创建并返回闭包。两者各有优劣，无状态的避免了创建闭包，有状态则可以遍历非数组table；</p>
+<p>lua中的迭代器典型的为ipairs跟pairs，ipairs是无状态迭代器；迭代器调用时，返回下一个元素的值跟对应的下标，比如调用 t[1] 时，返回的为 t[2], 2，如果下个元素为nil，则结束循环</p>
+<ul>
+<li><p>ipairs </p>
+<p>模拟lua的ipairs，迭代函数为iterator，传入表t 跟下标index，每次index加1，然后根据index去表中取值，取到则返回对应的下标跟值，没取到则结束循环</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">function iterator(t, index)</span><br><span class="line">    index = index + 1</span><br><span class="line">    if t[index] then</span><br><span class="line">        return index, t[index]</span><br><span class="line">    end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">function cIpairs(t)</span><br><span class="line">    return iterator, t, 0</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">t3 = &#123;2, 1, 4, 5, 6&#125;</span><br><span class="line">for i, v in cIpairs(t3) do</span><br><span class="line">    print(i,v)</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>pairs </p>
+<p>pairs 是非数组型表的遍历，当然也可以遍历数组型，为多状态迭代器。每次循环返回一个闭包函数，在闭包函数里面计算并返回对应的key的值或者nil，如果返回值是nil则结束循环。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">function iterator(t)</span><br><span class="line">    local index = 0</span><br><span class="line">    return function()</span><br><span class="line">        index = index + 1</span><br><span class="line">        if index &lt;= #t then</span><br><span class="line">            return index, t[index]</span><br><span class="line">        end</span><br><span class="line">    end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">function iterator2(t)</span><br><span class="line">    local index = 0</span><br><span class="line">    return function()</span><br><span class="line">        index = index + 1</span><br><span class="line">        return next(t, index)</span><br><span class="line">    end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">t3 = &#123;2, 1, 4, 5, 6&#125;</span><br><span class="line">for i, v in iterator2(t3) do</span><br><span class="line">    print(i, v)</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<p>iterator跟iterator2都包含一个闭包函数，里面计算下一个元素是否是nil。pairs是根据next的返回值判断是否还有下一个元素，相当于iterator2。区别在于我们使用的table隔了一层，无法直接取到key进行判断，所以只能遍历数组tabl</p>
+</li>
+</ul>
+<p>需要注意的是，数组的插入跟删除不建议使用直接赋值为nil的方式，因为这样一来，势必导致数组的长度出现诡异的问题，而导致无法遍历到需要的内容，比如一个表中间的下标对应的值被赋值为nil，那么，有可能这个下标之后的所有元素都无法正常遍历到，因为ipairs遍历到第一个元素为nil时就结束循环了。</p>
+<p>还可能引起数组排序遇到问题，即传入的元素为nil，会直接导致排序出错</p>
+<p>正确的方式应该是使用table.insert 跟 table.remove 进行增删操作。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/26/NGUI/NGUI-UIPanel研究/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -648,7 +1001,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-count">14</span>
                   <span class="site-state-item-name">Artikel</span>
                 </a>
               </div>
@@ -661,7 +1014,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">Tags</span>
                 </a>
               </div>
