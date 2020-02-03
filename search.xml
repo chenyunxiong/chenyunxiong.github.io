@@ -24,8 +24,225 @@
       </tags>
   </entry>
   <entry>
-    <title>TextMeshPro</title>
-    <url>/2020/01/31/TextMeshPro/TextMeshPro%E4%BB%8B%E7%BB%8D/</url>
+    <title>Windows批处理命令</title>
+    <url>/2019/11/28/Cmd/01/</url>
+    <content><![CDATA[<h1 id="Windows批处理命令"><a href="#Windows批处理命令" class="headerlink" title="Windows批处理命令"></a>Windows批处理命令</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>Windows批处理命令是使用一些含有特殊意义的符号和一些完成指定功能的命令组合而成</p>
+<h2 id="常见批处理命令"><a href="#常见批处理命令" class="headerlink" title="常见批处理命令"></a>常见批处理命令</h2><ol>
+<li><p>REM 和 ::</p>
+<p>为注释命令，后面的内容不显示不执行</p>
+</li>
+</ol>
+]]></content>
+      <tags>
+        <tag>批处理</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>时间论计时器</title>
+    <url>/2019/10/04/Lua/%E6%97%B6%E9%97%B4%E8%BD%AE%E8%AE%A1%E6%97%B6%E5%99%A8/</url>
+    <content><![CDATA[<h2 id="时间轮计时器"><a href="#时间轮计时器" class="headerlink" title="时间轮计时器"></a>时间轮计时器</h2><h3 id="设计思路"><a href="#设计思路" class="headerlink" title="设计思路"></a>设计思路</h3><p>需求是模拟服务器的各种计时，比如建筑升级倒计时、角色升级倒计时、活动截止倒计时等。按照基本设计，一个list保存所有的计时器，然后在Update中进行遍历倒计时，哪一个时间到了则进行回调通知，通知完删除回调。这种做法如果数量多了不是很美，因此采用了时间轮的做法。</p>
+<p>这里设计的时间轮为一轮为60秒，最小单位为秒，即无法处理时间单位小于秒的计时。每一秒为一个tick，每一个tick都保存对应的一个list数组，新建计时器时，将计时器的时间转为tick，保存进对应的list数组中，一旦到达这个时间点，则遍历调用这个tick下的所有事件回调。上一张网上盗的时间轮效果图：</p>
+<p><img src="https://stl.woobest.com/wiki/download/attachments/54155354/image2019-8-7_11-1-37.png?version=1&amp;modificationDate=1565146898000&amp;api=v2" alt="时间轮效果图"></p>
+<h3 id="时间轴"><a href="#时间轴" class="headerlink" title="时间轴"></a>时间轴</h3><p>计时器的重要东西就是时间轴，本来想直接使用lua的协程模拟自然时间，但是考虑到协程的不确定性，直接用了框架中的<em>GameMain</em>中的<em>addUpdateFunc</em>进行绑定<em>update</em>进行计时，在脚本的<em>init</em>方法中绑定，<em>release</em>中进行释放</p>
+<p>计时需要每一秒跳动一次，因此使用一个timer进行判断，如果其整数部分发生了变化，则表示已经读秒，则时间进行增值操作，同时推动对应那一秒的事件list</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">`---``计时``function fn.update(arg1)``    ``fn.timer = fn.timer + arg1``    ``fn.preSecond = math.floor(fn.timer)``    ``if fn.preSecond &gt; fn.second then``        ``fn.second = fn.preSecond``        ``fn.pushTick()``    ``end` `    ``if fn.preSecond &gt;= fn.roundLimited then``        ``fn.timer =` `0``        ``fn.preSecond =` `0``        ``fn.second =` `0``        ``fn.round = fn.round +` `1``    ``end``end`</span><br></pre></td></tr></table></figure>
+<h3 id="事件注册"><a href="#事件注册" class="headerlink" title="事件注册"></a>事件注册</h3><p>时间轴有了以后，就是数据的存储问题。总共存在两种数据，一为计时器数据，存储了每个计时器的时间长度、删除标志位、计时器结束回调等。二为时间轮数据，也就是一个最长为60的数据table，每一秒对应一个计时器list，这个list保存了当前时间点结束的所有计时器，虽然只有60个，但是可以存储的数据时无上限的理论上</p>
+<p>注册开放了一个register接口，传入的数据为时间跟回调以及回调函数的参数，时间的单位为秒，所有的时间都需要转换为秒再传入。然后新建一个计时器并添加进时间轮数据对应的秒上面</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">`---``添加计时器``---``@param key string 事件``---``@param time number 秒``---``@param callback function 回调``function module.register(time``,` `callback``,` `...)``    ``local node = ServerTimerStruct.new()``    ``local round``,` `tick = fn.transformTimeToTick(time)``    ``node:``init(time``,` `callback``,` `...)` `    ``if not fn.timeWheel``[``tick``]` `then``        ``fn.timeWheel``[``tick``]` `= ``&#123;``&#125;``    ``end` `    ``table.insert(fn.timeWheel``[``tick``]``,` `node)``end`</span><br></pre></td></tr></table></figure>
+<h3 id="事件推动"><a href="#事件推动" class="headerlink" title="事件推动"></a>事件推动</h3><p>事件注册成功以后，会在时间轮数据的对应的节点上进行添加，每当自然时间走完一秒，就会推动时间轮对应的那一秒事件list，如果list中存在计时器，且计时器的结束时间就是当前秒，则直接推动，否则不做处理，推动事件以后，删除此事件</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">`---``推动时间轮``function fn.pushTick()``    ``---``@type ServerTimerStruct``[``]``    ``local tickList = fn.timeWheel``[``fn.second``]``    ``if tickList and ``#tickList &gt; 0 then``        ``local posList = ``&#123;``&#125;``        ``for k``,` `v in pairs(tickList) do``            ``if v``:``compareTime(fn.round``,` `fn.second) then``                ``v:``push()``            ``end``        ``end``        ``module.remove(fn.second)``    ``end``end`</span><br></pre></td></tr></table></figure>
+<h3 id="优化思路"><a href="#优化思路" class="headerlink" title="优化思路"></a>优化思路</h3><p>这个时间轮只存在一个轮子，如果单个秒上面的事件过多，而又不是同一个时间点结束的话，会做很多多余的操作</p>
+<ol>
+<li>有一种想法为：直接将时间轮的数据改为一个key-value数据，key为计时器的结束时间点，value为计时器，这样的话，每一秒直接去时间轮判断是否有当前时间点结束的事件数据，有则推动，无则不做处理，这里的时间点是游戏开始以来的总长度，而不是跟上面时间轮一样的只是1-60秒的时间点</li>
+<li>再创建一个以分为单位的时间轮，一个以小时为单位的时间轮，如果有超过一分钟的计时器，则在分钟上面进行保存，就跟时钟一样，秒的时间轮走过一轮，分钟的时间轮轮数加一，轮数到了以后，将分钟上面的计时器转移到以秒为单位的时间轮上面，这样只要秒数一到，可以直接推动计时器的回调函数，每个计时器随着时间的流走，从小时的时间轮转移到分钟的时间轮再转移到秒的时间轮，最后推动</li>
+</ol>
+]]></content>
+      <tags>
+        <tag>Lua</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>TextMeshPro - 图文混排解决方案</title>
+    <url>/2019/08/13/TextMeshPro/TextMeshPro-%E5%9B%BE%E6%96%87%E6%B7%B7%E6%8E%92%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/</url>
+    <content><![CDATA[<h2 id="简介："><a href="#简介：" class="headerlink" title="简介："></a>简介：</h2><p>TextMeshPro原生支持图文混排，因此需要做的就是规定好字体跟图集的规范，使用起来才能事半功倍</p>
+<p>TexturePacker使用：<a href="https://stl.woobest.com/wiki/pages/viewpage.action?pageId=58761857" target="_blank" rel="noopener">10. TexturePacker使用流程</a></p>
+<p>Font Asset生成：<a href="https://stl.woobest.com/wiki/display/T18/2.+Font+Asset" target="_blank" rel="noopener">2. Font Asset</a></p>
+<p>Sprite Asset生成与使用：<a href="https://stl.woobest.com/wiki/display/T18/3.+Sprite+Assets" target="_blank" rel="noopener">3. Sprite Assets</a></p>
+<h2 id="使用："><a href="#使用：" class="headerlink" title="使用："></a>使用：</h2><h3 id="基本用法"><a href="#基本用法" class="headerlink" title="基本用法"></a>基本用法</h3><p>TextMeshPro显示图素并不复杂，直接使用类似富文本的格式进行插入即可</p>
+<p>例如：升级厢房到2级需要\n&lt;sprite=0&gt;1000秒\n &lt;sprite=2&gt;1000\n 确定升级吗？</p>
+<p>以上这一段文本的显示效果为：</p>
+<p><img src="https://app.yinxiang.com/shard/s20/res/b17b4166-857b-4641-8226-b853fe96d69f.png" alt="img"></p>
+<p><img src="https://app.yinxiang.com/shard/s20/res/7d0ef702-2c22-4610-a27d-8c143c43757d.png" alt="img"></p>
+<h3 id="颜色变化：更多请参考：3-Sprite-Assets"><a href="#颜色变化：更多请参考：3-Sprite-Assets" class="headerlink" title="颜色变化：更多请参考：3. Sprite Assets"></a>颜色变化：更多请参考：<a href="https://stl.woobest.com/wiki/display/T18/3.+Sprite+Assets" target="_blank" rel="noopener">3. Sprite Assets</a></h3><ol>
+<li>只有字颜色变化，图片颜色不变</li>
+<li>图片跟字颜色一起变化</li>
+<li>图片变化，字颜色不变</li>
+</ol>
+<p>以下图片与字颜色皆为白色</p>
+<p>1：通用模式，直接修改VetextColor：&lt;sprite=1&gt;继续加油</p>
+<p>效果：</p>
+<p><img src="https://app.yinxiang.com/shard/s20/res/8a5a07dc-696b-44a1-bb64-dc62c48f362a.png" alt="img"><img src="https://app.yinxiang.com/shard/s20/res/b8828d46-92b7-4da6-905d-7bc863d1bbe6.png" alt="img"></p>
+<p>2：&lt;sprite=1, tint=1&gt;继续加油</p>
+<p><img src="https://app.yinxiang.com/shard/s20/res/d6d4e240-bb2c-4743-9c78-a0e62ad59423.png" alt="img"></p>
+<p>3： &lt;color=#FF0000&gt;&lt;sprite=1, tint=1&gt;&lt;color=#ffffff&gt;继续加油  或者 &lt;sprite=1 color=#FF0000&gt;继续加油</p>
+<p>效果：</p>
+<p><img src="https://app.yinxiang.com/shard/s20/res/db1d9d75-87bf-4a0b-8955-f55c90514d05.png" alt="img"></p>
+<h3 id="多语言用法"><a href="#多语言用法" class="headerlink" title="多语言用法"></a>多语言用法</h3><p>示例：</p>
+<p>\n：换行</p>
+<p>&lt;sprite=%d&gt;: 图片id  需要保证此id跟Sprite Asset中的id是一致的</p>
+<p>考虑到多个Sprite Asset，改为<sprite name="resourceName">，resourceName为游戏中资源名</sprite></p>
+<p>使用：亲喵~ 确定要消耗\n<sprite name="%s">%d\n将建筑升级到2级吗？</sprite></p>
+<p><img src="https://app.yinxiang.com/shard/s20/res/bbdd61bb-5de3-4805-971c-8542af6665bd.png" alt="img"></p>
+<p><img src="https://app.yinxiang.com/shard/s20/res/6c24fafd-39dc-4f83-80ba-6076a1159381.png" alt="img"></p>
+<p>效果：</p>
+<p><img src="https://app.yinxiang.com/shard/s20/res/abf06fdc-26e3-439c-a0ff-7a50d2bb0674.png" alt="img"></p>
+<p>为确保Sprite Asset的图片id跟资源id保持一致，</p>
+<p>法1：可以在Sprite Asset上点开Sprite Character Table进行编辑，修改Glyph ID即可调整顺序，保证图片ID跟此处的Glyph ID一致即可</p>
+<p>缺点：每次重新生成Sprite Asset都需要手动修改一遍id，数量一多简直灾难</p>
+<p><img src="https://app.yinxiang.com/shard/s20/res/185f6708-fd40-4c37-9d8f-711df372d93b.png" alt="img"></p>
+<p>法2：Resources表添加id，对应这个数据</p>
+<p>再议，Sprite Asset 每次生成id都不一致，需要看看原理</p>
+]]></content>
+      <tags>
+        <tag>TextMeshPro</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>TextMeshPro - FallBack机制</title>
+    <url>/2019/08/12/TextMeshPro/TextMeshPro-Falback%E6%9C%BA%E5%88%B6/</url>
+    <content><![CDATA[<p>无论是Font Asset 还是Sprite Asset，其大小都是有限制的，不可能无限的大，因此如果我们需要使用的文字在其他Font Asset中，就需要切换Font Asset，但是如果一段文本中的字分别存在不同的Font Asset中，这时候怎么办，</p>
+<p>TextMeshPro使用Fallback机制解决了这个问题</p>
+<p><img src="https://app.yinxiang.com/shard/s20/res/cf7f70e5-0e17-4b2c-b98b-adcd07660faf.png" alt="img"></p>
+<p>在每个Font Asset下面都有一个Fallback Font Asset，只需要将其他的Font Asset添加到列表中，如果输入的文字不在当前引用的Font Asset中，TextMeshPro就会自动去这些Font Asset中进行查找。</p>
+<p>查找的顺序为：当前引用的Font Asset - 当前引用Font Asset的Fallback Font Asset - 当前TextMeshProUGUI(即场景中的TextMeshUI)的Extra Setting中查找 - TMP Setting的Fallback中查找</p>
+<p>→ TMP Setting 的 Default Sprite Asset - TMP Setting的Default Font Asset查找 - 如果还是没有，则显示TMPSetting 的Missing Glyphs</p>
+<p>因此使用的时候，就需要在Font Asset跟Sprite Asset上挂载这些Fallback，以防止查找不到，显示为空的情况。</p>
+]]></content>
+      <tags>
+        <tag>TextMeshPro</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>TextMeshPro - Preset机制</title>
+    <url>/2019/08/12/TextMeshPro/TextMeshPro-Preset%E9%A2%84%E8%AE%BE%E6%9C%BA%E5%88%B6/</url>
+    <content><![CDATA[<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>Material Preset 用于TextMeshPro的材质切换。材质用于不同的效果表现，比如描边、渐变等。</p>
+<h2 id="创建-替换材质"><a href="#创建-替换材质" class="headerlink" title="创建/替换材质"></a>创建/替换材质</h2><p><img src="https://app.yinxiang.com/shard/s20/res/f0829524-de02-49f7-900a-d4683a46c20e.png" alt="img"></p>
+<p>如上图，可以看到每个Font Asset都存在一个材质跟一张贴图，这张是默认的材质，无法移动无法编辑。</p>
+<ol>
+<li>选中这张默认材质，Ctrl + D 拷贝一个副本，<img src="https://app.yinxiang.com/shard/s20/res/e1002714-311b-43fa-a140-f6f395a046d7.png" alt="img"></li>
+<li>将材质移动到Assets/TextMeshPro/Resources/Materials/下。修改名称为MNJHK SDF - Outline，前面为Font Asset名称，以“-”分割，后面跟着的是效果名称，Outline表示描边</li>
+<li>修改材质的shader为TextMeshPro/Mobile/Distance Field，如图：<img src="https://app.yinxiang.com/shard/s20/res/eea1c9fc-3008-421c-9ea5-43e970950cd3.png" alt="img"></li>
+<li>勾选Outline选项，Color为描边颜色，Thickness为描边强度，调整这两个属性修改描边效果</li>
+<li>在Hierarchy中选中需要描边效果的文本，在其Inspector中，可以看到其正在使用的材质：<img src="https://app.yinxiang.com/shard/s20/res/84bd2371-1378-4f64-a1bf-09ae293ecf14.png" alt="img"><img src="https://app.yinxiang.com/shard/s20/res/e405a5ad-1ce0-4a5a-8775-943fa41aadc7.png" alt="img"></li>
+<li>将Inspector滑动到最底下，即可以看到材质：<img src="https://app.yinxiang.com/shard/s20/res/b805d058-ae90-43b1-992b-99d24761e8a5.png" alt="img"></li>
+<li>将之前编辑好的描边的材质拖到红框中，就可以看到效果：<img src="https://app.yinxiang.com/shard/s20/res/21cd122a-4157-4603-80c1-2783d7b8b366.png" alt="img"></li>
+</ol>
+<p>替换前后效果：</p>
+<p><img src="https://app.yinxiang.com/shard/s20/res/3f68294c-a27a-48f1-9e68-072294669ced.png" alt="img"><img src="https://app.yinxiang.com/shard/s20/res/9bc3ad8d-d6f9-4ac8-bc5e-e56ddaaef9f6.png" alt="img"></p>
+<p>使用之后，其Inspector的Material Preset中就会有拖入的材质，可以进行选择切换：</p>
+<p><img src="https://app.yinxiang.com/shard/s20/res/f646ab73-0a54-4604-9a9f-e871a6b9b5f7.png" alt="img"></p>
+<h2 id="代码更新材质"><a href="#代码更新材质" class="headerlink" title="代码更新材质"></a>代码更新材质</h2>]]></content>
+      <tags>
+        <tag>TextMeshPro</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>TextMeshPro - Sprite Asset</title>
+    <url>/2019/08/11/TextMeshPro/TextMeshPro-SpriteAsset/</url>
+    <content><![CDATA[<h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><p>图集一张，图集必须要是Sprite（2D and UI）,SpriteMode 必须为Multiple，并在Sprite Editor中切好。图集对应的Json文件一个配置参考下图：</p>
+<p><img src="https://app.yinxiang.com/shard/s20/res/a3892c5f-d1cc-4cc3-8e16-98753600c7f1.png" alt="img"></p>
+<p>法1：</p>
+<p>Windows - TextMeshPro - Sprite Importer:</p>
+<p><img src="https://app.yinxiang.com/shard/s20/res/a9d55219-b223-4cca-8953-a874b98094a6.png" alt="img"></p>
+<p>将准备好的Json文件拖入Sprite Date Source，然后将图集拖入SpriteTexture Atlas，Import Format选择TexturePacker</p>
+<p>点击Create Sprite Asset即可，点击保存</p>
+<p>法2：</p>
+<p>选中图集，右键 - Create - Text Mesh Pro - Sprite Asset，自动生成Sprite Asset</p>
+<p>生成以后面板如下：</p>
+<p><img src="https://app.yinxiang.com/shard/s20/res/ab341cd5-4cb9-42e3-92ce-4ab72c926425.png" alt="img"></p>
+<p>Sprite Character Table 为精灵的列表，记录了精灵的ID、Name、Unicode等参数，Sprite Glyph Table为字形列表，定义了元素的裁切、位置跟偏移等信息，Previous Page 跟 Next Page可以进行切页，</p>
+<p>点击SpriteCharacter Table中的元素，会变为对应图片的Glyph操作面板，可以操作单个图片的偏移等数据，如果需要统一操作，可以在Sprite Glyph Table的最底下看到Global操作，修改值将会同步到所有的</p>
+<p>精灵图片</p>
+<p><img src="https://app.yinxiang.com/shard/s20/res/1088db99-fb0b-4c13-b3f6-100fdea964a7.png" alt="img"></p>
+<h3 id="更新"><a href="#更新" class="headerlink" title="更新"></a>更新</h3><p>一旦添加跟删除Sprite，Sprite Asset对应的Texture贴图必然会发生改变，那么如何更新Sprite Asset呢？</p>
+<p>选中需要更新的Sprite Asset，将其Inspector面板拉取到最顶端，点击右上角的齿轮按钮，在弹出的窗口中点击“Update Sprite Asset”，就会更新新增的图素到这个Sprite Asset中</p>
+<p><img src="https://app.yinxiang.com/shard/s20/res/6f239803-ff7c-4870-b6f9-99120ba4502a.png" alt="img"></p>
+<h3 id="颜色修改"><a href="#颜色修改" class="headerlink" title="颜色修改"></a>颜色修改</h3><p>Sprite Asset默认时不参与组件的颜色变化，即如果是图文混排，那么直接修改Text的color变化，图素并不会跟着更改，那么怎么同步修改呢？</p>
+<ul>
+<li>tint 色调</li>
+</ul>
+<p><sprite index="0" tint="1">真棒！ tint值为0时不参与文本颜色（包括alpha）变化，为1时参与颜色变化</sprite></p>
+<p>tint=0时：<img src="https://app.yinxiang.com/shard/s20/res/0431da9a-c028-4060-b552-3bf316bd3105.png" alt="img"><img src="https://app.yinxiang.com/shard/s20/res/67503654-9283-4aa3-8f71-1125126ec652.png" alt="img"></p>
+<p>tint=1时：<img src="https://app.yinxiang.com/shard/s20/res/89621a56-2cd2-4da2-9e43-a084e9a4fa63.png" alt="img"><img src="https://app.yinxiang.com/shard/s20/res/de14fee0-89ab-47dc-a11c-ba7715fddd78.png" alt="img"></p>
+<p>那么如果只是需要对图素Sprite进行颜色修改呢？使用color标签</p>
+<p><img src="https://app.yinxiang.com/shard/s20/res/705fa9fd-0a75-475d-929f-1bc9a111c5f2.png" alt="img"><img src="https://app.yinxiang.com/shard/s20/res/36e8f4d2-6215-4635-9d14-1bda045bd0b8.png" alt="img"></p>
+<p>如果想要同时参与文本的Alpha修改又保持图素的颜色，则可以color与tint同时使用：</p>
+<p>alpha修改：<img src="https://app.yinxiang.com/shard/s20/res/6d4b0961-f88d-4b42-beda-29a16430100a.png" alt="img"><img src="https://app.yinxiang.com/shard/s20/res/b9afff85-c5de-4878-9d86-e84aecb69875.png" alt="img"></p>
+<p>这种方式，需要谨慎，如果只有Alpha调整是没有关系的，但是一旦涉及到颜色的变化，那么图素由于不是白色，颜色的变化就会很诡异，大概就是只有在白色上面绘制颜色才是正常的颜色。</p>
+<h3 id="使用-Tag标签"><a href="#使用-Tag标签" class="headerlink" title="使用 Tag标签"></a>使用 Tag标签</h3><p>在场景中创建Create - UI - TextMeshPro UI</p>
+<p>在输入框中输入对应的文本即可</p>
+<ul>
+<li>sprite 标签</li>
+</ul>
+<p>&lt;sprite=0&gt; 或者<sprite index="0">  直接显示index为0的图素  </sprite></p>
+<p>当然这里显示的只是TMP Setting中默认的Sprite Asset中的图素，默认Sprite Asset中不存在的，是没有的，设置如下图：</p>
+<p><img src="https://app.yinxiang.com/shard/s20/res/8f82ff13-2e98-4be1-9628-fe7242bbd3f3.png" alt="img"></p>
+<p>如果默认的Sprite Asset添加了Fallback Sprite Asset，如下图：</p>
+<p><img src="https://app.yinxiang.com/shard/s20/res/9377c48e-a891-4a90-87e1-4e3f57a7835b.png" alt="img"></p>
+<p>用index也是找不到的，需要使用name来查找</p>
+<p><sprite name="ham_1"> 可以找到两个Sprite Asset中name为“ham_1”的图素，先去默认的Sprite Asset，也就是Common中查找，没有的话再去Ham中查找，还没有的话，gg，不显示</sprite></p>
+<p>如果没有添加Fallback Sprite Asset的话，使用name只会查找默认Sprite Asset即Common中的图素Sprite，因此需要添加Sprite Asset名称来告诉TMP去哪里查找：</p>
+<p>&lt;sprite=”Ham” index=0&gt;  这样会去名称为”Ham“的Sprite Asset中查找index为0的图素Sprite</p>
+<p>同样的：&lt;sprite=”Ham” name=”ham_1”，同样会去名称为”Ham“的Sprite中查找name为”ham_1”的图素Sprite</p>
+<p>区别在于，使用name的时候，即使定义了去Ham中查找，但是如果其Fallback Sprite Asset中存在其他引用，也会接着找下去，</p>
+<p>也就是说，Common的Fallback Sprite Asset添加了Ham，那么此时&lt;sprite=”Common” name=”hum_1”&gt; 跟 &lt;sprite=”Ham” name=”ham_1” 是等价的，因为在Common中找不到，会去其Fallback Sprite Asset中查找</p>
+<p>其他标签参考地址：<a href="http://digitalnativestudios.com/textmeshpro/docs/rich-text/#sprite" target="_blank" rel="noopener">http://digitalnativestudios.com/textmeshpro/docs/rich-text/#sprite</a></p>
+]]></content>
+      <tags>
+        <tag>TextMeshPro</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>TextMeshPro - Font Asset</title>
+    <url>/2019/08/10/TextMeshPro/TextMeshPro-Font%20Asset/</url>
+    <content><![CDATA[<p>Font Asset是TextMeshPro渲染字体的主要资源文件，TextMeshPro渲染字体采用的是贴图渲染，因此需要将所有的文字都渲染为一张Font Asset进行使用</p>
+<h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><p>需要原生字体（Font）一个、保存着中文的txt文件一个</p>
+<p><img src="https://app.yinxiang.com/shard/s20/res/7b8e3925-68d3-4350-88b9-9c949cc621ed.png" alt="img"></p>
+<h2 id="创建"><a href="#创建" class="headerlink" title="创建"></a>创建</h2><h3 id="静态Font-Asset："><a href="#静态Font-Asset：" class="headerlink" title="静态Font Asset："></a>静态Font Asset：</h3><p>打开Winddows - TextMeshPro - Font Asset Creator，打开创建面板</p>
+<p><img src="https://app.yinxiang.com/shard/s20/res/7a7aec23-7b8b-400b-890b-a0299fc06065.png" alt="img"></p>
+<p>将准备好的字体拖入Source Font File中，Sampling Point Size 是每个元素的大小，选择Auto Sizing即可。Auto Sizing会自动填满整张贴图且不会丢失，除非实在放不下。</p>
+<p>Padding是每个元素之间的间隔，这个保持9-12，对字体特效影响比较大</p>
+<p>PackingMethod为打包方法，Fast为快捷方式，Otl为最优，开发时选择fast，出包选择Otl。</p>
+<p>Atlas Resolution为渲染出来的贴图的大小，越大越清晰，建议不要超过2048，资源超大，打包也超慢</p>
+<p>Character Set，这是打包的资源类型选择，是TextMeshPro内置的，里面有多种选项</p>
+<p>​      ASCII 只打包ASCII的元素</p>
+<p>​      ASCII Extension  </p>
+<p>​      Charactor from File  中文需要选择这个，从文件中导入</p>
+<p>RenderMode，渲染模式，开发选择ADFAA，出包选择SDF16</p>
+<p>Get kerning Pairs 不要问，问也不清楚</p>
+<p>最后点击 Generate Font Asset 进行生成</p>
+<p><img src="https://app.yinxiang.com/shard/s20/res/b19a83af-1514-413f-8438-e6f94fb3d74a/image2019-9-10_10-47-15.png" alt="img"></p>
+<p>左边的红框中是结果，Missing characters表示丢失了多少个字，下面是丢失的列表，这些是无法打入的，可能需要删除或者重新打包</p>
+<p>右边的红框是生成的贴图预览，一堆点表示原始文本里面有很多点，不合格，需要删除这些点</p>
+<p>最后点击Save/SaveAs进行保存，Save是覆盖，Save As 是另存为</p>
+<p><img src="https://app.yinxiang.com/shard/s20/res/f62a508a-e8a1-489a-823d-60a4db019787.png" alt="img"></p>
+<p>生成之后使用请看：<a href="https://stl.woobest.com/wiki/pages/viewpage.action?pageId=58759620" target="_blank" rel="noopener">8. TextMesh使用流程</a></p>
+<h3 id="动态Font-Asset："><a href="#动态Font-Asset：" class="headerlink" title="动态Font Asset："></a>动态Font Asset：</h3><p>选中准备好的字体Font，然后右键Create - TextMeshPro - Font Asset，会生成一个以Font为格式的空Font Asset文件</p>
+<p><img src="https://app.yinxiang.com/shard/s20/res/29389d88-ba26-4a1b-ba7c-6ce671420879.png" alt="img"></p>
+<p>可以看到这张Font Asset的Atlas Population Mode为Dynamic，即动态的，动态的意思为此Font Asset为空，用以保存玩家或者服务器的不确定输入</p>
+<h3 id="静态跟动态Font-Asset"><a href="#静态跟动态Font-Asset" class="headerlink" title="静态跟动态Font Asset"></a>静态跟动态Font Asset</h3><p>静态贴图只能通过生成来更新贴图的内容，而动态贴图则可以在游戏过程中进行输入跟更新贴图内容，</p>
+<p>这种方式的优势在于，如果遇到不确定的输入文本，需要进行显示的时候，静态Font Asset中没有，则无法显示，</p>
+<p>而动态Font Asset就可以解决这个问题，比如玩家起名之类的地方，无法预测需要显示的东西，则可以使用动态Font  Asset</p>
+<h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><p>在场景中创建Create - UI - TextMeshPro UI</p>
+<p>在输入框中输入对应的文本即可</p>
+]]></content>
+      <tags>
+        <tag>TextMeshPro</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>TextMeshPro介绍</title>
+    <url>/2019/08/09/TextMeshPro/TextMeshPro%E4%BB%8B%E7%BB%8D/</url>
     <content><![CDATA[<ol>
 <li>TextMesh介绍</li>
 </ol>
@@ -38,20 +255,6 @@
 ]]></content>
       <tags>
         <tag>TextMeshPro</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Windows批处理命令</title>
-    <url>/2019/11/28/Cmd/01/</url>
-    <content><![CDATA[<h1 id="Windows批处理命令"><a href="#Windows批处理命令" class="headerlink" title="Windows批处理命令"></a>Windows批处理命令</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>Windows批处理命令是使用一些含有特殊意义的符号和一些完成指定功能的命令组合而成</p>
-<h2 id="常见批处理命令"><a href="#常见批处理命令" class="headerlink" title="常见批处理命令"></a>常见批处理命令</h2><ol>
-<li><p>REM 和 ::</p>
-<p>为注释命令，后面的内容不显示不执行</p>
-</li>
-</ol>
-]]></content>
-      <tags>
-        <tag>批处理</tag>
       </tags>
   </entry>
   <entry>
@@ -587,6 +790,82 @@
 ]]></content>
       <tags>
         <tag>Lua</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Unity 多版本共存解决方案</title>
+    <url>/2019/03/13/Unity/Unity%E5%A4%9A%E7%89%88%E6%9C%AC%E5%85%B1%E5%AD%98%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/</url>
+    <content><![CDATA[<p>Unity Hub提供多版本Unity共存解决方案，因此下载Unity Hub安装，然后破解Unity Hub即可实现多版本共存</p>
+<p>UnityHub下载地址(可能会失效，官网下载即可)：<a href="https://unity3d.com/get-unity/download?_ga=2.29249404.1104840193.1569232230-1452117879.1563960195" target="_blank" rel="noopener">https://unity3d.com/get-unity/download?_ga=2.29249404.1104840193.1569232230-1452117879.1563960195</a></p>
+<p>以下内容拷贝自网络：</p>
+<p><a href="http://www.manongjc.com/article/116438.html" target="_blank" rel="noopener">http://www.manongjc.com/article/116438.html</a></p>
+<p><a href="http://www.unitycn.cn/?p=1133" target="_blank" rel="noopener">http://www.unitycn.cn/?p=1133</a></p>
+<p>1.安装好 Unity Hub 和 Node.js 执行以下命令 (记得安装好Unity Hub 后退出 Unity Hub)</p>
+<p>　　npm install -g asar</p>
+<p> 2.打开 Unity Hub 安装目录下的 resources 文件夹 如:</p>
+<p>　　X:\Unity Hub\resources</p>
+<p>3.在 resources 文件夹打开命令,解压 app.asar 文件执行以下命令</p>
+<p>　　X:\resources&gt; asar extract .\app.asar app</p>
+<p>4.解压后删除 resources 文件夹下的 app.asar 文件</p>
+<p>5.修改 \resources\app\src\services\licenseService 文件夹下的 licenseClient.js 文件</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">getLicenseInfo(callback) &#123;</span><br><span class="line"></span><br><span class="line">　　// load license</span><br><span class="line"></span><br><span class="line">　　// get latest data from licenseCore</span><br><span class="line"></span><br><span class="line">　　//licenseInfo.activated = licenseCore.getLicenseToken().length &gt; 0;//注释这行</span><br><span class="line"></span><br><span class="line">　　licenseInfo.activated = true; //新增这行</span><br></pre></td></tr></table></figure>
+<p>6.修改 \resources\app\src\services\licenseService 文件夹下的 licenseCore.js 文件</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">verifyLicenseData(xml) &#123;</span><br><span class="line"></span><br><span class="line">　　return new Promise((resolve, reject) =&gt; &#123;</span><br><span class="line"></span><br><span class="line">　　resolve(true); //新增这行</span><br></pre></td></tr></table></figure>
+<p>如果先破解的2017后破解的2018，破解完以后需要使用2017的破解文件（事先备份，破解完以后拷入），否则2017无法打开（其他顺序不确定，先破解18后破解17说不定直接就可以用了，没试过）。</p>
+<p>跟Hub应该没啥关系，纯粹是两个版本之间的龌龊吧</p>
+]]></content>
+      <tags>
+        <tag>Unity</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Unity 新版Prefab机制研究</title>
+    <url>/2019/03/12/Unity/Prefab2018%E6%96%B0%E7%89%88%E8%A7%84%E5%88%99/</url>
+    <content><![CDATA[<p>2018的预制体新增了嵌套的功能，这在18以前是不允许的，一旦出现嵌套，则只保存最外层的Prefab信息，内层的预制体Prefab则全部与源预制体Prefab断开链接，之后再修改预制体的时候，如果其是被嵌套，则无法正确的应用过去</p>
+<h3 id="预制体资源与预制体实例"><a href="#预制体资源与预制体实例" class="headerlink" title="预制体资源与预制体实例"></a>预制体资源与预制体实例</h3><ol>
+<li>预制体资源：保存在Project窗口下的以.prefab结尾的资源</li>
+<li>预制体实例：拖入Hierachy面板中的预制体称之为预制体实例，依赖于预制体资源，在Hierachy面板中</li>
+</ol>
+<h2 id="区分预制体"><a href="#区分预制体" class="headerlink" title="区分预制体"></a>区分预制体</h2><p>在Hierarchy面板中，以<strong><em>蓝色</em></strong>开头的节点都是预制体实例的根节点，也就是说其自身包括下面的子节点是一个预制体，而<strong><em>灰色</em></strong>节点表示普通节点</p>
+<p>例如：</p>
+<p><img src="https://app.yinxiang.com/shard/s20/res/e0dba9a4-320a-45c6-8a8d-030cf199b8bf.png" alt="img"></p>
+<p>如上图，MessageUI为一个预制体，而CommonFloatItem也是一个预制体，CommonFloatItem嵌套在MessageUI中，这就是Prefab的嵌套</p>
+<h2 id="编辑"><a href="#编辑" class="headerlink" title="编辑"></a>编辑</h2><p>众所周知，一个预制体的节点属性变化以后，一旦应用，那么其所有实例都会跟着改变，</p>
+<p>那么在2018中，存在Prefab预制体嵌套的规则，那么如果改变的是嵌套中的预制体，那么他的属性变化会应用到哪个预制体资源上呢？</p>
+<h3 id="简单嵌套"><a href="#简单嵌套" class="headerlink" title="简单嵌套"></a>简单嵌套</h3><p>一旦我修改了嵌套预制体的某个属性，那么其Inspector面板前面会有蓝色提示，比如我修改了<strong>CommonFloatItem</strong>预制体<strong>bgLineImg</strong>节点的<strong>RectTransform</strong>的<strong>Height</strong>属性，如下图：</p>
+<p><img src="https://app.yinxiang.com/shard/s20/res/bd3c1555-9636-41d7-88cf-ec931d88ded5.png" alt="img"><img src="https://app.yinxiang.com/shard/s20/res/f1d107fc-4ee5-4ff0-94e8-0df0ed5399d4.png" alt="img"></p>
+<p>而修改完以后，回到根节点，可以看到其Inspector多了个Overrides</p>
+<p><img src="https://app.yinxiang.com/shard/s20/res/3c1666ff-b5bd-44bd-a316-713fa38b8be7.png" alt="img"></p>
+<p>打开可以看到当前预制体的所有改动，点击改动的节点，左边会弹出预览界面，预览界面左边是修改前的数据，右边是修改后数据。Revert跟Apply跟之前没有区别，</p>
+<p>Revert表示重置修改，回到修改前的数据，Apply点开可以看到”Apply to Prefab ‘CommonFloatItem’”，就是说应用修改的数据到CommonFloatItem这个预制体资源上</p>
+<p>Revert All，一键重置所有修改，Apply All一键应用所有修改。</p>
+<p><strong>需要注意的是：</strong></p>
+<ul>
+<li><strong>save等于Apply All</strong></li>
+</ul>
+<p><img src="https://app.yinxiang.com/shard/s20/res/762767b1-e6a3-4734-bd68-b775b1c5879a.png" alt="img"></p>
+<p>进入Prefab Mode以后，Scene右上角会有Save 按钮跟Auto Save的选项，Save为手动保存，需要自己手动点击保存，Auto Save则为自动保存，一旦有修改，会自动保存。</p>
+<p>在Prefab Mode模式下，Save跟Auto Save都是Apply All</p>
+<h3 id="同个预制体多次嵌套"><a href="#同个预制体多次嵌套" class="headerlink" title="同个预制体多次嵌套"></a>同个预制体多次嵌套</h3><p>同个预制体在一个父预制体中多次嵌套的时候，Apply会有一定的复杂度</p>
+<ul>
+<li>存在多个同样的预制体实例嵌套的时候，如果一个预制体实例的某个属性存在修改，那么其他同样的预制体实例的属性修改Apply的时候不会应用到之前的那个预制体实例上</li>
+</ul>
+<p>比如：MessageUI嵌套了CommonFloatItem，而CommonFloatItem又嵌套了两个BlackTransition，那么我修改了上面BlackTransition的Right属性为100，但是不保存，</p>
+<p>然后修改下面的BlackTransition的Right属性为400，点击override-apply，此时上面的BlackTransition的Right属性是不会修改为400的，还是100，如下图：</p>
+<p><img src="https://app.yinxiang.com/shard/s20/res/f1b85777-0107-46bc-8004-0ff0b54db5dd.png" alt="img"><img src="https://app.yinxiang.com/shard/s20/res/697492a3-277f-48ff-8073-260f51b3aac1.png" alt="img"></p>
+<p>所以，这是个需要注意的地方，修改了同一个属性未保存，那么其他预制体实例修改这一属性是不会应用到这个预制体实例上的，修改其他的属性则可以应用。</p>
+<ul>
+<li>一旦修改了其中一个预制体实例的属性，在应用的时候，如图：</li>
+</ul>
+<p><img src="https://app.yinxiang.com/shard/s20/res/cd7114ab-1c8e-4cfc-97d4-524a62769d7c.png" alt="img"></p>
+<p>我修改了BlackTransition的RectTransform，那么此时在应用的时候，就会弹出两个选择，我是应用到哪个预制体上面，是应用到BlackTransition预制体资源还是应用到其父节点的CommonFloatItem，</p>
+<p>这里需要根据需要进行选择</p>
+<p>如果是针对所有BlackTransition的修改，则应用到BlackTransition上</p>
+<p>如果是针对CommonFloatItem的修改，则应用到CommonFloatItem上</p>
+<p>最后：以上嵌套都是随手拉进去的，实际上他们没有嵌套关系~ </p>
+]]></content>
+      <tags>
+        <tag>Unity</tag>
       </tags>
   </entry>
 </search>
