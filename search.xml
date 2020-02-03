@@ -38,6 +38,229 @@
       </tags>
   </entry>
   <entry>
+    <title>Cocos性能优化-DrawCall</title>
+    <url>/2019/10/25/Cocos/Cocos%20DrawCall%E4%BC%98%E5%8C%96/</url>
+    <content><![CDATA[<p>DrawCall是CPU通知GPU进行一次渲染命令的过程，如果DrawCall次数过多，同样会占用过多的CPU</p>
+<p>由于BBC游戏使用的是Cocos Creator自带的AutoAtlas，这就导致在浏览器中无法准确的输出真实的DrawCall数量，因此这里只做DrawCall的原理分析跟需要注意的事项</p>
+<h3 id="优化建议"><a href="#优化建议" class="headerlink" title="优化建议"></a>优化建议</h3><p>a.  Label与RichText尽量少，RichText的标签尽量少</p>
+<p>b. Label/RichText与Sprite尽量分离，Label</p>
+<h1 id="一、AutoAtlas不具有参考意义"><a href="#一、AutoAtlas不具有参考意义" class="headerlink" title="一、AutoAtlas不具有参考意义"></a>一、AutoAtlas不具有参考意义</h1><p><img src="https://app.yinxiang.com/shard/s20/res/ea16cf33-831a-4aa6-b134-4d3446548fb5.png" alt="img"><img src="https://app.yinxiang.com/shard/s20/res/a641f37c-abc1-4118-bffb-1861416664b2.png" alt="img"></p>
+<p>如上图，浏览器的Show FPS命令可以显示DrawCall数量，如果项目中使用的是打包好的图集，那么，此处的DrawCall数量就是正确的</p>
+<p>如果使用的是Cocos 自带的AutoAtlas，那么，这里显示的DrawCall数量其实是图集未打包前的DrawCall，也就是说，这个数量其实是偏高的</p>
+<p>因为Cocos 的AutoAtlas并不支持浏览器的时候预览，只能打包才能自动创建图集</p>
+<p>因此如果使用AutoAtlas，此处的DrawCall并没有多大的参考意义，这个数字只是场景中Sprite跟label的数量罢了</p>
+<p>而AutoAtlas最严重的问题在于，它并不是生成一个图集，而是动态调整生成。如果所有图素超过AotuAtlas定义的的宽高上限，则会生成多个贴图</p>
+<p>这就导致，我们根本无法判断哪个图片是在同一个图集中，即使这两张图在一个文件夹里面，当我们增删图片时，再次看预览就不一样了</p>
+<p>反应在界面上，就是我们没办法确切的知道同一个AutoAtlas中的图素是否会合批，或许官方有能力做到同一个AutoAtlas中的贴图不论是哪张，都可以准确合批，文档没有，无从了解</p>
+<p>拆包来看，生成的贴图跟预览的数量是一致的：（资源未做保护，直接拆包可得）</p>
+<p><img src="https://app.yinxiang.com/shard/s20/res/b9e74137-e77a-428f-9cce-1285d0a43405.png" alt="img"><img src="https://app.yinxiang.com/shard/s20/res/bbaf1e48-3108-4d3d-a1ed-061bdf25eca0.png" alt="img"></p>
+<h1 id="二、DrawCall合批规则"><a href="#二、DrawCall合批规则" class="headerlink" title="二、DrawCall合批规则"></a>二、DrawCall合批规则</h1><p>使用TexturePacker生成图集，然后可以在浏览器中分析DrawCall的数量跟原理</p>
+<h3 id="前提条件"><a href="#前提条件" class="headerlink" title="前提条件"></a>前提条件</h3><p>现有图集如下：</p>
+<p><img src="https://app.yinxiang.com/shard/s20/res/3ca2bbc1-faa8-448b-94af-dee3e1bfc002.png" alt="img"></p>
+<h3 id="规则1：同一个图集的图素在节点树中如果按顺序排列，则会合并成一个DrawCall"><a href="#规则1：同一个图集的图素在节点树中如果按顺序排列，则会合并成一个DrawCall" class="headerlink" title="规则1：同一个图集的图素在节点树中如果按顺序排列，则会合并成一个DrawCall"></a>规则1：同一个图集的图素在节点树中如果按顺序排列，则会合并成一个DrawCall</h3><p><img src="https://app.yinxiang.com/shard/s20/res/dd5dc06e-9adc-4c31-98ae-a70fd13bd17a.png" alt="img"><img src="https://app.yinxiang.com/shard/s20/res/24e5e343-15e7-48a4-a826-40c4d4855da0.png" alt="img"></p>
+<p>两张图素同属于上面的图集，DrawCall数量为1，这个顺序不容许任何意义上的打乱，否则都会断开，分为多个DrawCall</p>
+<p>最底下插入一张散图：</p>
+<p><img src="https://app.yinxiang.com/shard/s20/res/158c1903-4bb5-4e83-9b6d-6f0395051917.png" alt="img"><img src="https://app.yinxiang.com/shard/s20/res/248883ac-b508-4ea8-9bda-e2e6dd5261dc.png" alt="img"></p>
+<h3 id="规则2：统一图集的图素，如果在节点树中不连续，则会分为多个drawcall"><a href="#规则2：统一图集的图素，如果在节点树中不连续，则会分为多个drawcall" class="headerlink" title="规则2：统一图集的图素，如果在节点树中不连续，则会分为多个drawcall"></a>规则2：统一图集的图素，如果在节点树中不连续，则会分为多个drawcall</h3><p><img src="https://app.yinxiang.com/shard/s20/res/0314c9f5-48e7-44e6-b8f7-de84158fb2b4.png" alt="img"><img src="https://app.yinxiang.com/shard/s20/res/54566325-0fc4-4076-8887-e961d614e33b.png" alt="img"></p>
+<p>如上图，将Frame1往上插入两个同一图集的图素中间，结果每个图素都生成了一个DrawCall</p>
+<h3 id="规则3：Label、RichText不会合批，一个Label就会生成一个DrawCall"><a href="#规则3：Label、RichText不会合批，一个Label就会生成一个DrawCall" class="headerlink" title="规则3：Label、RichText不会合批，一个Label就会生成一个DrawCall"></a>规则3：Label、RichText不会合批，一个Label就会生成一个DrawCall</h3><p><img src="https://app.yinxiang.com/shard/s20/res/ad683e1e-305f-49bc-acb8-1ebe6c58ab45.png" alt="img"><img src="https://app.yinxiang.com/shard/s20/res/e3d1cfbc-3524-4d05-81d0-19e69970a1b7.png" alt="img"></p>
+<h3 id="规则4：RichText使用几个标签，就会有多少个DrawCall"><a href="#规则4：RichText使用几个标签，就会有多少个DrawCall" class="headerlink" title="规则4：RichText使用几个标签，就会有多少个DrawCall"></a>规则4：RichText使用几个标签，就会有多少个DrawCall</h3><p><img src="https://app.yinxiang.com/shard/s20/res/d64d3e7a-242f-427e-a175-2df8f51fbf4e.png" alt="img"><img src="https://app.yinxiang.com/shard/s20/res/768977ee-de56-484e-834d-871bdda5f227.png" alt="img"></p>
+<h3 id="规则5：Mask单独占用两个DrawCall"><a href="#规则5：Mask单独占用两个DrawCall" class="headerlink" title="规则5：Mask单独占用两个DrawCall"></a>规则5：Mask单独占用两个DrawCall</h3><p><img src="https://app.yinxiang.com/shard/s20/res/00f338bc-6d6f-4f3d-9954-34691cbaf872.png" alt="img"><img src="https://app.yinxiang.com/shard/s20/res/f483a457-68b6-494f-b969-123748ea100b.png" alt="img"><img src="https://app.yinxiang.com/shard/s20/res/e28863a7-8db6-4cd3-83c9-7dd2ead9f5df.png" alt="img"></p>
+<p>如图：什么都没有，只加了一个空Node，并添加Mask组件，DrawCall为2</p>
+<p>而其底下的元素另算，如果TYPE是IMAGE模式也不影响，还是2个DrawCall，添加的蒙板图片不算DrawCall</p>
+]]></content>
+      <tags>
+        <tag>Unity</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Cocos 搜索</title>
+    <url>/2019/10/20/Cocos/cocos%E6%90%9C%E7%B4%A2/</url>
+    <content><![CDATA[<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>cocos搜索极致的卡顿，使用标签搜索可以略微提高丢丢效率，聊胜于无</p>
+<p>标签搜索可以同时在Assets面板跟NodeTree面板使用，不过标签不一样</p>
+<h2 id="常用标签"><a href="#常用标签" class="headerlink" title="常用标签"></a>常用标签</h2><h3 id="Assets资源管理器面板"><a href="#Assets资源管理器面板" class="headerlink" title="Assets资源管理器面板"></a>Assets资源管理器面板</h3><p>资源管理器面板主要是用资源类型搜索，比如预制体prefab，精灵sprite-frame</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">标签</th>
+<th style="text-align:left">名称</th>
+<th style="text-align:left">使用方式</th>
+<th style="text-align:left">实例</th>
+<th style="text-align:left">解释</th>
+<th style="text-align:left">结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">prefab</td>
+<td style="text-align:left">预制体</td>
+<td style="text-align:left">t:prefab + name</td>
+<td style="text-align:left">t:prefab rank</td>
+<td style="text-align:left">搜索名字中包含rank的预制体</td>
+<td style="text-align:left"><img src="https://app.yinxiang.com/shard/s20/res/10ed2dac-d433-49da-982e-6544b9d4c303.png" alt="img"></td>
+</tr>
+<tr>
+<td style="text-align:left">sprite-frame</td>
+<td style="text-align:left">精灵图素</td>
+<td style="text-align:left">t:sprite-frame + name</td>
+<td style="text-align:left">t:sprite-frame icon</td>
+<td style="text-align:left">搜索名字中包含icon的精灵图片</td>
+<td style="text-align:left"><img src="https://app.yinxiang.com/shard/s20/res/0f7d7f40-d4ba-4e0f-8b74-6bfea704c7ae.png" alt="img"></td>
+</tr>
+<tr>
+<td style="text-align:left">javascript/typescript/coffeescript</td>
+<td style="text-align:left">代码</td>
+<td style="text-align:left">t:javascript + name</td>
+<td style="text-align:left">t:javascript rank</td>
+<td style="text-align:left">搜索包含rank的js代码文件</td>
+<td style="text-align:left"><img src="https://app.yinxiang.com/shard/s20/res/bdff3064-6149-4652-9500-33f26b3bbde6.png" alt="img"></td>
+</tr>
+<tr>
+<td style="text-align:left">animation-clip</td>
+<td style="text-align:left">动画</td>
+<td style="text-align:left">t:animation-clip + name</td>
+<td style="text-align:left">t:animation-clip rank</td>
+<td style="text-align:left">搜索包含rank的动画</td>
+<td style="text-align:left"><img src="https://app.yinxiang.com/shard/s20/res/cd79bda2-2003-4067-a78c-e644c65058c5.png" alt="img"></td>
+</tr>
+<tr>
+<td style="text-align:left">audio-clip</td>
+<td style="text-align:left">音频</td>
+<td style="text-align:left">t:audio-clip + name</td>
+<td style="text-align:left">t:audio-clip click</td>
+<td style="text-align:left">搜索包含click的音频</td>
+<td style="text-align:left"><img src="https://app.yinxiang.com/shard/s20/res/45accbd2-ef74-4379-8db0-be20c8f123ff.png" alt="img"></td>
+</tr>
+<tr>
+<td style="text-align:left">bitmap-font或者font</td>
+<td style="text-align:left">位图字体/字体</td>
+<td style="text-align:left">t:bitmap-font</td>
+<td style="text-align:left">t:bitmap-font time</td>
+<td style="text-align:left">搜索包含time的位图字体</td>
+<td style="text-align:left"><img src="https://app.yinxiang.com/shard/s20/res/9d5b6d24-62e8-4531-b485-c30954f52573.png" alt="img"></td>
+</tr>
+<tr>
+<td style="text-align:left">scene</td>
+<td style="text-align:left">场景</td>
+<td style="text-align:left">t:scene + name</td>
+<td style="text-align:left">t:scene</td>
+<td style="text-align:left">搜索场景</td>
+<td style="text-align:left"><img src="https://app.yinxiang.com/shard/s20/res/03ad4f7b-3ad9-49c2-afc9-f1884f963057.png" alt="img"></td>
+</tr>
+<tr>
+<td style="text-align:left">folder</td>
+<td style="text-align:left">文件夹</td>
+<td style="text-align:left">t:folder + name</td>
+<td style="text-align:left">t:folder anim</td>
+<td style="text-align:left">搜索带anim的文件夹</td>
+<td style="text-align:left"><img src="https://app.yinxiang.com/shard/s20/res/d893adde-8ab6-4a7b-90fe-3e7299ecc7dd.png" alt="img"></td>
+</tr>
+</tbody>
+</table>
+<p>常用资源类型查阅：</p>
+<p><img src="https://app.yinxiang.com/shard/s20/res/e6dcba83-fb61-43fc-8bb9-c75423d52daa.png" alt="img"></p>
+<h3 id="NodeTree层级管理器面板"><a href="#NodeTree层级管理器面板" class="headerlink" title="NodeTree层级管理器面板"></a>NodeTree层级管理器面板</h3><p>层级面板的搜索主要使用组件类型搜索，比如节点cc.Node，动画组件cc.Animation</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">标签</th>
+<th style="text-align:left">名称</th>
+<th style="text-align:left">使用方式</th>
+<th style="text-align:left">实例</th>
+<th style="text-align:left">解释</th>
+<th style="text-align:left">结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">cc.Node</td>
+<td style="text-align:left">节点</td>
+<td style="text-align:left">t:cc.Node + name</td>
+<td style="text-align:left">t:cc.Node rank</td>
+<td style="text-align:left">搜索带rank的节点</td>
+<td style="text-align:left"><img src="https://app.yinxiang.com/shard/s20/res/40256ec5-10f2-4881-9c4e-7d1e87a6ebf0.png" alt="img"></td>
+</tr>
+<tr>
+<td style="text-align:left">cc.Animation</td>
+<td style="text-align:left">动画组件</td>
+<td style="text-align:left">t:cc.Animation + name</td>
+<td style="text-align:left">t:cc.Animation</td>
+<td style="text-align:left">搜索挂载有Animation组件的节点</td>
+<td style="text-align:left"><img src="https://app.yinxiang.com/shard/s20/res/b749ae9b-a2ba-4ecb-a8aa-418cd87c6a69.png" alt="img"></td>
+</tr>
+<tr>
+<td style="text-align:left">cc.Label</td>
+<td style="text-align:left">Label 组件</td>
+<td style="text-align:left">t:cc.Label + name</td>
+<td style="text-align:left">t:cc.Label tip</td>
+<td style="text-align:left">搜索名称中带有tip且挂载Label组件的节点</td>
+<td style="text-align:left"><img src="https://app.yinxiang.com/shard/s20/res/fb3afd18-3994-493c-87cc-33cb1de5235f.png" alt="img"></td>
+</tr>
+<tr>
+<td style="text-align:left">cc.Button</td>
+<td style="text-align:left">按钮</td>
+<td style="text-align:left">t:cc.Button + name</td>
+<td style="text-align:left"></td>
+<td style="text-align:left"></td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">cc.Sprite</td>
+<td style="text-align:left">Sprite组件</td>
+<td style="text-align:left">t:cc.Sprite + name</td>
+<td style="text-align:left">t:cc.Sprite bg</td>
+<td style="text-align:left">搜索名称中带bg且挂载有sprite组件的节点</td>
+<td style="text-align:left"><img src="https://app.yinxiang.com/shard/s20/res/dece546f-053a-4f0b-8bd4-f6845e504067.png" alt="img"></td>
+</tr>
+<tr>
+<td style="text-align:left">cc.Toggle</td>
+<td style="text-align:left">toggle组件</td>
+<td style="text-align:left">t:cc.Toggle</td>
+<td style="text-align:left">t:cc.Toggle</td>
+<td style="text-align:left">搜索挂载有toggle组件的节点</td>
+<td style="text-align:left"><img src="https://app.yinxiang.com/shard/s20/res/0647081d-c1ab-4a8a-b5a5-e16170745d44.png" alt="img"></td>
+</tr>
+<tr>
+<td style="text-align:left">cc.EditBox</td>
+<td style="text-align:left">EditBox组件</td>
+<td style="text-align:left">t:cc.EditBox</td>
+<td style="text-align:left">t:cc.EditBox</td>
+<td style="text-align:left">搜索挂载有EditBox组件的节点</td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">t:cc.Layout</td>
+<td style="text-align:left">Layout组件</td>
+<td style="text-align:left">t:cc.Layout</td>
+<td style="text-align:left">t:cc.Layout</td>
+<td style="text-align:left">搜索挂载有Layout组件的节点</td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">t:name</td>
+<td style="text-align:left">自定义组件</td>
+<td style="text-align:left">t:festivalSkin</td>
+<td style="text-align:left">t:festivalSkin</td>
+<td style="text-align:left">搜索挂载有festivalSkin的节点</td>
+<td style="text-align:left"><img src="https://app.yinxiang.com/shard/s20/res/47061e13-24f8-49bf-ab18-0a3b880c51d1.png" alt="img"></td>
+</tr>
+</tbody>
+</table>
+<p>常用组件类型查阅：</p>
+<p>在节点的Properties面板的AddComponent可以点开，或者创建节点时可以看到</p>
+<p><img src="https://app.yinxiang.com/shard/s20/res/ed37cafe-dfa6-433d-8363-7f2fd949fdb6.png" alt="img"><img src="https://app.yinxiang.com/shard/s20/res/f16ea6d6-919a-40a4-a261-0c189db71c3d.png" alt="img"></p>
+<h3 id="联合搜索"><a href="#联合搜索" class="headerlink" title="联合搜索"></a>联合搜索</h3><p>需要同时搜索多个标签怎么办，使用英文逗号隔开即可，这种情况不常用</p>
+<p>搜索精灵跟预制体中包含rank的资源，结果如下</p>
+<p><img src="https://app.yinxiang.com/shard/s20/res/1801994d-65ef-46ff-9d21-d02e19fa702a.png" alt="img"></p>
+<h3 id="模糊搜索"><a href="#模糊搜索" class="headerlink" title="模糊搜索"></a>模糊搜索</h3><p>比如我只知道排行包含r、k两个字母，那么我可以直接使用：t:prefab r k</p>
+<p>r跟k中间加入一个空格，可以搜索出带这两个字母或者其中一个的所有预制体</p>
+<p><img src="https://app.yinxiang.com/shard/s20/res/d8298379-6899-4d3d-9c4b-270133466317.png" alt="img"></p>
+]]></content>
+      <tags>
+        <tag>Cocos</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>时间论计时器</title>
     <url>/2019/10/04/Lua/%E6%97%B6%E9%97%B4%E8%BD%AE%E8%AE%A1%E6%97%B6%E5%99%A8/</url>
     <content><![CDATA[<h2 id="时间轮计时器"><a href="#时间轮计时器" class="headerlink" title="时间轮计时器"></a>时间轮计时器</h2><h3 id="设计思路"><a href="#设计思路" class="headerlink" title="设计思路"></a>设计思路</h3><p>需求是模拟服务器的各种计时，比如建筑升级倒计时、角色升级倒计时、活动截止倒计时等。按照基本设计，一个list保存所有的计时器，然后在Update中进行遍历倒计时，哪一个时间到了则进行回调通知，通知完删除回调。这种做法如果数量多了不是很美，因此采用了时间轮的做法。</p>

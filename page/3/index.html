@@ -277,6 +277,341 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/26/NGUI/NGUI-UIPanel研究/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="人生如逆旅">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/03/26/NGUI/NGUI-UIPanel研究/" itemprop="url">UIPanel 面板</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-26T22:47:05+08:00">
+                2019-03-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/03/26/NGUI/NGUI-UIPanel研究/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2019/03/26/NGUI/NGUI-UIPanel研究/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="UIPanel-面板"><a href="#UIPanel-面板" class="headerlink" title="UIPanel 面板"></a>UIPanel 面板</h3><p>UIPanel是用以隔离各个页面的工具，它保存并管理其子节点下面的所有UIWidget跟继承自UIWidget类型的UI元素，各个 UIPanel 之间以 <em>depth</em> 参数进行隔离</p>
+<h4 id="Clipping裁剪"><a href="#Clipping裁剪" class="headerlink" title="Clipping裁剪"></a>Clipping裁剪</h4><h5 id="裁剪方式"><a href="#裁剪方式" class="headerlink" title="裁剪方式"></a>裁剪方式</h5><p>UIDrawCall中枚举：Clipping：None、TextureMask、SoftClip、ConstrainButDontClip</p>
+<table>
+<thead>
+<tr>
+<th>Enum</th>
+<th>value</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>None</td>
+<td>0</td>
+<td>无</td>
+</tr>
+<tr>
+<td>TextureMask</td>
+<td>1</td>
+<td>遮罩裁剪</td>
+</tr>
+<tr>
+<td>SoftClip</td>
+<td>2</td>
+<td>矩形裁剪</td>
+</tr>
+<tr>
+<td>ConstrainButDontClip</td>
+<td>3</td>
+<td>No actual clipping, but does have an area</td>
+</tr>
+</tbody>
+</table>
+<p>在UIIPanel的Inspector面板可以选择裁剪方式，修改以后，会调用UIPanel的 <em>LateUpdate()</em> 方法进行刷新。最后会调用UIDrawCall的 <em>UpdateGeometry()</em> 方法进行更换当前DrawCall的shader</p>
+<h5 id="裁剪范围"><a href="#裁剪范围" class="headerlink" title="裁剪范围"></a>裁剪范围</h5><ul>
+<li>mClipRange（Vector4）裁剪范围</li>
+<li>baseClipRegion(Vector4)  等同于上面的mClipRange，Inspector面板直接修改baseClipRange，并应用到mClipRange上</li>
+<li>clipOffset  裁剪偏移量，用以移动子物体而裁剪框保持位置不变，通常与ScrollView一起使用</li>
+<li>finalClipRegion  最终裁剪范围，如果有裁剪就返回计算后的裁剪值，否则返回相机裁剪框计算后的裁剪值</li>
+</ul>
+<p>确定裁剪范围以后，在DrawCall的 <em>CreateMaterial ()</em> 中加载裁剪shader</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">void CreateMaterial ()&#123;</span><br><span class="line">    ... 省略</span><br><span class="line">    mClipCount = panel.clipCount;</span><br><span class="line">    ... 省略shaderName获取过程</span><br><span class="line">    if (shader == null) </span><br><span class="line">    	shader = Shader.Find(shaderName + &quot; &quot; + mClipCount);</span><br><span class="line">    ... 省略赋值shader给material</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="渲染"><a href="#渲染" class="headerlink" title="渲染"></a>渲染</h5><p>在UIDrawCall的渲染方法 <em>OnWillRenderObject()</em> 中，会给shader赋值</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">shader:</span><br><span class="line">sampler2D _MainTex;</span><br><span class="line">float4 _ClipRange0 = float4(0.0, 0.0, 1.0, 1.0);</span><br><span class="line">float2 _ClipArgs0 = float2(1000.0, 1000.0);</span><br></pre></td></tr></table></figure>
+<p>shader有两个参数，一个是裁剪范围(_ClipRange0)，一个是裁剪参数(_ClipArgs0)，在 <em>SetCliping()</em> 方法中进行传递，shader根据这两个参数进行裁剪</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">void OnWillRenderObject ()&#123;</span><br><span class="line">    ... 省略</span><br><span class="line">    if (mTextureClip)&#123;</span><br><span class="line">    	... 省略</span><br><span class="line">    &#125;</span><br><span class="line">    else&#123;</span><br><span class="line">        ... 省略</span><br><span class="line">        SetClipping(i++, cr, currentPanel.clipSoftness, angle);</span><br><span class="line">    &#125;</span><br><span class="line">    ... 省略</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void SetClipping (int index, Vector4 cr, Vector2 soft, float angle)&#123;</span><br><span class="line">    angle *= -Mathf.Deg2Rad;</span><br><span class="line">	Vector2 sharpness = new Vector2(1000.0f, 1000.0f);</span><br><span class="line">	if (soft.x &gt; 0f) sharpness.x = cr.z / soft.x;</span><br><span class="line">	if (soft.y &gt; 0f) sharpness.y = cr.w / soft.y;</span><br><span class="line">	if (index &lt; ClipRange.Length)&#123;</span><br><span class="line">		mDynamicMat.SetVector(ClipRange[index], new Vector4(-cr.x / cr.z, -cr.y / cr.w, 1f / cr.z, 1f / cr.w));</span><br><span class="line">		mDynamicMat.SetVector(ClipArgs[index], new Vector4(sharpness.x, sharpness.y, Mathf.Sin(angle), Mathf.Cos(angle)));</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="裁剪移动"><a href="#裁剪移动" class="headerlink" title="裁剪移动"></a>裁剪移动</h5><p>UIPanel的移动主要靠UIScrollView驱动，UIScrollView滑动的时候（MoveRelative()之类），直接将偏移量赋值给关联的UIPanel的 <em>clipOffset</em>，而transform的localPosition的变化值与 <em>clipOffset</em> 的绝对值是相同的。也就是说，物体移动的偏移量，由clipOffset进行平衡，这样两者能实现物体移动了，但是裁剪框不动。同时调用onClipMove委托，通知订阅者当前ScrollView正在滑动</p>
+<h4 id="深度depth解析"><a href="#深度depth解析" class="headerlink" title="深度depth解析"></a>深度depth解析</h4><p>UIPanel 靠 <em>depth</em> 属性隔离各个UIPnel。分为两个部分，一为渲染的隔离，二为点击响应的隔离。</p>
+<h5 id="渲染的隔离"><a href="#渲染的隔离" class="headerlink" title="渲染的隔离"></a>渲染的隔离</h5><p>渲染的隔离意思为，在一个UIPanel下方的 <em>UIWidget</em> 元素，不会在其他UIPanel中显示。这种隔离是靠 <em>depth</em> 实现的。由《NGUI渲染流程分析》可以知道，UIPanel的渲染是靠自身的DrawCall的RenderQueue决定的。UIPanel的 <em>depth</em> 变化以后，对保存所有UIPanel的 <em>list</em> 根据 <em>depth</em> 大小进行排序，然后更新所有的DrawCall的RenderQueue大小。也就是说：</p>
+<p><em>depth 越小，对应的UIPenal在 list 越靠前，则其DrawCall的 RenderQueue 越小，则渲染时越先渲染，则会被遮挡；反之，depth越大，则对应UIPanel的 UIWidget 元素越靠后渲染，则遮挡其他 UIWidget 元素</em></p>
+<h5 id="点击隔离"><a href="#点击隔离" class="headerlink" title="点击隔离"></a>点击隔离</h5><p>NGUI的点击隔离也是靠depth来起作用的，大概原理就是：</p>
+<ol>
+<li>遍历射线碰撞到的所有 <em>UIWidget</em> 并计算 最终的 <em>depth</em>，并保存进List中</li>
+<li>将这个List根据最终的 depth 进行排序，最顶上的就是最上层的也是应该正确被点击到的那个</li>
+<li>遍历这个List，第一个可见的便是点击到的 <em>UIWidget</em></li>
+<li>响应这个 <em>UIWidget</em> 身上的点击事件</li>
+</ol>
+<p>具体代码可以看 <em>UICamera</em> 的 <em>Raycast (Vector3 inPos)</em> 方法</p>
+<p>最终的depth：需要考虑上UIWidget所属的UIPanel的depth上限，如下图：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">public int raycastDepth&#123;</span><br><span class="line">	get&#123;</span><br><span class="line">		if (panel == null) CreatePanel();</span><br><span class="line">		return (panel != null) ? mDepth + panel.depth * 1000 : mDepth;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>也就是说，两个depth相邻的UIPanel的点击差值是1000，比如depth分别为1，2的两个UIPanel，前者的点击范围为 &gt;= 1000，而后者的为 &gt;= 2000。</p>
+<p>并没有上限，一旦前者有一个UIWidget的depth超过1000，那么就有可能出现点击穿透的行为。不过一般情况下是足够使用了</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/22/Lua/Lua事件系统/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="人生如逆旅">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/03/22/Lua/Lua事件系统/" itemprop="url">Lua事件系统（EventManager.lua）</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-22T22:47:05+08:00">
+                2019-03-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/03/22/Lua/Lua事件系统/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2019/03/22/Lua/Lua事件系统/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="Lua事件系统（EventManager-lua）"><a href="#Lua事件系统（EventManager-lua）" class="headerlink" title="Lua事件系统（EventManager.lua）"></a>Lua事件系统（EventManager.lua）</h3><p>在使用LuaFrameWork的时候，苦于没有事件系统传递消息，于是写了这个事件管理器，进行多个模块之间、单个模块内部的消息传递。</p>
+<p>作为事件管理器，那么就是需要管理事件，因此我选择function作为参数进行传递。事件需要一个唯一标识符，无论是数字还是string都可以，我选择string作为标识符，因为这样更容易辨识。事件有可能需要传递参数，lua的可变参数为 ‘…’三个点。</p>
+<p>用string作为唯一标识符的问题在于可能会不小心出现两个同样的标识符，这样就会导致出现错误调用的问题，因此我添加了一个tag标签，用于区分不同模块的事件。</p>
+<h4 id="保存事件"><a href="#保存事件" class="headerlink" title="保存事件"></a>保存事件</h4><p>事件我用两个变量进行保存，一个是带tag的表示模块内部的事件容器 <em>eventsWithTag</em>，一个是不带tag的，表示通用的事件的容器 <em>events</em></p>
+<h4 id="添加事件"><a href="#添加事件" class="headerlink" title="添加事件"></a>添加事件</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">local function AddListener(list, name, func)</span><br><span class="line">    if list[tostring(name)] == nil then</span><br><span class="line">        list[tostring(name)] = &#123;&#125;</span><br><span class="line">        table.insert(list[tostring(name)], func)</span><br><span class="line">    else</span><br><span class="line">        local eventList = list[tostring(name)]</span><br><span class="line">        if not CheckContainFunc(eventList, func) then</span><br><span class="line">            table.insert(eventList, func)</span><br><span class="line">        else</span><br><span class="line">            print(string.format(&quot;Events Contains A Same Key %s&quot;, name))</span><br><span class="line">        end</span><br><span class="line">    end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">local function AddListenerWithTag(tag, name, func)</span><br><span class="line">    if eventsWithTag[tostring(tag)] then</span><br><span class="line">        local tagEvents = eventsWithTag[tostring(tag)]</span><br><span class="line">        AddListener(tagEvents, name, func)</span><br><span class="line">    else</span><br><span class="line">        eventsWithTag[tostring(tag)] = &#123;&#125; -- add a new tag to keep events</span><br><span class="line">        AddListener(eventsWithTag[tostring(tag)], name, func)</span><br><span class="line">    end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<p>tag 表示模块的唯一标识符，lua中没有过多的数据格式限制，如果需要的话，可以改为其他的数据格式，比如数字、table等等，管理器通过这个tag查找事件属于哪个模块的事件</p>
+<p>name 表示事件的唯一标识符，管理器通过这个name查找对应的事件</p>
+<p>func 表示回调函数，事件最终会调用这些方法，方法可以带参数，调用的时候如果不传递则为nil</p>
+<h4 id="删除事件"><a href="#删除事件" class="headerlink" title="删除事件"></a>删除事件</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">local function RemoveListener(list, name, func)</span><br><span class="line">    if list ~= nil then</span><br><span class="line">        local eventList = list[tostring(name)]</span><br><span class="line">        local index = CheckContainFunc(eventList, func)</span><br><span class="line">        if index then</span><br><span class="line">            print(&quot;Remove &quot; .. name .. &quot; Succeed !&quot;)</span><br><span class="line">            table.remove(eventList, index)</span><br><span class="line">        else</span><br><span class="line">            print(&quot;Attempt To Remove A UnRegister Event: &quot; .. name)</span><br><span class="line">        end</span><br><span class="line">    end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">local function RemoveListenerWithTag(tag, name, func)</span><br><span class="line">    local tmpEventTag = eventsWithTag[tostring(tag)]</span><br><span class="line">    if tmpEventTag then</span><br><span class="line">        RemoveListener(tmpEventTag, name, func)</span><br><span class="line">    end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<p>同样的，怎么添加事件就需要怎么样删除事件。通过tag跟name查找并删除即可。</p>
+<h4 id="调用事件"><a href="#调用事件" class="headerlink" title="调用事件"></a>调用事件</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">local function DispatchListener(list, name, ...)</span><br><span class="line">    if list[tostring(name)] ~= nil then</span><br><span class="line">        local events = list[tostring(name)]</span><br><span class="line">        for i, v in pairs(events) do</span><br><span class="line">            if v ~= nil then</span><br><span class="line">                v(...)</span><br><span class="line">            end</span><br><span class="line">        end</span><br><span class="line">    else</span><br><span class="line">        print(string.format(&quot;event is not registed %s&quot;, name))</span><br><span class="line">    end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">local function DispatchListenerByTag(tag, name, ...)</span><br><span class="line">    local eventsList = eventsWithTag[tostring(tag)]</span><br><span class="line">    DispatchListener(eventsList, name, ...)</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<p>调用的时候，根据传入的tag跟name查找事件，遍历name下所有的事件并调用。</p>
+<p>具体方法可以看Scripts目录下的EventManager.lua文件，事件跟模块的唯一标识符最好也能够放在一个全局类中，这样模块之间调用事件不会出现不必要的交叉</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/13/Unity/Unity多版本共存解决方案/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -634,7 +969,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-count">24</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -647,7 +982,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-count">9</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

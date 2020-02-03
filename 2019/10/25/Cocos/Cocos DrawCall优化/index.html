@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="TextMeshPro," />
+  <meta name="keywords" content="Unity," />
 
 
 
@@ -79,18 +79,37 @@
 
 
 
-<meta name="description" content="TextMesh介绍  转至元数据起始TextMeshPro原来是一款Unity字体插件，由于其优异的字体渲染跟字体特效表现方式，从2018.3以后正式引入Unity的资源包，可以通过Window - PackageManager面板进行查看跟引入当前TextMeshPro的版本 TextMeshPro支持图文混排，只需要创建对应的Sprite Asset，就可以进行丰富的图文混排，可以满足大部">
-<meta name="keywords" content="TextMeshPro">
+<meta name="description" content="DrawCall是CPU通知GPU进行一次渲染命令的过程，如果DrawCall次数过多，同样会占用过多的CPU 由于BBC游戏使用的是Cocos Creator自带的AutoAtlas，这就导致在浏览器中无法准确的输出真实的DrawCall数量，因此这里只做DrawCall的原理分析跟需要注意的事项 优化建议a.  Label与RichText尽量少，RichText的标签尽量少 b. Label">
+<meta name="keywords" content="Unity">
 <meta property="og:type" content="article">
-<meta property="og:title" content="TextMeshPro介绍">
-<meta property="og:url" content="http://yoursite.com/2019/08/09/TextMeshPro/TextMeshPro介绍/index.html">
+<meta property="og:title" content="Cocos性能优化-DrawCall">
+<meta property="og:url" content="http://yoursite.com/2019/10/25/Cocos/Cocos DrawCall优化/index.html">
 <meta property="og:site_name" content="人生如逆旅">
-<meta property="og:description" content="TextMesh介绍  转至元数据起始TextMeshPro原来是一款Unity字体插件，由于其优异的字体渲染跟字体特效表现方式，从2018.3以后正式引入Unity的资源包，可以通过Window - PackageManager面板进行查看跟引入当前TextMeshPro的版本 TextMeshPro支持图文混排，只需要创建对应的Sprite Asset，就可以进行丰富的图文混排，可以满足大部">
+<meta property="og:description" content="DrawCall是CPU通知GPU进行一次渲染命令的过程，如果DrawCall次数过多，同样会占用过多的CPU 由于BBC游戏使用的是Cocos Creator自带的AutoAtlas，这就导致在浏览器中无法准确的输出真实的DrawCall数量，因此这里只做DrawCall的原理分析跟需要注意的事项 优化建议a.  Label与RichText尽量少，RichText的标签尽量少 b. Label">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-02-02T14:44:50.653Z">
+<meta property="og:image" content="https://app.yinxiang.com/shard/s20/res/ea16cf33-831a-4aa6-b134-4d3446548fb5.png">
+<meta property="og:image" content="https://app.yinxiang.com/shard/s20/res/a641f37c-abc1-4118-bffb-1861416664b2.png">
+<meta property="og:image" content="https://app.yinxiang.com/shard/s20/res/b9e74137-e77a-428f-9cce-1285d0a43405.png">
+<meta property="og:image" content="https://app.yinxiang.com/shard/s20/res/bbaf1e48-3108-4d3d-a1ed-061bdf25eca0.png">
+<meta property="og:image" content="https://app.yinxiang.com/shard/s20/res/3ca2bbc1-faa8-448b-94af-dee3e1bfc002.png">
+<meta property="og:image" content="https://app.yinxiang.com/shard/s20/res/dd5dc06e-9adc-4c31-98ae-a70fd13bd17a.png">
+<meta property="og:image" content="https://app.yinxiang.com/shard/s20/res/24e5e343-15e7-48a4-a826-40c4d4855da0.png">
+<meta property="og:image" content="https://app.yinxiang.com/shard/s20/res/158c1903-4bb5-4e83-9b6d-6f0395051917.png">
+<meta property="og:image" content="https://app.yinxiang.com/shard/s20/res/248883ac-b508-4ea8-9bda-e2e6dd5261dc.png">
+<meta property="og:image" content="https://app.yinxiang.com/shard/s20/res/0314c9f5-48e7-44e6-b8f7-de84158fb2b4.png">
+<meta property="og:image" content="https://app.yinxiang.com/shard/s20/res/54566325-0fc4-4076-8887-e961d614e33b.png">
+<meta property="og:image" content="https://app.yinxiang.com/shard/s20/res/ad683e1e-305f-49bc-acb8-1ebe6c58ab45.png">
+<meta property="og:image" content="https://app.yinxiang.com/shard/s20/res/e3d1cfbc-3524-4d05-81d0-19e69970a1b7.png">
+<meta property="og:image" content="https://app.yinxiang.com/shard/s20/res/d64d3e7a-242f-427e-a175-2df8f51fbf4e.png">
+<meta property="og:image" content="https://app.yinxiang.com/shard/s20/res/768977ee-de56-484e-834d-871bdda5f227.png">
+<meta property="og:image" content="https://app.yinxiang.com/shard/s20/res/00f338bc-6d6f-4f3d-9954-34691cbaf872.png">
+<meta property="og:image" content="https://app.yinxiang.com/shard/s20/res/f483a457-68b6-494f-b969-123748ea100b.png">
+<meta property="og:image" content="https://app.yinxiang.com/shard/s20/res/e28863a7-8db6-4cd3-83c9-7dd2ead9f5df.png">
+<meta property="og:updated_time" content="2020-02-03T07:28:41.532Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="TextMeshPro介绍">
-<meta name="twitter:description" content="TextMesh介绍  转至元数据起始TextMeshPro原来是一款Unity字体插件，由于其优异的字体渲染跟字体特效表现方式，从2018.3以后正式引入Unity的资源包，可以通过Window - PackageManager面板进行查看跟引入当前TextMeshPro的版本 TextMeshPro支持图文混排，只需要创建对应的Sprite Asset，就可以进行丰富的图文混排，可以满足大部">
+<meta name="twitter:title" content="Cocos性能优化-DrawCall">
+<meta name="twitter:description" content="DrawCall是CPU通知GPU进行一次渲染命令的过程，如果DrawCall次数过多，同样会占用过多的CPU 由于BBC游戏使用的是Cocos Creator自带的AutoAtlas，这就导致在浏览器中无法准确的输出真实的DrawCall数量，因此这里只做DrawCall的原理分析跟需要注意的事项 优化建议a.  Label与RichText尽量少，RichText的标签尽量少 b. Label">
+<meta name="twitter:image" content="https://app.yinxiang.com/shard/s20/res/ea16cf33-831a-4aa6-b134-4d3446548fb5.png">
 
 
 
@@ -120,13 +139,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/08/09/TextMeshPro/TextMeshPro介绍/"/>
+  <link rel="canonical" href="http://yoursite.com/2019/10/25/Cocos/Cocos DrawCall优化/"/>
 
 
 
 
 
-  <title>TextMeshPro介绍 | 人生如逆旅</title>
+  <title>Cocos性能优化-DrawCall | 人生如逆旅</title>
   
 
 
@@ -281,7 +300,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/09/TextMeshPro/TextMeshPro介绍/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/25/Cocos/Cocos DrawCall优化/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -298,7 +317,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">TextMeshPro介绍</h1>
+          <h1 class="post-title" itemprop="name headline">Cocos性能优化-DrawCall</h1>
         
 
         <div class="post-meta">
@@ -310,8 +329,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-09T21:24:26+08:00">
-                2019-08-09
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-10-25T21:24:26+08:00">
+                2019-10-25
               </time>
             
 
@@ -329,9 +348,9 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2019/08/09/TextMeshPro/TextMeshPro介绍/#comments" itemprop="discussionUrl">
+                <a href="/2019/10/25/Cocos/Cocos DrawCall优化/#comments" itemprop="discussionUrl">
                   <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2019/08/09/TextMeshPro/TextMeshPro介绍/" itemprop="commentCount"></span>
+                        data-disqus-identifier="2019/10/25/Cocos/Cocos DrawCall优化/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -359,15 +378,34 @@
       
 
       
-        <ol>
-<li>TextMesh介绍</li>
-</ol>
-<p>转至元数据起始<br>TextMeshPro原来是一款Unity字体插件，由于其优异的字体渲染跟字体特效表现方式，从2018.3以后正式引入Unity的资源包，可以通过Window - PackageManager面板进行查看跟引入当前TextMeshPro的版本</p>
-<p>TextMeshPro支持图文混排，只需要创建对应的Sprite Asset，就可以进行丰富的图文混排，可以满足大部分的需求</p>
-<p>TextMeshPro主要分为：Font Asset（字体资源，显示文字使用）、Sprite Asset（精灵图集，显示图片使用）、Font/Sprite Fallback（资源查找，用于各个资源之间的连接）、Material Preset（材质设置，用于字体特效）</p>
-<p>Unity地址：</p>
-<p>教程地址：<a href="https://www.youtube.com/user/Zolran/videos" target="_blank" rel="noopener">https://www.youtube.com/user/Zolran/videos</a></p>
-<p><a href="https://www.bilibili.com/video/av45212703/" target="_blank" rel="noopener">https://www.bilibili.com/video/av45212703/</a></p>
+        <p>DrawCall是CPU通知GPU进行一次渲染命令的过程，如果DrawCall次数过多，同样会占用过多的CPU</p>
+<p>由于BBC游戏使用的是Cocos Creator自带的AutoAtlas，这就导致在浏览器中无法准确的输出真实的DrawCall数量，因此这里只做DrawCall的原理分析跟需要注意的事项</p>
+<h3 id="优化建议"><a href="#优化建议" class="headerlink" title="优化建议"></a>优化建议</h3><p>a.  Label与RichText尽量少，RichText的标签尽量少</p>
+<p>b. Label/RichText与Sprite尽量分离，Label</p>
+<h1 id="一、AutoAtlas不具有参考意义"><a href="#一、AutoAtlas不具有参考意义" class="headerlink" title="一、AutoAtlas不具有参考意义"></a>一、AutoAtlas不具有参考意义</h1><p><img src="https://app.yinxiang.com/shard/s20/res/ea16cf33-831a-4aa6-b134-4d3446548fb5.png" alt="img"><img src="https://app.yinxiang.com/shard/s20/res/a641f37c-abc1-4118-bffb-1861416664b2.png" alt="img"></p>
+<p>如上图，浏览器的Show FPS命令可以显示DrawCall数量，如果项目中使用的是打包好的图集，那么，此处的DrawCall数量就是正确的</p>
+<p>如果使用的是Cocos 自带的AutoAtlas，那么，这里显示的DrawCall数量其实是图集未打包前的DrawCall，也就是说，这个数量其实是偏高的</p>
+<p>因为Cocos 的AutoAtlas并不支持浏览器的时候预览，只能打包才能自动创建图集</p>
+<p>因此如果使用AutoAtlas，此处的DrawCall并没有多大的参考意义，这个数字只是场景中Sprite跟label的数量罢了</p>
+<p>而AutoAtlas最严重的问题在于，它并不是生成一个图集，而是动态调整生成。如果所有图素超过AotuAtlas定义的的宽高上限，则会生成多个贴图</p>
+<p>这就导致，我们根本无法判断哪个图片是在同一个图集中，即使这两张图在一个文件夹里面，当我们增删图片时，再次看预览就不一样了</p>
+<p>反应在界面上，就是我们没办法确切的知道同一个AutoAtlas中的图素是否会合批，或许官方有能力做到同一个AutoAtlas中的贴图不论是哪张，都可以准确合批，文档没有，无从了解</p>
+<p>拆包来看，生成的贴图跟预览的数量是一致的：（资源未做保护，直接拆包可得）</p>
+<p><img src="https://app.yinxiang.com/shard/s20/res/b9e74137-e77a-428f-9cce-1285d0a43405.png" alt="img"><img src="https://app.yinxiang.com/shard/s20/res/bbaf1e48-3108-4d3d-a1ed-061bdf25eca0.png" alt="img"></p>
+<h1 id="二、DrawCall合批规则"><a href="#二、DrawCall合批规则" class="headerlink" title="二、DrawCall合批规则"></a>二、DrawCall合批规则</h1><p>使用TexturePacker生成图集，然后可以在浏览器中分析DrawCall的数量跟原理</p>
+<h3 id="前提条件"><a href="#前提条件" class="headerlink" title="前提条件"></a>前提条件</h3><p>现有图集如下：</p>
+<p><img src="https://app.yinxiang.com/shard/s20/res/3ca2bbc1-faa8-448b-94af-dee3e1bfc002.png" alt="img"></p>
+<h3 id="规则1：同一个图集的图素在节点树中如果按顺序排列，则会合并成一个DrawCall"><a href="#规则1：同一个图集的图素在节点树中如果按顺序排列，则会合并成一个DrawCall" class="headerlink" title="规则1：同一个图集的图素在节点树中如果按顺序排列，则会合并成一个DrawCall"></a>规则1：同一个图集的图素在节点树中如果按顺序排列，则会合并成一个DrawCall</h3><p><img src="https://app.yinxiang.com/shard/s20/res/dd5dc06e-9adc-4c31-98ae-a70fd13bd17a.png" alt="img"><img src="https://app.yinxiang.com/shard/s20/res/24e5e343-15e7-48a4-a826-40c4d4855da0.png" alt="img"></p>
+<p>两张图素同属于上面的图集，DrawCall数量为1，这个顺序不容许任何意义上的打乱，否则都会断开，分为多个DrawCall</p>
+<p>最底下插入一张散图：</p>
+<p><img src="https://app.yinxiang.com/shard/s20/res/158c1903-4bb5-4e83-9b6d-6f0395051917.png" alt="img"><img src="https://app.yinxiang.com/shard/s20/res/248883ac-b508-4ea8-9bda-e2e6dd5261dc.png" alt="img"></p>
+<h3 id="规则2：统一图集的图素，如果在节点树中不连续，则会分为多个drawcall"><a href="#规则2：统一图集的图素，如果在节点树中不连续，则会分为多个drawcall" class="headerlink" title="规则2：统一图集的图素，如果在节点树中不连续，则会分为多个drawcall"></a>规则2：统一图集的图素，如果在节点树中不连续，则会分为多个drawcall</h3><p><img src="https://app.yinxiang.com/shard/s20/res/0314c9f5-48e7-44e6-b8f7-de84158fb2b4.png" alt="img"><img src="https://app.yinxiang.com/shard/s20/res/54566325-0fc4-4076-8887-e961d614e33b.png" alt="img"></p>
+<p>如上图，将Frame1往上插入两个同一图集的图素中间，结果每个图素都生成了一个DrawCall</p>
+<h3 id="规则3：Label、RichText不会合批，一个Label就会生成一个DrawCall"><a href="#规则3：Label、RichText不会合批，一个Label就会生成一个DrawCall" class="headerlink" title="规则3：Label、RichText不会合批，一个Label就会生成一个DrawCall"></a>规则3：Label、RichText不会合批，一个Label就会生成一个DrawCall</h3><p><img src="https://app.yinxiang.com/shard/s20/res/ad683e1e-305f-49bc-acb8-1ebe6c58ab45.png" alt="img"><img src="https://app.yinxiang.com/shard/s20/res/e3d1cfbc-3524-4d05-81d0-19e69970a1b7.png" alt="img"></p>
+<h3 id="规则4：RichText使用几个标签，就会有多少个DrawCall"><a href="#规则4：RichText使用几个标签，就会有多少个DrawCall" class="headerlink" title="规则4：RichText使用几个标签，就会有多少个DrawCall"></a>规则4：RichText使用几个标签，就会有多少个DrawCall</h3><p><img src="https://app.yinxiang.com/shard/s20/res/d64d3e7a-242f-427e-a175-2df8f51fbf4e.png" alt="img"><img src="https://app.yinxiang.com/shard/s20/res/768977ee-de56-484e-834d-871bdda5f227.png" alt="img"></p>
+<h3 id="规则5：Mask单独占用两个DrawCall"><a href="#规则5：Mask单独占用两个DrawCall" class="headerlink" title="规则5：Mask单独占用两个DrawCall"></a>规则5：Mask单独占用两个DrawCall</h3><p><img src="https://app.yinxiang.com/shard/s20/res/00f338bc-6d6f-4f3d-9954-34691cbaf872.png" alt="img"><img src="https://app.yinxiang.com/shard/s20/res/f483a457-68b6-494f-b969-123748ea100b.png" alt="img"><img src="https://app.yinxiang.com/shard/s20/res/e28863a7-8db6-4cd3-83c9-7dd2ead9f5df.png" alt="img"></p>
+<p>如图：什么都没有，只加了一个空Node，并添加Mask组件，DrawCall为2</p>
+<p>而其底下的元素另算，如果TYPE是IMAGE模式也不影响，还是2个DrawCall，添加的蒙板图片不算DrawCall</p>
 
       
     </div>
@@ -385,7 +423,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/TextMeshPro/" rel="tag"># TextMeshPro</a>
+            <a href="/tags/Unity/" rel="tag"># Unity</a>
           
         </div>
       
@@ -398,8 +436,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/07/10/算法/冒泡排序/" rel="next" title="冒泡排序">
-                <i class="fa fa-chevron-left"></i> 冒泡排序
+              <a href="/2019/10/20/Cocos/cocos搜索/" rel="next" title="Cocos 搜索">
+                <i class="fa fa-chevron-left"></i> Cocos 搜索
               </a>
             
           </div>
@@ -408,8 +446,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/08/10/TextMeshPro/TextMeshPro-Font Asset/" rel="prev" title="TextMeshPro - Font Asset">
-                TextMeshPro - Font Asset <i class="fa fa-chevron-right"></i>
+              <a href="/2019/11/28/Cmd/01/" rel="prev" title="Windows批处理命令">
+                Windows批处理命令 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -472,8 +510,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -524,6 +571,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#优化建议"><span class="nav-number">1.</span> <span class="nav-text">优化建议</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#一、AutoAtlas不具有参考意义"><span class="nav-number"></span> <span class="nav-text">一、AutoAtlas不具有参考意义</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#二、DrawCall合批规则"><span class="nav-number"></span> <span class="nav-text">二、DrawCall合批规则</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#前提条件"><span class="nav-number">1.</span> <span class="nav-text">前提条件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#规则1：同一个图集的图素在节点树中如果按顺序排列，则会合并成一个DrawCall"><span class="nav-number">2.</span> <span class="nav-text">规则1：同一个图集的图素在节点树中如果按顺序排列，则会合并成一个DrawCall</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#规则2：统一图集的图素，如果在节点树中不连续，则会分为多个drawcall"><span class="nav-number">3.</span> <span class="nav-text">规则2：统一图集的图素，如果在节点树中不连续，则会分为多个drawcall</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#规则3：Label、RichText不会合批，一个Label就会生成一个DrawCall"><span class="nav-number">4.</span> <span class="nav-text">规则3：Label、RichText不会合批，一个Label就会生成一个DrawCall</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#规则4：RichText使用几个标签，就会有多少个DrawCall"><span class="nav-number">5.</span> <span class="nav-text">规则4：RichText使用几个标签，就会有多少个DrawCall</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#规则5：Mask单独占用两个DrawCall"><span class="nav-number">6.</span> <span class="nav-text">规则5：Mask单独占用两个DrawCall</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -688,9 +751,9 @@
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'http://yoursite.com/2019/08/09/TextMeshPro/TextMeshPro介绍/';
-          this.page.identifier = '2019/08/09/TextMeshPro/TextMeshPro介绍/';
-          this.page.title = 'TextMeshPro介绍';
+          this.page.url = 'http://yoursite.com/2019/10/25/Cocos/Cocos DrawCall优化/';
+          this.page.identifier = '2019/10/25/Cocos/Cocos DrawCall优化/';
+          this.page.title = 'Cocos性能优化-DrawCall';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://disqus_MPafUaZzMk.disqus.com/embed.js';
