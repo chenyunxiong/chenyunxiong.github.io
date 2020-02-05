@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://yoursite.com/2019/10/20/Cocos/cocos%E6%90%9C%E7%B4%A2/</loc>
+    
+    <lastmod>2020-02-05T12:06:22.702Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://yoursite.com/2019/08/09/TextMeshPro/TextMeshPro%E4%BB%8B%E7%BB%8D/</loc>
     
     <lastmod>2020-02-05T11:41:50.246Z</lastmod>
@@ -40,13 +47,6 @@
     <loc>http://yoursite.com/2019/08/12/TextMeshPro/TextMeshPro-Falback%E6%9C%BA%E5%88%B6/</loc>
     
     <lastmod>2020-02-05T11:14:22.373Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://yoursite.com/2019/10/20/Cocos/cocos%E6%90%9C%E7%B4%A2/</loc>
-    
-    <lastmod>2020-02-05T11:13:43.468Z</lastmod>
     
   </url>
   
