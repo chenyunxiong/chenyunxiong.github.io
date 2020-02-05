@@ -87,29 +87,29 @@
 <meta property="og:site_name" content="人生如逆旅">
 <meta property="og:description" content="DrawCall是CPU通知GPU进行一次渲染命令的过程，如果DrawCall次数过多，同样会占用过多的CPU 由于BBC游戏使用的是Cocos Creator自带的AutoAtlas，这就导致在浏览器中无法准确的输出真实的DrawCall数量，因此这里只做DrawCall的原理分析跟需要注意的事项 优化建议a.  Label与RichText尽量少，RichText的标签尽量少 b. Label">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://app.yinxiang.com/shard/s20/res/ea16cf33-831a-4aa6-b134-4d3446548fb5.png">
-<meta property="og:image" content="https://app.yinxiang.com/shard/s20/res/a641f37c-abc1-4118-bffb-1861416664b2.png">
-<meta property="og:image" content="https://app.yinxiang.com/shard/s20/res/b9e74137-e77a-428f-9cce-1285d0a43405.png">
-<meta property="og:image" content="https://app.yinxiang.com/shard/s20/res/bbaf1e48-3108-4d3d-a1ed-061bdf25eca0.png">
-<meta property="og:image" content="https://app.yinxiang.com/shard/s20/res/3ca2bbc1-faa8-448b-94af-dee3e1bfc002.png">
-<meta property="og:image" content="https://app.yinxiang.com/shard/s20/res/dd5dc06e-9adc-4c31-98ae-a70fd13bd17a.png">
-<meta property="og:image" content="https://app.yinxiang.com/shard/s20/res/24e5e343-15e7-48a4-a826-40c4d4855da0.png">
-<meta property="og:image" content="https://app.yinxiang.com/shard/s20/res/158c1903-4bb5-4e83-9b6d-6f0395051917.png">
-<meta property="og:image" content="https://app.yinxiang.com/shard/s20/res/248883ac-b508-4ea8-9bda-e2e6dd5261dc.png">
-<meta property="og:image" content="https://app.yinxiang.com/shard/s20/res/0314c9f5-48e7-44e6-b8f7-de84158fb2b4.png">
-<meta property="og:image" content="https://app.yinxiang.com/shard/s20/res/54566325-0fc4-4076-8887-e961d614e33b.png">
-<meta property="og:image" content="https://app.yinxiang.com/shard/s20/res/ad683e1e-305f-49bc-acb8-1ebe6c58ab45.png">
-<meta property="og:image" content="https://app.yinxiang.com/shard/s20/res/e3d1cfbc-3524-4d05-81d0-19e69970a1b7.png">
-<meta property="og:image" content="https://app.yinxiang.com/shard/s20/res/d64d3e7a-242f-427e-a175-2df8f51fbf4e.png">
-<meta property="og:image" content="https://app.yinxiang.com/shard/s20/res/768977ee-de56-484e-834d-871bdda5f227.png">
-<meta property="og:image" content="https://app.yinxiang.com/shard/s20/res/00f338bc-6d6f-4f3d-9954-34691cbaf872.png">
-<meta property="og:image" content="https://app.yinxiang.com/shard/s20/res/f483a457-68b6-494f-b969-123748ea100b.png">
-<meta property="og:image" content="https://app.yinxiang.com/shard/s20/res/e28863a7-8db6-4cd3-83c9-7dd2ead9f5df.png">
-<meta property="og:updated_time" content="2020-02-03T07:28:41.532Z">
+<meta property="og:image" content="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_01.png?raw=true">
+<meta property="og:image" content="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_01_1.png?raw=true">
+<meta property="og:image" content="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_03.png?raw=true">
+<meta property="og:image" content="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_02.png?raw=true">
+<meta property="og:image" content="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_04.png?raw=true">
+<meta property="og:image" content="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_05.png?raw=true">
+<meta property="og:image" content="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_06.png?raw=true">
+<meta property="og:image" content="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_07.png?raw=true">
+<meta property="og:image" content="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_08.png?raw=true">
+<meta property="og:image" content="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_09.png?raw=true">
+<meta property="og:image" content="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_10.png?raw=true">
+<meta property="og:image" content="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_11.png?raw=true">
+<meta property="og:image" content="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_12.png?raw=true">
+<meta property="og:image" content="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_13.png?raw=true">
+<meta property="og:image" content="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_14.png?raw=true">
+<meta property="og:image" content="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_15.png?raw=true">
+<meta property="og:image" content="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_16.png?raw=true">
+<meta property="og:image" content="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_17.png?raw=true">
+<meta property="og:updated_time" content="2020-02-05T09:17:33.162Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Cocos性能优化-DrawCall">
 <meta name="twitter:description" content="DrawCall是CPU通知GPU进行一次渲染命令的过程，如果DrawCall次数过多，同样会占用过多的CPU 由于BBC游戏使用的是Cocos Creator自带的AutoAtlas，这就导致在浏览器中无法准确的输出真实的DrawCall数量，因此这里只做DrawCall的原理分析跟需要注意的事项 优化建议a.  Label与RichText尽量少，RichText的标签尽量少 b. Label">
-<meta name="twitter:image" content="https://app.yinxiang.com/shard/s20/res/ea16cf33-831a-4aa6-b134-4d3446548fb5.png">
+<meta name="twitter:image" content="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_01.png?raw=true">
 
 
 
@@ -382,7 +382,7 @@
 <p>由于BBC游戏使用的是Cocos Creator自带的AutoAtlas，这就导致在浏览器中无法准确的输出真实的DrawCall数量，因此这里只做DrawCall的原理分析跟需要注意的事项</p>
 <h3 id="优化建议"><a href="#优化建议" class="headerlink" title="优化建议"></a>优化建议</h3><p>a.  Label与RichText尽量少，RichText的标签尽量少</p>
 <p>b. Label/RichText与Sprite尽量分离，Label</p>
-<h1 id="一、AutoAtlas不具有参考意义"><a href="#一、AutoAtlas不具有参考意义" class="headerlink" title="一、AutoAtlas不具有参考意义"></a>一、AutoAtlas不具有参考意义</h1><p><img src="https://app.yinxiang.com/shard/s20/res/ea16cf33-831a-4aa6-b134-4d3446548fb5.png" alt="img"><img src="https://app.yinxiang.com/shard/s20/res/a641f37c-abc1-4118-bffb-1861416664b2.png" alt="img"></p>
+<h1 id="一、AutoAtlas不具有参考意义"><a href="#一、AutoAtlas不具有参考意义" class="headerlink" title="一、AutoAtlas不具有参考意义"></a>一、AutoAtlas不具有参考意义</h1><p><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_01.png?raw=true" alt="img"><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_01_1.png?raw=true" alt="img"></p>
 <p>如上图，浏览器的Show FPS命令可以显示DrawCall数量，如果项目中使用的是打包好的图集，那么，此处的DrawCall数量就是正确的</p>
 <p>如果使用的是Cocos 自带的AutoAtlas，那么，这里显示的DrawCall数量其实是图集未打包前的DrawCall，也就是说，这个数量其实是偏高的</p>
 <p>因为Cocos 的AutoAtlas并不支持浏览器的时候预览，只能打包才能自动创建图集</p>
@@ -391,19 +391,19 @@
 <p>这就导致，我们根本无法判断哪个图片是在同一个图集中，即使这两张图在一个文件夹里面，当我们增删图片时，再次看预览就不一样了</p>
 <p>反应在界面上，就是我们没办法确切的知道同一个AutoAtlas中的图素是否会合批，或许官方有能力做到同一个AutoAtlas中的贴图不论是哪张，都可以准确合批，文档没有，无从了解</p>
 <p>拆包来看，生成的贴图跟预览的数量是一致的：（资源未做保护，直接拆包可得）</p>
-<p><img src="https://app.yinxiang.com/shard/s20/res/b9e74137-e77a-428f-9cce-1285d0a43405.png" alt="img"><img src="https://app.yinxiang.com/shard/s20/res/bbaf1e48-3108-4d3d-a1ed-061bdf25eca0.png" alt="img"></p>
+<p><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_03.png?raw=true" alt="img"><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_02.png?raw=true" alt="img"></p>
 <h1 id="二、DrawCall合批规则"><a href="#二、DrawCall合批规则" class="headerlink" title="二、DrawCall合批规则"></a>二、DrawCall合批规则</h1><p>使用TexturePacker生成图集，然后可以在浏览器中分析DrawCall的数量跟原理</p>
 <h3 id="前提条件"><a href="#前提条件" class="headerlink" title="前提条件"></a>前提条件</h3><p>现有图集如下：</p>
-<p><img src="https://app.yinxiang.com/shard/s20/res/3ca2bbc1-faa8-448b-94af-dee3e1bfc002.png" alt="img"></p>
-<h3 id="规则1：同一个图集的图素在节点树中如果按顺序排列，则会合并成一个DrawCall"><a href="#规则1：同一个图集的图素在节点树中如果按顺序排列，则会合并成一个DrawCall" class="headerlink" title="规则1：同一个图集的图素在节点树中如果按顺序排列，则会合并成一个DrawCall"></a>规则1：同一个图集的图素在节点树中如果按顺序排列，则会合并成一个DrawCall</h3><p><img src="https://app.yinxiang.com/shard/s20/res/dd5dc06e-9adc-4c31-98ae-a70fd13bd17a.png" alt="img"><img src="https://app.yinxiang.com/shard/s20/res/24e5e343-15e7-48a4-a826-40c4d4855da0.png" alt="img"></p>
+<p><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_04.png?raw=true" alt="img"></p>
+<h3 id="规则1：同一个图集的图素在节点树中如果按顺序排列，则会合并成一个DrawCall"><a href="#规则1：同一个图集的图素在节点树中如果按顺序排列，则会合并成一个DrawCall" class="headerlink" title="规则1：同一个图集的图素在节点树中如果按顺序排列，则会合并成一个DrawCall"></a>规则1：同一个图集的图素在节点树中如果按顺序排列，则会合并成一个DrawCall</h3><p><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_05.png?raw=true" alt="img"><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_06.png?raw=true" alt="img"></p>
 <p>两张图素同属于上面的图集，DrawCall数量为1，这个顺序不容许任何意义上的打乱，否则都会断开，分为多个DrawCall</p>
 <p>最底下插入一张散图：</p>
-<p><img src="https://app.yinxiang.com/shard/s20/res/158c1903-4bb5-4e83-9b6d-6f0395051917.png" alt="img"><img src="https://app.yinxiang.com/shard/s20/res/248883ac-b508-4ea8-9bda-e2e6dd5261dc.png" alt="img"></p>
-<h3 id="规则2：统一图集的图素，如果在节点树中不连续，则会分为多个drawcall"><a href="#规则2：统一图集的图素，如果在节点树中不连续，则会分为多个drawcall" class="headerlink" title="规则2：统一图集的图素，如果在节点树中不连续，则会分为多个drawcall"></a>规则2：统一图集的图素，如果在节点树中不连续，则会分为多个drawcall</h3><p><img src="https://app.yinxiang.com/shard/s20/res/0314c9f5-48e7-44e6-b8f7-de84158fb2b4.png" alt="img"><img src="https://app.yinxiang.com/shard/s20/res/54566325-0fc4-4076-8887-e961d614e33b.png" alt="img"></p>
+<p><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_07.png?raw=true" alt="img"><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_08.png?raw=true" alt="img"></p>
+<h3 id="规则2：统一图集的图素，如果在节点树中不连续，则会分为多个drawcall"><a href="#规则2：统一图集的图素，如果在节点树中不连续，则会分为多个drawcall" class="headerlink" title="规则2：统一图集的图素，如果在节点树中不连续，则会分为多个drawcall"></a>规则2：统一图集的图素，如果在节点树中不连续，则会分为多个drawcall</h3><p><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_09.png?raw=true" alt="img"><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_10.png?raw=true" alt="img"></p>
 <p>如上图，将Frame1往上插入两个同一图集的图素中间，结果每个图素都生成了一个DrawCall</p>
-<h3 id="规则3：Label、RichText不会合批，一个Label就会生成一个DrawCall"><a href="#规则3：Label、RichText不会合批，一个Label就会生成一个DrawCall" class="headerlink" title="规则3：Label、RichText不会合批，一个Label就会生成一个DrawCall"></a>规则3：Label、RichText不会合批，一个Label就会生成一个DrawCall</h3><p><img src="https://app.yinxiang.com/shard/s20/res/ad683e1e-305f-49bc-acb8-1ebe6c58ab45.png" alt="img"><img src="https://app.yinxiang.com/shard/s20/res/e3d1cfbc-3524-4d05-81d0-19e69970a1b7.png" alt="img"></p>
-<h3 id="规则4：RichText使用几个标签，就会有多少个DrawCall"><a href="#规则4：RichText使用几个标签，就会有多少个DrawCall" class="headerlink" title="规则4：RichText使用几个标签，就会有多少个DrawCall"></a>规则4：RichText使用几个标签，就会有多少个DrawCall</h3><p><img src="https://app.yinxiang.com/shard/s20/res/d64d3e7a-242f-427e-a175-2df8f51fbf4e.png" alt="img"><img src="https://app.yinxiang.com/shard/s20/res/768977ee-de56-484e-834d-871bdda5f227.png" alt="img"></p>
-<h3 id="规则5：Mask单独占用两个DrawCall"><a href="#规则5：Mask单独占用两个DrawCall" class="headerlink" title="规则5：Mask单独占用两个DrawCall"></a>规则5：Mask单独占用两个DrawCall</h3><p><img src="https://app.yinxiang.com/shard/s20/res/00f338bc-6d6f-4f3d-9954-34691cbaf872.png" alt="img"><img src="https://app.yinxiang.com/shard/s20/res/f483a457-68b6-494f-b969-123748ea100b.png" alt="img"><img src="https://app.yinxiang.com/shard/s20/res/e28863a7-8db6-4cd3-83c9-7dd2ead9f5df.png" alt="img"></p>
+<h3 id="规则3：Label、RichText不会合批，一个Label就会生成一个DrawCall"><a href="#规则3：Label、RichText不会合批，一个Label就会生成一个DrawCall" class="headerlink" title="规则3：Label、RichText不会合批，一个Label就会生成一个DrawCall"></a>规则3：Label、RichText不会合批，一个Label就会生成一个DrawCall</h3><p><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_11.png?raw=true" alt="img"><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_12.png?raw=true" alt="img"></p>
+<h3 id="规则4：RichText使用几个标签，就会有多少个DrawCall"><a href="#规则4：RichText使用几个标签，就会有多少个DrawCall" class="headerlink" title="规则4：RichText使用几个标签，就会有多少个DrawCall"></a>规则4：RichText使用几个标签，就会有多少个DrawCall</h3><p><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_13.png?raw=true" alt="img"><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_14.png?raw=true" alt="img"></p>
+<h3 id="规则5：Mask单独占用两个DrawCall"><a href="#规则5：Mask单独占用两个DrawCall" class="headerlink" title="规则5：Mask单独占用两个DrawCall"></a>规则5：Mask单独占用两个DrawCall</h3><p><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_15.png?raw=true" alt="img"><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_16.png?raw=true" alt="img"><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_17.png?raw=true" alt="img"></p>
 <p>如图：什么都没有，只加了一个空Node，并添加Mask组件，DrawCall为2</p>
 <p>而其底下的元素另算，如果TYPE是IMAGE模式也不影响，还是2个DrawCall，添加的蒙板图片不算DrawCall</p>
 
@@ -535,7 +535,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-count">27</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
