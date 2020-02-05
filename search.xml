@@ -97,8 +97,8 @@
       </tags>
   </entry>
   <entry>
-    <title>Unity 多版本共存解决方案</title>
-    <url>/2019/12/25/Unity/Unity%E9%80%82%E9%85%8D%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/</url>
+    <title>Unity适配解决方案</title>
+    <url>/2019/11/29/Unity/Unity%E9%80%82%E9%85%8D%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/</url>
     <content><![CDATA[<h2 id="一、适配方案设想"><a href="#一、适配方案设想" class="headerlink" title="一、适配方案设想"></a><strong>一、适配方案设想</strong></h2><p>​      <strong>对于各种分辨率的手机，适配是一个头疼的事情，所以只能一点点探索。</strong></p>
 <p>​       <strong>对于一个好的适配，我们需要什么？：</strong></p>
 <ol>
