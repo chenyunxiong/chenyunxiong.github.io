@@ -1083,7 +1083,7 @@
 <p>由于BBC游戏使用的是Cocos Creator自带的AutoAtlas，这就导致在浏览器中无法准确的输出真实的DrawCall数量，因此这里只做DrawCall的原理分析跟需要注意的事项</p>
 <h3 id="优化建议"><a href="#优化建议" class="headerlink" title="优化建议"></a>优化建议</h3><p>a.  Label与RichText尽量少，RichText的标签尽量少</p>
 <p>b. Label/RichText与Sprite尽量分离，Label</p>
-<h1 id="一、AutoAtlas不具有参考意义"><a href="#一、AutoAtlas不具有参考意义" class="headerlink" title="一、AutoAtlas不具有参考意义"></a>一、AutoAtlas不具有参考意义</h1><p><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_01.png?raw=true" alt="img"><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_01_1.png?raw=true" alt="img"></p>
+<h1 id="一、AutoAtlas不具有参考意义"><a href="#一、AutoAtlas不具有参考意义" class="headerlink" title="一、AutoAtlas不具有参考意义"></a>一、AutoAtlas不具有参考意义</h1><p><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_01.png?raw=true" alt="img"><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_01_1.png?raw=true" alt="img"></p>
 <p>如上图，浏览器的Show FPS命令可以显示DrawCall数量，如果项目中使用的是打包好的图集，那么，此处的DrawCall数量就是正确的</p>
 <p>如果使用的是Cocos 自带的AutoAtlas，那么，这里显示的DrawCall数量其实是图集未打包前的DrawCall，也就是说，这个数量其实是偏高的</p>
 <p>因为Cocos 的AutoAtlas并不支持浏览器的时候预览，只能打包才能自动创建图集</p>
@@ -1092,19 +1092,19 @@
 <p>这就导致，我们根本无法判断哪个图片是在同一个图集中，即使这两张图在一个文件夹里面，当我们增删图片时，再次看预览就不一样了</p>
 <p>反应在界面上，就是我们没办法确切的知道同一个AutoAtlas中的图素是否会合批，或许官方有能力做到同一个AutoAtlas中的贴图不论是哪张，都可以准确合批，文档没有，无从了解</p>
 <p>拆包来看，生成的贴图跟预览的数量是一致的：（资源未做保护，直接拆包可得）</p>
-<p><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_03.png?raw=true" alt="img"><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_02.png?raw=true" alt="img"></p>
+<p><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_02.png?raw=true" alt="img"><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_03.png?raw=true" alt="img"></p>
 <h1 id="二、DrawCall合批规则"><a href="#二、DrawCall合批规则" class="headerlink" title="二、DrawCall合批规则"></a>二、DrawCall合批规则</h1><p>使用TexturePacker生成图集，然后可以在浏览器中分析DrawCall的数量跟原理</p>
 <h3 id="前提条件"><a href="#前提条件" class="headerlink" title="前提条件"></a>前提条件</h3><p>现有图集如下：</p>
-<p><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_04.png?raw=true" alt="img"></p>
-<h3 id="规则1：同一个图集的图素在节点树中如果按顺序排列，则会合并成一个DrawCall"><a href="#规则1：同一个图集的图素在节点树中如果按顺序排列，则会合并成一个DrawCall" class="headerlink" title="规则1：同一个图集的图素在节点树中如果按顺序排列，则会合并成一个DrawCall"></a>规则1：同一个图集的图素在节点树中如果按顺序排列，则会合并成一个DrawCall</h3><p><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_05.png?raw=true" alt="img"><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_06.png?raw=true" alt="img"></p>
+<p><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_04.png?raw=true" alt="img"></p>
+<h3 id="规则1：同一个图集的图素在节点树中如果按顺序排列，则会合并成一个DrawCall"><a href="#规则1：同一个图集的图素在节点树中如果按顺序排列，则会合并成一个DrawCall" class="headerlink" title="规则1：同一个图集的图素在节点树中如果按顺序排列，则会合并成一个DrawCall"></a>规则1：同一个图集的图素在节点树中如果按顺序排列，则会合并成一个DrawCall</h3><p><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_05.png?raw=true" alt="img"><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_06.png?raw=true" alt="img"></p>
 <p>两张图素同属于上面的图集，DrawCall数量为1，这个顺序不容许任何意义上的打乱，否则都会断开，分为多个DrawCall</p>
 <p>最底下插入一张散图：</p>
-<p><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_07.png?raw=true" alt="img"><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_08.png?raw=true" alt="img"></p>
-<h3 id="规则2：统一图集的图素，如果在节点树中不连续，则会分为多个drawcall"><a href="#规则2：统一图集的图素，如果在节点树中不连续，则会分为多个drawcall" class="headerlink" title="规则2：统一图集的图素，如果在节点树中不连续，则会分为多个drawcall"></a>规则2：统一图集的图素，如果在节点树中不连续，则会分为多个drawcall</h3><p><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_09.png?raw=true" alt="img"><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_10.png?raw=true" alt="img"></p>
+<p><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_07.png?raw=true" alt="img"><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_08.png?raw=true" alt="img"></p>
+<h3 id="规则2：统一图集的图素，如果在节点树中不连续，则会分为多个drawcall"><a href="#规则2：统一图集的图素，如果在节点树中不连续，则会分为多个drawcall" class="headerlink" title="规则2：统一图集的图素，如果在节点树中不连续，则会分为多个drawcall"></a>规则2：统一图集的图素，如果在节点树中不连续，则会分为多个drawcall</h3><p><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_09.png?raw=true" alt="img"><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_10.png?raw=true" alt="img"></p>
 <p>如上图，将Frame1往上插入两个同一图集的图素中间，结果每个图素都生成了一个DrawCall</p>
-<h3 id="规则3：Label、RichText不会合批，一个Label就会生成一个DrawCall"><a href="#规则3：Label、RichText不会合批，一个Label就会生成一个DrawCall" class="headerlink" title="规则3：Label、RichText不会合批，一个Label就会生成一个DrawCall"></a>规则3：Label、RichText不会合批，一个Label就会生成一个DrawCall</h3><p><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_11.png?raw=true" alt="img"><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_12.png?raw=true" alt="img"></p>
-<h3 id="规则4：RichText使用几个标签，就会有多少个DrawCall"><a href="#规则4：RichText使用几个标签，就会有多少个DrawCall" class="headerlink" title="规则4：RichText使用几个标签，就会有多少个DrawCall"></a>规则4：RichText使用几个标签，就会有多少个DrawCall</h3><p><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_13.png?raw=true" alt="img"><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_14.png?raw=true" alt="img"></p>
-<h3 id="规则5：Mask单独占用两个DrawCall"><a href="#规则5：Mask单独占用两个DrawCall" class="headerlink" title="规则5：Mask单独占用两个DrawCall"></a>规则5：Mask单独占用两个DrawCall</h3><p><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_15.png?raw=true" alt="img"><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_16.png?raw=true" alt="img"><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_17.png?raw=true" alt="img"></p>
+<h3 id="规则3：Label、RichText不会合批，一个Label就会生成一个DrawCall"><a href="#规则3：Label、RichText不会合批，一个Label就会生成一个DrawCall" class="headerlink" title="规则3：Label、RichText不会合批，一个Label就会生成一个DrawCall"></a>规则3：Label、RichText不会合批，一个Label就会生成一个DrawCall</h3><p><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_11.png?raw=true" alt="img"><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_12.png?raw=true" alt="img"></p>
+<h3 id="规则4：RichText使用几个标签，就会有多少个DrawCall"><a href="#规则4：RichText使用几个标签，就会有多少个DrawCall" class="headerlink" title="规则4：RichText使用几个标签，就会有多少个DrawCall"></a>规则4：RichText使用几个标签，就会有多少个DrawCall</h3><p><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_13.png?raw=true" alt="img"><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_14.png?raw=true" alt="img"></p>
+<h3 id="规则5：Mask单独占用两个DrawCall"><a href="#规则5：Mask单独占用两个DrawCall" class="headerlink" title="规则5：Mask单独占用两个DrawCall"></a>规则5：Mask单独占用两个DrawCall</h3><p><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_15.png?raw=true" alt="img"><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_16.png?raw=true" alt="img"><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_17.png?raw=true" alt="img"></p>
 <p>如图：什么都没有，只加了一个空Node，并添加Mask组件，DrawCall为2</p>
 <p>而其底下的元素另算，如果TYPE是IMAGE模式也不影响，还是2个DrawCall，添加的蒙板图片不算DrawCall</p>
 
@@ -1258,7 +1258,7 @@
 <td style="text-align:left">t:prefab + name</td>
 <td style="text-align:left">t:prefab rank</td>
 <td style="text-align:left">搜索名字中包含rank的预制体</td>
-<td style="text-align:left"><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/blogImg/1.png?raw=true" alt="img"></td>
+<td style="text-align:left"><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/Cocos%E6%90%9C%E7%B4%A2/1.png?raw=true" alt="img"></td>
 </tr>
 <tr>
 <td style="text-align:left">sprite-frame</td>
@@ -1266,7 +1266,7 @@
 <td style="text-align:left">t:sprite-frame + name</td>
 <td style="text-align:left">t:sprite-frame icon</td>
 <td style="text-align:left">搜索名字中包含icon的精灵图片</td>
-<td style="text-align:left"><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/Cocos%E6%90%9C%E7%B4%A2/2.png?raw=true" alt="img"></td>
+<td style="text-align:left"><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/Cocos%E6%90%9C%E7%B4%A2/2.png?raw=true" alt="img"></td>
 </tr>
 <tr>
 <td style="text-align:left">javascript/typescript/coffeescript</td>
@@ -1274,7 +1274,7 @@
 <td style="text-align:left">t:javascript + name</td>
 <td style="text-align:left">t:javascript rank</td>
 <td style="text-align:left">搜索包含rank的js代码文件</td>
-<td style="text-align:left"><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/Cocos%E6%90%9C%E7%B4%A2/3.png?raw=true" alt="img"></td>
+<td style="text-align:left"><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/Cocos%E6%90%9C%E7%B4%A2/3.png?raw=true" alt="img"></td>
 </tr>
 <tr>
 <td style="text-align:left">animation-clip</td>
@@ -1282,7 +1282,7 @@
 <td style="text-align:left">t:animation-clip + name</td>
 <td style="text-align:left">t:animation-clip rank</td>
 <td style="text-align:left">搜索包含rank的动画</td>
-<td style="text-align:left"><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/Cocos%E6%90%9C%E7%B4%A2/4.png?raw=true" alt="img"></td>
+<td style="text-align:left"><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/Cocos%E6%90%9C%E7%B4%A2/4.png?raw=true" alt="img"></td>
 </tr>
 <tr>
 <td style="text-align:left">audio-clip</td>
@@ -1290,7 +1290,7 @@
 <td style="text-align:left">t:audio-clip + name</td>
 <td style="text-align:left">t:audio-clip click</td>
 <td style="text-align:left">搜索包含click的音频</td>
-<td style="text-align:left"><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/Cocos%E6%90%9C%E7%B4%A2/5.png?raw=true" alt="img"></td>
+<td style="text-align:left"><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/Cocos%E6%90%9C%E7%B4%A2/5.png?raw=true" alt="img"></td>
 </tr>
 <tr>
 <td style="text-align:left">bitmap-font或者font</td>
@@ -1298,7 +1298,7 @@
 <td style="text-align:left">t:bitmap-font</td>
 <td style="text-align:left">t:bitmap-font time</td>
 <td style="text-align:left">搜索包含time的位图字体</td>
-<td style="text-align:left"><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/Cocos%E6%90%9C%E7%B4%A2/6.png?raw=true" alt="img"></td>
+<td style="text-align:left"><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/Cocos%E6%90%9C%E7%B4%A2/6.png?raw=true" alt="img"></td>
 </tr>
 <tr>
 <td style="text-align:left">scene</td>
@@ -1306,7 +1306,7 @@
 <td style="text-align:left">t:scene + name</td>
 <td style="text-align:left">t:scene</td>
 <td style="text-align:left">搜索场景</td>
-<td style="text-align:left"><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/Cocos%E6%90%9C%E7%B4%A2/7.png?raw=true" alt="img"></td>
+<td style="text-align:left"><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/Cocos%E6%90%9C%E7%B4%A2/7.png?raw=true" alt="img"></td>
 </tr>
 <tr>
 <td style="text-align:left">folder</td>
@@ -1314,12 +1314,12 @@
 <td style="text-align:left">t:folder + name</td>
 <td style="text-align:left">t:folder anim</td>
 <td style="text-align:left">搜索带anim的文件夹</td>
-<td style="text-align:left"><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/Cocos%E6%90%9C%E7%B4%A2/8.png?raw=true" alt="img"></td>
+<td style="text-align:left"><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/Cocos%E6%90%9C%E7%B4%A2/8.png?raw=true" alt="img"></td>
 </tr>
 </tbody>
 </table>
 <p>常用资源类型查阅：</p>
-<p><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/Cocos%E6%90%9C%E7%B4%A2/9.png?raw=true" alt="img"></p>
+<p><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/Cocos%E6%90%9C%E7%B4%A2/9.png?raw=true" alt="img"></p>
 <h3 id="NodeTree层级管理器面板"><a href="#NodeTree层级管理器面板" class="headerlink" title="NodeTree层级管理器面板"></a>NodeTree层级管理器面板</h3><p>层级面板的搜索主要使用组件类型搜索，比如节点cc.Node，动画组件cc.Animation</p>
 <table>
 <thead>
@@ -1339,7 +1339,7 @@
 <td style="text-align:left">t:cc.Node + name</td>
 <td style="text-align:left">t:cc.Node rank</td>
 <td style="text-align:left">搜索带rank的节点</td>
-<td style="text-align:left"><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/Cocos%E6%90%9C%E7%B4%A2/10.png?raw=true" alt="img"></td>
+<td style="text-align:left"><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/Cocos%E6%90%9C%E7%B4%A2/10.png?raw=true" alt="img"></td>
 </tr>
 <tr>
 <td style="text-align:left">cc.Animation</td>
@@ -1347,7 +1347,7 @@
 <td style="text-align:left">t:cc.Animation + name</td>
 <td style="text-align:left">t:cc.Animation</td>
 <td style="text-align:left">搜索挂载有Animation组件的节点</td>
-<td style="text-align:left"><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/Cocos%E6%90%9C%E7%B4%A2/11.png?raw=true" alt="img"></td>
+<td style="text-align:left"><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/Cocos%E6%90%9C%E7%B4%A2/11.png?raw=true" alt="img"></td>
 </tr>
 <tr>
 <td style="text-align:left">cc.Label</td>
@@ -1355,7 +1355,7 @@
 <td style="text-align:left">t:cc.Label + name</td>
 <td style="text-align:left">t:cc.Label tip</td>
 <td style="text-align:left">搜索名称中带有tip且挂载Label组件的节点</td>
-<td style="text-align:left"><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/Cocos%E6%90%9C%E7%B4%A2/12.png?raw=true" alt="img"></td>
+<td style="text-align:left"><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/Cocos%E6%90%9C%E7%B4%A2/12.png?raw=true" alt="img"></td>
 </tr>
 <tr>
 <td style="text-align:left">cc.Button</td>
@@ -1371,7 +1371,7 @@
 <td style="text-align:left">t:cc.Sprite + name</td>
 <td style="text-align:left">t:cc.Sprite bg</td>
 <td style="text-align:left">搜索名称中带bg且挂载有sprite组件的节点</td>
-<td style="text-align:left"><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/Cocos%E6%90%9C%E7%B4%A2/13.png?raw=true" alt="img"></td>
+<td style="text-align:left"><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/Cocos%E6%90%9C%E7%B4%A2/13.png?raw=true" alt="img"></td>
 </tr>
 <tr>
 <td style="text-align:left">cc.Toggle</td>
@@ -1379,7 +1379,7 @@
 <td style="text-align:left">t:cc.Toggle</td>
 <td style="text-align:left">t:cc.Toggle</td>
 <td style="text-align:left">搜索挂载有toggle组件的节点</td>
-<td style="text-align:left"><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/Cocos%E6%90%9C%E7%B4%A2/14.png?raw=true" alt="img"></td>
+<td style="text-align:left"><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/Cocos%E6%90%9C%E7%B4%A2/14.png?raw=true" alt="img"></td>
 </tr>
 <tr>
 <td style="text-align:left">cc.EditBox</td>
@@ -1403,19 +1403,19 @@
 <td style="text-align:left">t:festivalSkin</td>
 <td style="text-align:left">t:festivalSkin</td>
 <td style="text-align:left">搜索挂载有festivalSkin的节点</td>
-<td style="text-align:left"><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/Cocos%E6%90%9C%E7%B4%A2/15.png?raw=true" alt="img"></td>
+<td style="text-align:left"><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/Cocos%E6%90%9C%E7%B4%A2/15.png?raw=true" alt="img"></td>
 </tr>
 </tbody>
 </table>
 <p>常用组件类型查阅：</p>
 <p>在节点的Properties面板的AddComponent可以点开，或者创建节点时可以看到</p>
-<p><img src="https://app.yinxiang.com/shard/s20/res/ed37cafe-dfa6-433d-8363-7f2fd949fdb6.png" alt="img"><img src="https://app.yinxiang.com/shard/s20/res/f16ea6d6-919a-40a4-a261-0c189db71c3d.png" alt="img"></p>
+<p><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/Cocos%E6%90%9C%E7%B4%A2/16.png?raw=true" alt="img"><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/Cocos%E6%90%9C%E7%B4%A2/17.png?raw=true" alt="img"></p>
 <h3 id="联合搜索"><a href="#联合搜索" class="headerlink" title="联合搜索"></a>联合搜索</h3><p>需要同时搜索多个标签怎么办，使用英文逗号隔开即可，这种情况不常用</p>
 <p>搜索精灵跟预制体中包含rank的资源，结果如下</p>
-<p><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/Cocos%E6%90%9C%E7%B4%A2/16.png?raw=true" alt="img"></p>
+<p><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/Cocos%E6%90%9C%E7%B4%A2/18.png?raw=true" alt="img"></p>
 <h3 id="模糊搜索"><a href="#模糊搜索" class="headerlink" title="模糊搜索"></a>模糊搜索</h3><p>比如我只知道排行包含r、k两个字母，那么我可以直接使用：t:prefab r k</p>
 <p>r跟k中间加入一个空格，可以搜索出带这两个字母或者其中一个的所有预制体</p>
-<p><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/Cocos%E6%90%9C%E7%B4%A2/17.png?raw=true" alt="img"></p>
+<p><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/Cocos%E6%90%9C%E7%B4%A2/19.png?raw=true" alt="img"></p>
 
           
         
@@ -1696,9 +1696,9 @@
 <h2 id="使用："><a href="#使用：" class="headerlink" title="使用："></a>使用：</h2><h3 id="基本用法"><a href="#基本用法" class="headerlink" title="基本用法"></a>基本用法</h3><p>TextMeshPro显示图素并不复杂，直接使用类似富文本的格式进行插入即可</p>
 <p>例如：升级厢房到2级需要\n&lt;sprite=0&gt;1000秒\n &lt;sprite=2&gt;1000\n 确定升级吗？</p>
 <p>以上这一段文本的显示效果为：</p>
-<p><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/TextMeshPro/%E5%9B%BE%E6%96%87%E6%B7%B7%E6%8E%92/1.png?raw=true" alt="img"></p>
-<p><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/TextMeshPro/%E5%9B%BE%E6%96%87%E6%B7%B7%E6%8E%92/2.png?raw=true" alt="img"></p>
-<h3 id="颜色变化：更多请参考：3-Sprite-Assets"><a href="#颜色变化：更多请参考：3-Sprite-Assets" class="headerlink" title="颜色变化：更多请参考：3. Sprite Assets"></a>颜色变化：更多请参考：<a href="https://stl.woobest.com/wiki/display/T18/3.+Sprite+Assets" target="_blank" rel="noopener">3. Sprite Assets</a></h3><ol>
+<p><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/TextMeshPro/%E5%9B%BE%E6%96%87%E6%B7%B7%E6%8E%92/1.png?raw=true" alt="img"></p>
+<p><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/TextMeshPro/%E5%9B%BE%E6%96%87%E6%B7%B7%E6%8E%92/2.png?raw=true" alt="img"></p>
+<h3 id="颜色变化："><a href="#颜色变化：" class="headerlink" title="颜色变化："></a>颜色变化：</h3><ol>
 <li>只有字颜色变化，图片颜色不变</li>
 <li>图片跟字颜色一起变化</li>
 <li>图片变化，字颜色不变</li>
@@ -1706,24 +1706,24 @@
 <p>以下图片与字颜色皆为白色</p>
 <p>1：通用模式，直接修改VetextColor：&lt;sprite=1&gt;继续加油</p>
 <p>效果：</p>
-<p><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/TextMeshPro/%E5%9B%BE%E6%96%87%E6%B7%B7%E6%8E%92/3.png?raw=true" alt="img"><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/TextMeshPro/%E5%9B%BE%E6%96%87%E6%B7%B7%E6%8E%92/4.png?raw=true" alt="img"></p>
+<p><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/TextMeshPro/%E5%9B%BE%E6%96%87%E6%B7%B7%E6%8E%92/3.png?raw=true" alt="img"><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/TextMeshPro/%E5%9B%BE%E6%96%87%E6%B7%B7%E6%8E%92/4.png?raw=true" alt="img"></p>
 <p>2：&lt;sprite=1, tint=1&gt;继续加油</p>
-<p><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/TextMeshPro/%E5%9B%BE%E6%96%87%E6%B7%B7%E6%8E%92/5.png?raw=true" alt="img"></p>
+<p><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/TextMeshPro/%E5%9B%BE%E6%96%87%E6%B7%B7%E6%8E%92/5.png?raw=true" alt="img"></p>
 <p>3： &lt;color=#FF0000&gt;&lt;sprite=1, tint=1&gt;&lt;color=#ffffff&gt;继续加油  或者 &lt;sprite=1 color=#FF0000&gt;继续加油</p>
 <p>效果：</p>
-<p><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/TextMeshPro/%E5%9B%BE%E6%96%87%E6%B7%B7%E6%8E%92/6.png?raw=true" alt="img"></p>
+<p><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/TextMeshPro/%E5%9B%BE%E6%96%87%E6%B7%B7%E6%8E%92/6.png?raw=true" alt="img"></p>
 <h3 id="多语言用法"><a href="#多语言用法" class="headerlink" title="多语言用法"></a>多语言用法</h3><p>示例：</p>
 <p>\n：换行</p>
 <p>&lt;sprite=%d&gt;: 图片id  需要保证此id跟Sprite Asset中的id是一致的</p>
 <p>考虑到多个Sprite Asset，改为<sprite name="resourceName">，resourceName为游戏中资源名</sprite></p>
 <p>使用：亲喵~ 确定要消耗\n<sprite name="%s">%d\n将建筑升级到2级吗？</sprite></p>
-<p><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/TextMeshPro/%E5%9B%BE%E6%96%87%E6%B7%B7%E6%8E%92/7.png?raw=true" alt="img"></p>
+<p><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/TextMeshPro/%E5%9B%BE%E6%96%87%E6%B7%B7%E6%8E%92/7.png?raw=true" alt="img"></p>
 <p>效果：</p>
-<p><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/TextMeshPro/%E5%9B%BE%E6%96%87%E6%B7%B7%E6%8E%92/8.png?raw=true" alt="img"></p>
+<p><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/TextMeshPro/%E5%9B%BE%E6%96%87%E6%B7%B7%E6%8E%92/8.png?raw=true" alt="img"></p>
 <p>为确保Sprite Asset的图片id跟资源id保持一致，</p>
 <p>法1：可以在Sprite Asset上点开Sprite Character Table进行编辑，修改Glyph ID即可调整顺序，保证图片ID跟此处的Glyph ID一致即可</p>
 <p>缺点：每次重新生成Sprite Asset都需要手动修改一遍id，数量一多简直灾难</p>
-<p><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/TextMeshPro/%E5%9B%BE%E6%96%87%E6%B7%B7%E6%8E%92/9.png?raw=true" alt="img"></p>
+<p><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/TextMeshPro/%E5%9B%BE%E6%96%87%E6%B7%B7%E6%8E%92/9.png?raw=true" alt="img"></p>
 <p>法2：Resources表添加id，对应这个数据</p>
 <p>再议，Sprite Asset 每次生成id都不一致，需要看看原理</p>
 
@@ -1858,7 +1858,7 @@
           
             <p>无论是Font Asset 还是Sprite Asset，其大小都是有限制的，不可能无限的大，因此如果我们需要使用的文字在其他Font Asset中，就需要切换Font Asset，但是如果一段文本中的字分别存在不同的Font Asset中，这时候怎么办，</p>
 <p>TextMeshPro使用Fallback机制解决了这个问题</p>
-<p><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/TextMeshPro/Fallback%E6%9C%BA%E5%88%B6/1.png?raw=true" alt="img"></p>
+<p><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/TextMeshPro/Fallback%E6%9C%BA%E5%88%B6/1.png?raw=true" alt="img"></p>
 <p>在每个Font Asset下面都有一个Fallback Font Asset，只需要将其他的Font Asset添加到列表中，如果输入的文字不在当前引用的Font Asset中，TextMeshPro就会自动去这些Font Asset中进行查找。</p>
 <p>查找的顺序为：当前引用的Font Asset - 当前引用Font Asset的Fallback Font Asset - 当前TextMeshProUGUI(即场景中的TextMeshUI)的Extra Setting中查找 - TMP Setting的Fallback中查找</p>
 <p>→ TMP Setting 的 Default Sprite Asset - TMP Setting的Default Font Asset查找 - 如果还是没有，则显示TMPSetting 的Missing Glyphs</p>

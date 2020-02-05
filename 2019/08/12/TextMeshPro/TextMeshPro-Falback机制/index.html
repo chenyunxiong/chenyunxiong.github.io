@@ -87,12 +87,12 @@
 <meta property="og:site_name" content="人生如逆旅">
 <meta property="og:description" content="无论是Font Asset 还是Sprite Asset，其大小都是有限制的，不可能无限的大，因此如果我们需要使用的文字在其他Font Asset中，就需要切换Font Asset，但是如果一段文本中的字分别存在不同的Font Asset中，这时候怎么办， TextMeshPro使用Fallback机制解决了这个问题  在每个Font Asset下面都有一个Fallback Font Asset，">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/TextMeshPro/Fallback%E6%9C%BA%E5%88%B6/1.png?raw=true">
-<meta property="og:updated_time" content="2020-02-05T11:14:22.373Z">
+<meta property="og:image" content="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/TextMeshPro/Fallback%E6%9C%BA%E5%88%B6/1.png?raw=true">
+<meta property="og:updated_time" content="2020-02-05T12:44:59.231Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="TextMeshPro - FallBack机制">
 <meta name="twitter:description" content="无论是Font Asset 还是Sprite Asset，其大小都是有限制的，不可能无限的大，因此如果我们需要使用的文字在其他Font Asset中，就需要切换Font Asset，但是如果一段文本中的字分别存在不同的Font Asset中，这时候怎么办， TextMeshPro使用Fallback机制解决了这个问题  在每个Font Asset下面都有一个Fallback Font Asset，">
-<meta name="twitter:image" content="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/TextMeshPro/Fallback%E6%9C%BA%E5%88%B6/1.png?raw=true">
+<meta name="twitter:image" content="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/TextMeshPro/Fallback%E6%9C%BA%E5%88%B6/1.png?raw=true">
 
 
 
@@ -363,7 +363,7 @@
       
         <p>无论是Font Asset 还是Sprite Asset，其大小都是有限制的，不可能无限的大，因此如果我们需要使用的文字在其他Font Asset中，就需要切换Font Asset，但是如果一段文本中的字分别存在不同的Font Asset中，这时候怎么办，</p>
 <p>TextMeshPro使用Fallback机制解决了这个问题</p>
-<p><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/TextMeshPro/Fallback%E6%9C%BA%E5%88%B6/1.png?raw=true" alt="img"></p>
+<p><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/TextMeshPro/Fallback%E6%9C%BA%E5%88%B6/1.png?raw=true" alt="img"></p>
 <p>在每个Font Asset下面都有一个Fallback Font Asset，只需要将其他的Font Asset添加到列表中，如果输入的文字不在当前引用的Font Asset中，TextMeshPro就会自动去这些Font Asset中进行查找。</p>
 <p>查找的顺序为：当前引用的Font Asset - 当前引用Font Asset的Fallback Font Asset - 当前TextMeshProUGUI(即场景中的TextMeshUI)的Extra Setting中查找 - TMP Setting的Fallback中查找</p>
 <p>→ TMP Setting 的 Default Sprite Asset - TMP Setting的Default Font Asset查找 - 如果还是没有，则显示TMPSetting 的Missing Glyphs</p>

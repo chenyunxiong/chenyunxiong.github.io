@@ -117,7 +117,7 @@
 <p>由于BBC游戏使用的是Cocos Creator自带的AutoAtlas，这就导致在浏览器中无法准确的输出真实的DrawCall数量，因此这里只做DrawCall的原理分析跟需要注意的事项</p>
 <h3 id="优化建议"><a href="#优化建议" class="headerlink" title="优化建议"></a>优化建议</h3><p>a.  Label与RichText尽量少，RichText的标签尽量少</p>
 <p>b. Label/RichText与Sprite尽量分离，Label</p>
-<h1 id="一、AutoAtlas不具有参考意义"><a href="#一、AutoAtlas不具有参考意义" class="headerlink" title="一、AutoAtlas不具有参考意义"></a>一、AutoAtlas不具有参考意义</h1><p><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_01.png?raw=true" alt="img"><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_01_1.png?raw=true" alt="img"></p>
+<h1 id="一、AutoAtlas不具有参考意义"><a href="#一、AutoAtlas不具有参考意义" class="headerlink" title="一、AutoAtlas不具有参考意义"></a>一、AutoAtlas不具有参考意义</h1><p><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_01.png?raw=true" alt="img"><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_01_1.png?raw=true" alt="img"></p>
 <p>如上图，浏览器的Show FPS命令可以显示DrawCall数量，如果项目中使用的是打包好的图集，那么，此处的DrawCall数量就是正确的</p>
 <p>如果使用的是Cocos 自带的AutoAtlas，那么，这里显示的DrawCall数量其实是图集未打包前的DrawCall，也就是说，这个数量其实是偏高的</p>
 <p>因为Cocos 的AutoAtlas并不支持浏览器的时候预览，只能打包才能自动创建图集</p>
@@ -126,19 +126,19 @@
 <p>这就导致，我们根本无法判断哪个图片是在同一个图集中，即使这两张图在一个文件夹里面，当我们增删图片时，再次看预览就不一样了</p>
 <p>反应在界面上，就是我们没办法确切的知道同一个AutoAtlas中的图素是否会合批，或许官方有能力做到同一个AutoAtlas中的贴图不论是哪张，都可以准确合批，文档没有，无从了解</p>
 <p>拆包来看，生成的贴图跟预览的数量是一致的：（资源未做保护，直接拆包可得）</p>
-<p><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_03.png?raw=true" alt="img"><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_02.png?raw=true" alt="img"></p>
+<p><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_02.png?raw=true" alt="img"><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_03.png?raw=true" alt="img"></p>
 <h1 id="二、DrawCall合批规则"><a href="#二、DrawCall合批规则" class="headerlink" title="二、DrawCall合批规则"></a>二、DrawCall合批规则</h1><p>使用TexturePacker生成图集，然后可以在浏览器中分析DrawCall的数量跟原理</p>
 <h3 id="前提条件"><a href="#前提条件" class="headerlink" title="前提条件"></a>前提条件</h3><p>现有图集如下：</p>
-<p><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_04.png?raw=true" alt="img"></p>
-<h3 id="规则1：同一个图集的图素在节点树中如果按顺序排列，则会合并成一个DrawCall"><a href="#规则1：同一个图集的图素在节点树中如果按顺序排列，则会合并成一个DrawCall" class="headerlink" title="规则1：同一个图集的图素在节点树中如果按顺序排列，则会合并成一个DrawCall"></a>规则1：同一个图集的图素在节点树中如果按顺序排列，则会合并成一个DrawCall</h3><p><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_05.png?raw=true" alt="img"><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_06.png?raw=true" alt="img"></p>
+<p><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_04.png?raw=true" alt="img"></p>
+<h3 id="规则1：同一个图集的图素在节点树中如果按顺序排列，则会合并成一个DrawCall"><a href="#规则1：同一个图集的图素在节点树中如果按顺序排列，则会合并成一个DrawCall" class="headerlink" title="规则1：同一个图集的图素在节点树中如果按顺序排列，则会合并成一个DrawCall"></a>规则1：同一个图集的图素在节点树中如果按顺序排列，则会合并成一个DrawCall</h3><p><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_05.png?raw=true" alt="img"><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_06.png?raw=true" alt="img"></p>
 <p>两张图素同属于上面的图集，DrawCall数量为1，这个顺序不容许任何意义上的打乱，否则都会断开，分为多个DrawCall</p>
 <p>最底下插入一张散图：</p>
-<p><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_07.png?raw=true" alt="img"><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_08.png?raw=true" alt="img"></p>
-<h3 id="规则2：统一图集的图素，如果在节点树中不连续，则会分为多个drawcall"><a href="#规则2：统一图集的图素，如果在节点树中不连续，则会分为多个drawcall" class="headerlink" title="规则2：统一图集的图素，如果在节点树中不连续，则会分为多个drawcall"></a>规则2：统一图集的图素，如果在节点树中不连续，则会分为多个drawcall</h3><p><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_09.png?raw=true" alt="img"><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_10.png?raw=true" alt="img"></p>
+<p><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_07.png?raw=true" alt="img"><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_08.png?raw=true" alt="img"></p>
+<h3 id="规则2：统一图集的图素，如果在节点树中不连续，则会分为多个drawcall"><a href="#规则2：统一图集的图素，如果在节点树中不连续，则会分为多个drawcall" class="headerlink" title="规则2：统一图集的图素，如果在节点树中不连续，则会分为多个drawcall"></a>规则2：统一图集的图素，如果在节点树中不连续，则会分为多个drawcall</h3><p><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_09.png?raw=true" alt="img"><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_10.png?raw=true" alt="img"></p>
 <p>如上图，将Frame1往上插入两个同一图集的图素中间，结果每个图素都生成了一个DrawCall</p>
-<h3 id="规则3：Label、RichText不会合批，一个Label就会生成一个DrawCall"><a href="#规则3：Label、RichText不会合批，一个Label就会生成一个DrawCall" class="headerlink" title="规则3：Label、RichText不会合批，一个Label就会生成一个DrawCall"></a>规则3：Label、RichText不会合批，一个Label就会生成一个DrawCall</h3><p><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_11.png?raw=true" alt="img"><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_12.png?raw=true" alt="img"></p>
-<h3 id="规则4：RichText使用几个标签，就会有多少个DrawCall"><a href="#规则4：RichText使用几个标签，就会有多少个DrawCall" class="headerlink" title="规则4：RichText使用几个标签，就会有多少个DrawCall"></a>规则4：RichText使用几个标签，就会有多少个DrawCall</h3><p><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_13.png?raw=true" alt="img"><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_14.png?raw=true" alt="img"></p>
-<h3 id="规则5：Mask单独占用两个DrawCall"><a href="#规则5：Mask单独占用两个DrawCall" class="headerlink" title="规则5：Mask单独占用两个DrawCall"></a>规则5：Mask单独占用两个DrawCall</h3><p><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_15.png?raw=true" alt="img"><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_16.png?raw=true" alt="img"><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_17.png?raw=true" alt="img"></p>
+<h3 id="规则3：Label、RichText不会合批，一个Label就会生成一个DrawCall"><a href="#规则3：Label、RichText不会合批，一个Label就会生成一个DrawCall" class="headerlink" title="规则3：Label、RichText不会合批，一个Label就会生成一个DrawCall"></a>规则3：Label、RichText不会合批，一个Label就会生成一个DrawCall</h3><p><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_11.png?raw=true" alt="img"><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_12.png?raw=true" alt="img"></p>
+<h3 id="规则4：RichText使用几个标签，就会有多少个DrawCall"><a href="#规则4：RichText使用几个标签，就会有多少个DrawCall" class="headerlink" title="规则4：RichText使用几个标签，就会有多少个DrawCall"></a>规则4：RichText使用几个标签，就会有多少个DrawCall</h3><p><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_13.png?raw=true" alt="img"><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_14.png?raw=true" alt="img"></p>
+<h3 id="规则5：Mask单独占用两个DrawCall"><a href="#规则5：Mask单独占用两个DrawCall" class="headerlink" title="规则5：Mask单独占用两个DrawCall"></a>规则5：Mask单独占用两个DrawCall</h3><p><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_15.png?raw=true" alt="img"><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_16.png?raw=true" alt="img"><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/%E9%A1%B5%E9%9D%A2DrawCall%E5%88%86%E6%9E%90/cocos_drawCall_17.png?raw=true" alt="img"></p>
 <p>如图：什么都没有，只加了一个空Node，并添加Mask组件，DrawCall为2</p>
 <p>而其底下的元素另算，如果TYPE是IMAGE模式也不影响，还是2个DrawCall，添加的蒙板图片不算DrawCall</p>
 ]]></content>
@@ -170,7 +170,7 @@
 <td style="text-align:left">t:prefab + name</td>
 <td style="text-align:left">t:prefab rank</td>
 <td style="text-align:left">搜索名字中包含rank的预制体</td>
-<td style="text-align:left"><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/blogImg/1.png?raw=true" alt="img"></td>
+<td style="text-align:left"><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/Cocos%E6%90%9C%E7%B4%A2/1.png?raw=true" alt="img"></td>
 </tr>
 <tr>
 <td style="text-align:left">sprite-frame</td>
@@ -178,7 +178,7 @@
 <td style="text-align:left">t:sprite-frame + name</td>
 <td style="text-align:left">t:sprite-frame icon</td>
 <td style="text-align:left">搜索名字中包含icon的精灵图片</td>
-<td style="text-align:left"><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/Cocos%E6%90%9C%E7%B4%A2/2.png?raw=true" alt="img"></td>
+<td style="text-align:left"><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/Cocos%E6%90%9C%E7%B4%A2/2.png?raw=true" alt="img"></td>
 </tr>
 <tr>
 <td style="text-align:left">javascript/typescript/coffeescript</td>
@@ -186,7 +186,7 @@
 <td style="text-align:left">t:javascript + name</td>
 <td style="text-align:left">t:javascript rank</td>
 <td style="text-align:left">搜索包含rank的js代码文件</td>
-<td style="text-align:left"><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/Cocos%E6%90%9C%E7%B4%A2/3.png?raw=true" alt="img"></td>
+<td style="text-align:left"><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/Cocos%E6%90%9C%E7%B4%A2/3.png?raw=true" alt="img"></td>
 </tr>
 <tr>
 <td style="text-align:left">animation-clip</td>
@@ -194,7 +194,7 @@
 <td style="text-align:left">t:animation-clip + name</td>
 <td style="text-align:left">t:animation-clip rank</td>
 <td style="text-align:left">搜索包含rank的动画</td>
-<td style="text-align:left"><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/Cocos%E6%90%9C%E7%B4%A2/4.png?raw=true" alt="img"></td>
+<td style="text-align:left"><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/Cocos%E6%90%9C%E7%B4%A2/4.png?raw=true" alt="img"></td>
 </tr>
 <tr>
 <td style="text-align:left">audio-clip</td>
@@ -202,7 +202,7 @@
 <td style="text-align:left">t:audio-clip + name</td>
 <td style="text-align:left">t:audio-clip click</td>
 <td style="text-align:left">搜索包含click的音频</td>
-<td style="text-align:left"><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/Cocos%E6%90%9C%E7%B4%A2/5.png?raw=true" alt="img"></td>
+<td style="text-align:left"><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/Cocos%E6%90%9C%E7%B4%A2/5.png?raw=true" alt="img"></td>
 </tr>
 <tr>
 <td style="text-align:left">bitmap-font或者font</td>
@@ -210,7 +210,7 @@
 <td style="text-align:left">t:bitmap-font</td>
 <td style="text-align:left">t:bitmap-font time</td>
 <td style="text-align:left">搜索包含time的位图字体</td>
-<td style="text-align:left"><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/Cocos%E6%90%9C%E7%B4%A2/6.png?raw=true" alt="img"></td>
+<td style="text-align:left"><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/Cocos%E6%90%9C%E7%B4%A2/6.png?raw=true" alt="img"></td>
 </tr>
 <tr>
 <td style="text-align:left">scene</td>
@@ -218,7 +218,7 @@
 <td style="text-align:left">t:scene + name</td>
 <td style="text-align:left">t:scene</td>
 <td style="text-align:left">搜索场景</td>
-<td style="text-align:left"><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/Cocos%E6%90%9C%E7%B4%A2/7.png?raw=true" alt="img"></td>
+<td style="text-align:left"><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/Cocos%E6%90%9C%E7%B4%A2/7.png?raw=true" alt="img"></td>
 </tr>
 <tr>
 <td style="text-align:left">folder</td>
@@ -226,12 +226,12 @@
 <td style="text-align:left">t:folder + name</td>
 <td style="text-align:left">t:folder anim</td>
 <td style="text-align:left">搜索带anim的文件夹</td>
-<td style="text-align:left"><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/Cocos%E6%90%9C%E7%B4%A2/8.png?raw=true" alt="img"></td>
+<td style="text-align:left"><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/Cocos%E6%90%9C%E7%B4%A2/8.png?raw=true" alt="img"></td>
 </tr>
 </tbody>
 </table>
 <p>常用资源类型查阅：</p>
-<p><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/Cocos%E6%90%9C%E7%B4%A2/9.png?raw=true" alt="img"></p>
+<p><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/Cocos%E6%90%9C%E7%B4%A2/9.png?raw=true" alt="img"></p>
 <h3 id="NodeTree层级管理器面板"><a href="#NodeTree层级管理器面板" class="headerlink" title="NodeTree层级管理器面板"></a>NodeTree层级管理器面板</h3><p>层级面板的搜索主要使用组件类型搜索，比如节点cc.Node，动画组件cc.Animation</p>
 <table>
 <thead>
@@ -251,7 +251,7 @@
 <td style="text-align:left">t:cc.Node + name</td>
 <td style="text-align:left">t:cc.Node rank</td>
 <td style="text-align:left">搜索带rank的节点</td>
-<td style="text-align:left"><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/Cocos%E6%90%9C%E7%B4%A2/10.png?raw=true" alt="img"></td>
+<td style="text-align:left"><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/Cocos%E6%90%9C%E7%B4%A2/10.png?raw=true" alt="img"></td>
 </tr>
 <tr>
 <td style="text-align:left">cc.Animation</td>
@@ -259,7 +259,7 @@
 <td style="text-align:left">t:cc.Animation + name</td>
 <td style="text-align:left">t:cc.Animation</td>
 <td style="text-align:left">搜索挂载有Animation组件的节点</td>
-<td style="text-align:left"><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/Cocos%E6%90%9C%E7%B4%A2/11.png?raw=true" alt="img"></td>
+<td style="text-align:left"><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/Cocos%E6%90%9C%E7%B4%A2/11.png?raw=true" alt="img"></td>
 </tr>
 <tr>
 <td style="text-align:left">cc.Label</td>
@@ -267,7 +267,7 @@
 <td style="text-align:left">t:cc.Label + name</td>
 <td style="text-align:left">t:cc.Label tip</td>
 <td style="text-align:left">搜索名称中带有tip且挂载Label组件的节点</td>
-<td style="text-align:left"><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/Cocos%E6%90%9C%E7%B4%A2/12.png?raw=true" alt="img"></td>
+<td style="text-align:left"><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/Cocos%E6%90%9C%E7%B4%A2/12.png?raw=true" alt="img"></td>
 </tr>
 <tr>
 <td style="text-align:left">cc.Button</td>
@@ -283,7 +283,7 @@
 <td style="text-align:left">t:cc.Sprite + name</td>
 <td style="text-align:left">t:cc.Sprite bg</td>
 <td style="text-align:left">搜索名称中带bg且挂载有sprite组件的节点</td>
-<td style="text-align:left"><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/Cocos%E6%90%9C%E7%B4%A2/13.png?raw=true" alt="img"></td>
+<td style="text-align:left"><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/Cocos%E6%90%9C%E7%B4%A2/13.png?raw=true" alt="img"></td>
 </tr>
 <tr>
 <td style="text-align:left">cc.Toggle</td>
@@ -291,7 +291,7 @@
 <td style="text-align:left">t:cc.Toggle</td>
 <td style="text-align:left">t:cc.Toggle</td>
 <td style="text-align:left">搜索挂载有toggle组件的节点</td>
-<td style="text-align:left"><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/Cocos%E6%90%9C%E7%B4%A2/14.png?raw=true" alt="img"></td>
+<td style="text-align:left"><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/Cocos%E6%90%9C%E7%B4%A2/14.png?raw=true" alt="img"></td>
 </tr>
 <tr>
 <td style="text-align:left">cc.EditBox</td>
@@ -315,19 +315,19 @@
 <td style="text-align:left">t:festivalSkin</td>
 <td style="text-align:left">t:festivalSkin</td>
 <td style="text-align:left">搜索挂载有festivalSkin的节点</td>
-<td style="text-align:left"><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/Cocos%E6%90%9C%E7%B4%A2/15.png?raw=true" alt="img"></td>
+<td style="text-align:left"><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/Cocos%E6%90%9C%E7%B4%A2/15.png?raw=true" alt="img"></td>
 </tr>
 </tbody>
 </table>
 <p>常用组件类型查阅：</p>
 <p>在节点的Properties面板的AddComponent可以点开，或者创建节点时可以看到</p>
-<p><img src="https://app.yinxiang.com/shard/s20/res/ed37cafe-dfa6-433d-8363-7f2fd949fdb6.png" alt="img"><img src="https://app.yinxiang.com/shard/s20/res/f16ea6d6-919a-40a4-a261-0c189db71c3d.png" alt="img"></p>
+<p><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/Cocos%E6%90%9C%E7%B4%A2/16.png?raw=true" alt="img"><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/Cocos%E6%90%9C%E7%B4%A2/17.png?raw=true" alt="img"></p>
 <h3 id="联合搜索"><a href="#联合搜索" class="headerlink" title="联合搜索"></a>联合搜索</h3><p>需要同时搜索多个标签怎么办，使用英文逗号隔开即可，这种情况不常用</p>
 <p>搜索精灵跟预制体中包含rank的资源，结果如下</p>
-<p><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/Cocos%E6%90%9C%E7%B4%A2/16.png?raw=true" alt="img"></p>
+<p><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/Cocos%E6%90%9C%E7%B4%A2/18.png?raw=true" alt="img"></p>
 <h3 id="模糊搜索"><a href="#模糊搜索" class="headerlink" title="模糊搜索"></a>模糊搜索</h3><p>比如我只知道排行包含r、k两个字母，那么我可以直接使用：t:prefab r k</p>
 <p>r跟k中间加入一个空格，可以搜索出带这两个字母或者其中一个的所有预制体</p>
-<p><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/Cocos%E6%90%9C%E7%B4%A2/17.png?raw=true" alt="img"></p>
+<p><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/Cocos%E6%90%9C%E7%B4%A2/19.png?raw=true" alt="img"></p>
 ]]></content>
       <tags>
         <tag>Cocos</tag>
@@ -364,9 +364,9 @@
 <h2 id="使用："><a href="#使用：" class="headerlink" title="使用："></a>使用：</h2><h3 id="基本用法"><a href="#基本用法" class="headerlink" title="基本用法"></a>基本用法</h3><p>TextMeshPro显示图素并不复杂，直接使用类似富文本的格式进行插入即可</p>
 <p>例如：升级厢房到2级需要\n&lt;sprite=0&gt;1000秒\n &lt;sprite=2&gt;1000\n 确定升级吗？</p>
 <p>以上这一段文本的显示效果为：</p>
-<p><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/TextMeshPro/%E5%9B%BE%E6%96%87%E6%B7%B7%E6%8E%92/1.png?raw=true" alt="img"></p>
-<p><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/TextMeshPro/%E5%9B%BE%E6%96%87%E6%B7%B7%E6%8E%92/2.png?raw=true" alt="img"></p>
-<h3 id="颜色变化：更多请参考：3-Sprite-Assets"><a href="#颜色变化：更多请参考：3-Sprite-Assets" class="headerlink" title="颜色变化：更多请参考：3. Sprite Assets"></a>颜色变化：更多请参考：<a href="https://stl.woobest.com/wiki/display/T18/3.+Sprite+Assets" target="_blank" rel="noopener">3. Sprite Assets</a></h3><ol>
+<p><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/TextMeshPro/%E5%9B%BE%E6%96%87%E6%B7%B7%E6%8E%92/1.png?raw=true" alt="img"></p>
+<p><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/TextMeshPro/%E5%9B%BE%E6%96%87%E6%B7%B7%E6%8E%92/2.png?raw=true" alt="img"></p>
+<h3 id="颜色变化："><a href="#颜色变化：" class="headerlink" title="颜色变化："></a>颜色变化：</h3><ol>
 <li>只有字颜色变化，图片颜色不变</li>
 <li>图片跟字颜色一起变化</li>
 <li>图片变化，字颜色不变</li>
@@ -374,24 +374,24 @@
 <p>以下图片与字颜色皆为白色</p>
 <p>1：通用模式，直接修改VetextColor：&lt;sprite=1&gt;继续加油</p>
 <p>效果：</p>
-<p><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/TextMeshPro/%E5%9B%BE%E6%96%87%E6%B7%B7%E6%8E%92/3.png?raw=true" alt="img"><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/TextMeshPro/%E5%9B%BE%E6%96%87%E6%B7%B7%E6%8E%92/4.png?raw=true" alt="img"></p>
+<p><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/TextMeshPro/%E5%9B%BE%E6%96%87%E6%B7%B7%E6%8E%92/3.png?raw=true" alt="img"><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/TextMeshPro/%E5%9B%BE%E6%96%87%E6%B7%B7%E6%8E%92/4.png?raw=true" alt="img"></p>
 <p>2：&lt;sprite=1, tint=1&gt;继续加油</p>
-<p><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/TextMeshPro/%E5%9B%BE%E6%96%87%E6%B7%B7%E6%8E%92/5.png?raw=true" alt="img"></p>
+<p><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/TextMeshPro/%E5%9B%BE%E6%96%87%E6%B7%B7%E6%8E%92/5.png?raw=true" alt="img"></p>
 <p>3： &lt;color=#FF0000&gt;&lt;sprite=1, tint=1&gt;&lt;color=#ffffff&gt;继续加油  或者 &lt;sprite=1 color=#FF0000&gt;继续加油</p>
 <p>效果：</p>
-<p><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/TextMeshPro/%E5%9B%BE%E6%96%87%E6%B7%B7%E6%8E%92/6.png?raw=true" alt="img"></p>
+<p><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/TextMeshPro/%E5%9B%BE%E6%96%87%E6%B7%B7%E6%8E%92/6.png?raw=true" alt="img"></p>
 <h3 id="多语言用法"><a href="#多语言用法" class="headerlink" title="多语言用法"></a>多语言用法</h3><p>示例：</p>
 <p>\n：换行</p>
 <p>&lt;sprite=%d&gt;: 图片id  需要保证此id跟Sprite Asset中的id是一致的</p>
 <p>考虑到多个Sprite Asset，改为<sprite name="resourceName">，resourceName为游戏中资源名</sprite></p>
 <p>使用：亲喵~ 确定要消耗\n<sprite name="%s">%d\n将建筑升级到2级吗？</sprite></p>
-<p><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/TextMeshPro/%E5%9B%BE%E6%96%87%E6%B7%B7%E6%8E%92/7.png?raw=true" alt="img"></p>
+<p><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/TextMeshPro/%E5%9B%BE%E6%96%87%E6%B7%B7%E6%8E%92/7.png?raw=true" alt="img"></p>
 <p>效果：</p>
-<p><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/TextMeshPro/%E5%9B%BE%E6%96%87%E6%B7%B7%E6%8E%92/8.png?raw=true" alt="img"></p>
+<p><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/TextMeshPro/%E5%9B%BE%E6%96%87%E6%B7%B7%E6%8E%92/8.png?raw=true" alt="img"></p>
 <p>为确保Sprite Asset的图片id跟资源id保持一致，</p>
 <p>法1：可以在Sprite Asset上点开Sprite Character Table进行编辑，修改Glyph ID即可调整顺序，保证图片ID跟此处的Glyph ID一致即可</p>
 <p>缺点：每次重新生成Sprite Asset都需要手动修改一遍id，数量一多简直灾难</p>
-<p><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/TextMeshPro/%E5%9B%BE%E6%96%87%E6%B7%B7%E6%8E%92/9.png?raw=true" alt="img"></p>
+<p><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/TextMeshPro/%E5%9B%BE%E6%96%87%E6%B7%B7%E6%8E%92/9.png?raw=true" alt="img"></p>
 <p>法2：Resources表添加id，对应这个数据</p>
 <p>再议，Sprite Asset 每次生成id都不一致，需要看看原理</p>
 ]]></content>
@@ -404,7 +404,7 @@
     <url>/2019/08/12/TextMeshPro/TextMeshPro-Falback%E6%9C%BA%E5%88%B6/</url>
     <content><![CDATA[<p>无论是Font Asset 还是Sprite Asset，其大小都是有限制的，不可能无限的大，因此如果我们需要使用的文字在其他Font Asset中，就需要切换Font Asset，但是如果一段文本中的字分别存在不同的Font Asset中，这时候怎么办，</p>
 <p>TextMeshPro使用Fallback机制解决了这个问题</p>
-<p><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/TextMeshPro/Fallback%E6%9C%BA%E5%88%B6/1.png?raw=true" alt="img"></p>
+<p><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/TextMeshPro/Fallback%E6%9C%BA%E5%88%B6/1.png?raw=true" alt="img"></p>
 <p>在每个Font Asset下面都有一个Fallback Font Asset，只需要将其他的Font Asset添加到列表中，如果输入的文字不在当前引用的Font Asset中，TextMeshPro就会自动去这些Font Asset中进行查找。</p>
 <p>查找的顺序为：当前引用的Font Asset - 当前引用Font Asset的Fallback Font Asset - 当前TextMeshProUGUI(即场景中的TextMeshUI)的Extra Setting中查找 - TMP Setting的Fallback中查找</p>
 <p>→ TMP Setting 的 Default Sprite Asset - TMP Setting的Default Font Asset查找 - 如果还是没有，则显示TMPSetting 的Missing Glyphs</p>
@@ -418,21 +418,21 @@
     <title>TextMeshPro - Preset机制</title>
     <url>/2019/08/12/TextMeshPro/TextMeshPro-Preset%E9%A2%84%E8%AE%BE%E6%9C%BA%E5%88%B6/</url>
     <content><![CDATA[<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>Material Preset 用于TextMeshPro的材质切换。材质用于不同的效果表现，比如描边、渐变等。</p>
-<h2 id="创建-替换材质"><a href="#创建-替换材质" class="headerlink" title="创建/替换材质"></a>创建/替换材质</h2><p><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/TextMeshPro/Material%20Preset%E6%9C%BA%E5%88%B6/1.png?raw=true" alt="img"></p>
+<h2 id="创建-替换材质"><a href="#创建-替换材质" class="headerlink" title="创建/替换材质"></a>创建/替换材质</h2><p><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/TextMeshPro/Material%20Preset%E6%9C%BA%E5%88%B6/1.png?raw=true" alt="img"></p>
 <p>如上图，可以看到每个Font Asset都存在一个材质跟一张贴图，这张是默认的材质，无法移动无法编辑。</p>
 <ol>
-<li>选中这张默认材质，Ctrl + D 拷贝一个副本，<img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/TextMeshPro/Material%20Preset%E6%9C%BA%E5%88%B6/2.png?raw=true" alt="img"></li>
+<li>选中这张默认材质，Ctrl + D 拷贝一个副本，<img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/TextMeshPro/Material%20Preset%E6%9C%BA%E5%88%B6/2.png?raw=true" alt="img"></li>
 <li>将材质移动到Assets/TextMeshPro/Resources/Materials/下。修改名称为MNJHK SDF - Outline，前面为Font Asset名称，以“-”分割，后面跟着的是效果名称，Outline表示描边</li>
-<li>修改材质的shader为TextMeshPro/Mobile/Distance Field，如图：<img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/TextMeshPro/Material%20Preset%E6%9C%BA%E5%88%B6/3.png?raw=true" alt="img"></li>
+<li>修改材质的shader为TextMeshPro/Mobile/Distance Field，如图：<img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/TextMeshPro/Material%20Preset%E6%9C%BA%E5%88%B6/3.png?raw=true" alt="img"></li>
 <li>勾选Outline选项，Color为描边颜色，Thickness为描边强度，调整这两个属性修改描边效果</li>
-<li>在Hierarchy中选中需要描边效果的文本，在其Inspector中，可以看到其正在使用的材质：<img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/TextMeshPro/Material%20Preset%E6%9C%BA%E5%88%B6/4.png?raw=true" alt="img"><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/TextMeshPro/Material%20Preset%E6%9C%BA%E5%88%B6/5.png?raw=true" alt="img"></li>
-<li>将Inspector滑动到最底下，即可以看到材质：<img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/TextMeshPro/Material%20Preset%E6%9C%BA%E5%88%B6/6.png?raw=true" alt="img"></li>
-<li>将之前编辑好的描边的材质拖到红框中，就可以看到效果：<img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/TextMeshPro/Material%20Preset%E6%9C%BA%E5%88%B6/7.png?raw=true" alt="img"></li>
+<li>在Hierarchy中选中需要描边效果的文本，在其Inspector中，可以看到其正在使用的材质：<img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/TextMeshPro/Material%20Preset%E6%9C%BA%E5%88%B6/4.png?raw=true" alt="img"><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/TextMeshPro/Material%20Preset%E6%9C%BA%E5%88%B6/5.png?raw=true" alt="img"></li>
+<li>将Inspector滑动到最底下，即可以看到材质：<img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/TextMeshPro/Material%20Preset%E6%9C%BA%E5%88%B6/6.png?raw=true" alt="img"></li>
+<li>将之前编辑好的描边的材质拖到红框中，就可以看到效果：<img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/TextMeshPro/Material%20Preset%E6%9C%BA%E5%88%B6/7.png?raw=true" alt="img"></li>
 </ol>
 <p>替换前后效果：</p>
-<p><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/TextMeshPro/Material%20Preset%E6%9C%BA%E5%88%B6/8.png?raw=true" alt="img"><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/TextMeshPro/Material%20Preset%E6%9C%BA%E5%88%B6/9.png?raw=true" alt="img"></p>
+<p><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/TextMeshPro/Material%20Preset%E6%9C%BA%E5%88%B6/8.png?raw=true" alt="img"><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/TextMeshPro/Material%20Preset%E6%9C%BA%E5%88%B6/9.png?raw=true" alt="img"></p>
 <p>使用之后，其Inspector的Material Preset中就会有拖入的材质，可以进行选择切换：</p>
-<p><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/TextMeshPro/Material%20Preset%E6%9C%BA%E5%88%B6/10.png?raw=true" alt="img"></p>
+<p><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/TextMeshPro/Material%20Preset%E6%9C%BA%E5%88%B6/10.png?raw=true" alt="img"></p>
 <h2 id="代码更新材质"><a href="#代码更新材质" class="headerlink" title="代码更新材质"></a>代码更新材质</h2>]]></content>
       <tags>
         <tag>TextMeshPro</tag>
@@ -442,34 +442,34 @@
     <title>TextMeshPro - Sprite Asset</title>
     <url>/2019/08/11/TextMeshPro/TextMeshPro-SpriteAsset/</url>
     <content><![CDATA[<h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><p>图集一张，图集必须要是Sprite（2D and UI）,SpriteMode 必须为Multiple，并在Sprite Editor中切好。图集对应的Json文件一个配置参考下图：</p>
-<p><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/TextMeshPro/Sprite%20Assets/1.png?raw=true" alt="img"></p>
+<p><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/TextMeshPro/Sprite%20Assets/1.png?raw=true" alt="img"></p>
 <p>法1：</p>
 <p>Windows - TextMeshPro - Sprite Importer:</p>
-<p><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/TextMeshPro/Sprite%20Assets/2.png?raw=true" alt="img"></p>
+<p><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/TextMeshPro/Sprite%20Assets/2.png?raw=true" alt="img"></p>
 <p>将准备好的Json文件拖入Sprite Date Source，然后将图集拖入SpriteTexture Atlas，Import Format选择TexturePacker</p>
 <p>点击Create Sprite Asset即可，点击保存</p>
 <p>法2：</p>
 <p>选中图集，右键 - Create - Text Mesh Pro - Sprite Asset，自动生成Sprite Asset</p>
 <p>生成以后面板如下：</p>
-<p><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/TextMeshPro/Sprite%20Assets/3.png?raw=true" alt="img"></p>
+<p><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/TextMeshPro/Sprite%20Assets/3.png?raw=true" alt="img"></p>
 <p>Sprite Character Table 为精灵的列表，记录了精灵的ID、Name、Unicode等参数，Sprite Glyph Table为字形列表，定义了元素的裁切、位置跟偏移等信息，Previous Page 跟 Next Page可以进行切页，</p>
 <p>点击SpriteCharacter Table中的元素，会变为对应图片的Glyph操作面板，可以操作单个图片的偏移等数据，如果需要统一操作，可以在Sprite Glyph Table的最底下看到Global操作，修改值将会同步到所有的</p>
 <p>精灵图片</p>
-<p><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/TextMeshPro/Sprite%20Assets/4.png?raw=true" alt="img"></p>
+<p><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/TextMeshPro/Sprite%20Assets/4.png?raw=true" alt="img"></p>
 <h3 id="更新"><a href="#更新" class="headerlink" title="更新"></a>更新</h3><p>一旦添加跟删除Sprite，Sprite Asset对应的Texture贴图必然会发生改变，那么如何更新Sprite Asset呢？</p>
 <p>选中需要更新的Sprite Asset，将其Inspector面板拉取到最顶端，点击右上角的齿轮按钮，在弹出的窗口中点击“Update Sprite Asset”，就会更新新增的图素到这个Sprite Asset中</p>
-<p><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/TextMeshPro/Sprite%20Assets/5.png?raw=true" alt="img"></p>
+<p><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/TextMeshPro/Sprite%20Assets/5.png?raw=true" alt="img"></p>
 <h3 id="颜色修改"><a href="#颜色修改" class="headerlink" title="颜色修改"></a>颜色修改</h3><p>Sprite Asset默认时不参与组件的颜色变化，即如果是图文混排，那么直接修改Text的color变化，图素并不会跟着更改，那么怎么同步修改呢？</p>
 <ul>
 <li>tint 色调</li>
 </ul>
 <p><sprite index="0" tint="1">真棒！ tint值为0时不参与文本颜色（包括alpha）变化，为1时参与颜色变化</sprite></p>
-<p>tint=0时：<img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/TextMeshPro/Sprite%20Assets/6.png?raw=true" alt="img"><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/TextMeshPro/Sprite%20Assets/7.png?raw=true" alt="img"></p>
-<p>tint=1时：<img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/TextMeshPro/Sprite%20Assets/8.png?raw=true" alt="img"><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/TextMeshPro/Sprite%20Assets/9.png?raw=true" alt="img"></p>
+<p>tint=0时：<img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/TextMeshPro/Sprite%20Assets/6.png?raw=true" alt="img"><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/TextMeshPro/Sprite%20Assets/7.png?raw=true" alt="img"></p>
+<p>tint=1时：<img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/TextMeshPro/Sprite%20Assets/8.png?raw=true" alt="img"><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/TextMeshPro/Sprite%20Assets/9.png?raw=true" alt="img"></p>
 <p>那么如果只是需要对图素Sprite进行颜色修改呢？使用color标签</p>
-<p><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/TextMeshPro/Sprite%20Assets/10.png?raw=true" alt="img"><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/TextMeshPro/Sprite%20Assets/11.png?raw=true" alt="img"></p>
+<p><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/TextMeshPro/Sprite%20Assets/10.png?raw=true" alt="img"><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/TextMeshPro/Sprite%20Assets/11.png?raw=true" alt="img"></p>
 <p>如果想要同时参与文本的Alpha修改又保持图素的颜色，则可以color与tint同时使用：</p>
-<p>alpha修改：<img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/TextMeshPro/Sprite%20Assets/12.png?raw=true" alt="img"><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/TextMeshPro/Sprite%20Assets/13.png?raw=true" alt="img"></p>
+<p>alpha修改：<img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/TextMeshPro/Sprite%20Assets/12.png?raw=true" alt="img"><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/TextMeshPro/Sprite%20Assets/13.png?raw=true" alt="img"></p>
 <p>这种方式，需要谨慎，如果只有Alpha调整是没有关系的，但是一旦涉及到颜色的变化，那么图素由于不是白色，颜色的变化就会很诡异，大概就是只有在白色上面绘制颜色才是正常的颜色。</p>
 <h3 id="使用-Tag标签"><a href="#使用-Tag标签" class="headerlink" title="使用 Tag标签"></a>使用 Tag标签</h3><p>在场景中创建Create - UI - TextMeshPro UI</p>
 <p>在输入框中输入对应的文本即可</p>
@@ -478,9 +478,9 @@
 </ul>
 <p>&lt;sprite=0&gt; 或者<sprite index="0">  直接显示index为0的图素  </sprite></p>
 <p>当然这里显示的只是TMP Setting中默认的Sprite Asset中的图素，默认Sprite Asset中不存在的，是没有的，设置如下图：</p>
-<p><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/TextMeshPro/Sprite%20Assets/14.png?raw=true" alt="img"></p>
+<p><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/TextMeshPro/Sprite%20Assets/14.png?raw=true" alt="img"></p>
 <p>如果默认的Sprite Asset添加了Fallback Sprite Asset，如下图：</p>
-<p><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/TextMeshPro/Sprite%20Assets/15.png?raw=true" alt="img"></p>
+<p><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/TextMeshPro/Sprite%20Assets/15.png?raw=true" alt="img"></p>
 <p>用index也是找不到的，需要使用name来查找</p>
 <p><sprite name="ham_1"> 可以找到两个Sprite Asset中name为“ham_1”的图素，先去默认的Sprite Asset，也就是Common中查找，没有的话再去Ham中查找，还没有的话，gg，不显示</sprite></p>
 <p>如果没有添加Fallback Sprite Asset的话，使用name只会查找默认Sprite Asset即Common中的图素Sprite，因此需要添加Sprite Asset名称来告诉TMP去哪里查找：</p>
@@ -499,9 +499,9 @@
     <url>/2019/08/10/TextMeshPro/TextMeshPro-Font%20Asset/</url>
     <content><![CDATA[<p>Font Asset是TextMeshPro渲染字体的主要资源文件，TextMeshPro渲染字体采用的是贴图渲染，因此需要将所有的文字都渲染为一张Font Asset进行使用</p>
 <h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><p>需要原生字体（Font）一个、保存着中文的txt文件一个</p>
-<p><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/TextMeshPro/FontAssets/1.png?raw=true" alt="img"></p>
+<p><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/TextMeshPro/FontAssets/1.png?raw=true" alt="img"></p>
 <h2 id="创建"><a href="#创建" class="headerlink" title="创建"></a>创建</h2><h3 id="静态Font-Asset："><a href="#静态Font-Asset：" class="headerlink" title="静态Font Asset："></a>静态Font Asset：</h3><p>打开Winddows - TextMeshPro - Font Asset Creator，打开创建面板</p>
-<p><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/TextMeshPro/FontAssets/2.png?raw=true" alt="img"></p>
+<p><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/TextMeshPro/FontAssets/2.png?raw=true" alt="img"></p>
 <p>将准备好的字体拖入Source Font File中，Sampling Point Size 是每个元素的大小，选择Auto Sizing即可。Auto Sizing会自动填满整张贴图且不会丢失，除非实在放不下。</p>
 <p>Padding是每个元素之间的间隔，这个保持9-12，对字体特效影响比较大</p>
 <p>PackingMethod为打包方法，Fast为快捷方式，Otl为最优，开发时选择fast，出包选择Otl。</p>
@@ -513,14 +513,14 @@
 <p>RenderMode，渲染模式，开发选择ADFAA，出包选择SDF16</p>
 <p>Get kerning Pairs 不要问，问也不清楚</p>
 <p>最后点击 Generate Font Asset 进行生成</p>
-<p><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/TextMeshPro/FontAssets/3.png?raw=true" alt="img"></p>
+<p><img src="https://https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/TextMeshPro/FontAssets/3.png?raw=true" alt="img"></p>
 <p>左边的红框中是结果，Missing characters表示丢失了多少个字，下面是丢失的列表，这些是无法打入的，可能需要删除或者重新打包</p>
 <p>右边的红框是生成的贴图预览，一堆点表示原始文本里面有很多点，不合格，需要删除这些点</p>
 <p>最后点击Save/SaveAs进行保存，Save是覆盖，Save As 是另存为</p>
-<p><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/TextMeshPro/FontAssets/4.png?raw=true" alt="img"></p>
+<p><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/TextMeshPro/FontAssets/4.png?raw=true" alt="img"></p>
 <p>生成之后使用请看：<a href="https://stl.woobest.com/wiki/pages/viewpage.action?pageId=58759620" target="_blank" rel="noopener">8. TextMesh使用流程</a></p>
 <h3 id="动态Font-Asset："><a href="#动态Font-Asset：" class="headerlink" title="动态Font Asset："></a>动态Font Asset：</h3><p>选中准备好的字体Font，然后右键Create - TextMeshPro - Font Asset，会生成一个以Font为格式的空Font Asset文件</p>
-<p><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/TextMeshPro/FontAssets/5.png?raw=true" alt="img"></p>
+<p><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/TextMeshPro/FontAssets/5.png?raw=true" alt="img"></p>
 <p>可以看到这张Font Asset的Atlas Population Mode为Dynamic，即动态的，动态的意思为此Font Asset为空，用以保存玩家或者服务器的不确定输入</p>
 <h3 id="静态跟动态Font-Asset"><a href="#静态跟动态Font-Asset" class="headerlink" title="静态跟动态Font Asset"></a>静态跟动态Font Asset</h3><p>静态贴图只能通过生成来更新贴图的内容，而动态贴图则可以在游戏过程中进行输入跟更新贴图内容，</p>
 <p>这种方式的优势在于，如果遇到不确定的输入文本，需要进行显示的时候，静态Font Asset中没有，则无法显示，</p>

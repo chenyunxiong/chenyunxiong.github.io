@@ -360,21 +360,21 @@
         
           
             <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>Material Preset 用于TextMeshPro的材质切换。材质用于不同的效果表现，比如描边、渐变等。</p>
-<h2 id="创建-替换材质"><a href="#创建-替换材质" class="headerlink" title="创建/替换材质"></a>创建/替换材质</h2><p><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/TextMeshPro/Material%20Preset%E6%9C%BA%E5%88%B6/1.png?raw=true" alt="img"></p>
+<h2 id="创建-替换材质"><a href="#创建-替换材质" class="headerlink" title="创建/替换材质"></a>创建/替换材质</h2><p><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/TextMeshPro/Material%20Preset%E6%9C%BA%E5%88%B6/1.png?raw=true" alt="img"></p>
 <p>如上图，可以看到每个Font Asset都存在一个材质跟一张贴图，这张是默认的材质，无法移动无法编辑。</p>
 <ol>
-<li>选中这张默认材质，Ctrl + D 拷贝一个副本，<img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/TextMeshPro/Material%20Preset%E6%9C%BA%E5%88%B6/2.png?raw=true" alt="img"></li>
+<li>选中这张默认材质，Ctrl + D 拷贝一个副本，<img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/TextMeshPro/Material%20Preset%E6%9C%BA%E5%88%B6/2.png?raw=true" alt="img"></li>
 <li>将材质移动到Assets/TextMeshPro/Resources/Materials/下。修改名称为MNJHK SDF - Outline，前面为Font Asset名称，以“-”分割，后面跟着的是效果名称，Outline表示描边</li>
-<li>修改材质的shader为TextMeshPro/Mobile/Distance Field，如图：<img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/TextMeshPro/Material%20Preset%E6%9C%BA%E5%88%B6/3.png?raw=true" alt="img"></li>
+<li>修改材质的shader为TextMeshPro/Mobile/Distance Field，如图：<img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/TextMeshPro/Material%20Preset%E6%9C%BA%E5%88%B6/3.png?raw=true" alt="img"></li>
 <li>勾选Outline选项，Color为描边颜色，Thickness为描边强度，调整这两个属性修改描边效果</li>
-<li>在Hierarchy中选中需要描边效果的文本，在其Inspector中，可以看到其正在使用的材质：<img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/TextMeshPro/Material%20Preset%E6%9C%BA%E5%88%B6/4.png?raw=true" alt="img"><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/TextMeshPro/Material%20Preset%E6%9C%BA%E5%88%B6/5.png?raw=true" alt="img"></li>
-<li>将Inspector滑动到最底下，即可以看到材质：<img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/TextMeshPro/Material%20Preset%E6%9C%BA%E5%88%B6/6.png?raw=true" alt="img"></li>
-<li>将之前编辑好的描边的材质拖到红框中，就可以看到效果：<img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/TextMeshPro/Material%20Preset%E6%9C%BA%E5%88%B6/7.png?raw=true" alt="img"></li>
+<li>在Hierarchy中选中需要描边效果的文本，在其Inspector中，可以看到其正在使用的材质：<img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/TextMeshPro/Material%20Preset%E6%9C%BA%E5%88%B6/4.png?raw=true" alt="img"><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/TextMeshPro/Material%20Preset%E6%9C%BA%E5%88%B6/5.png?raw=true" alt="img"></li>
+<li>将Inspector滑动到最底下，即可以看到材质：<img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/TextMeshPro/Material%20Preset%E6%9C%BA%E5%88%B6/6.png?raw=true" alt="img"></li>
+<li>将之前编辑好的描边的材质拖到红框中，就可以看到效果：<img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/TextMeshPro/Material%20Preset%E6%9C%BA%E5%88%B6/7.png?raw=true" alt="img"></li>
 </ol>
 <p>替换前后效果：</p>
-<p><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/TextMeshPro/Material%20Preset%E6%9C%BA%E5%88%B6/8.png?raw=true" alt="img"><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/TextMeshPro/Material%20Preset%E6%9C%BA%E5%88%B6/9.png?raw=true" alt="img"></p>
+<p><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/TextMeshPro/Material%20Preset%E6%9C%BA%E5%88%B6/8.png?raw=true" alt="img"><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/TextMeshPro/Material%20Preset%E6%9C%BA%E5%88%B6/9.png?raw=true" alt="img"></p>
 <p>使用之后，其Inspector的Material Preset中就会有拖入的材质，可以进行选择切换：</p>
-<p><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/TextMeshPro/Material%20Preset%E6%9C%BA%E5%88%B6/10.png?raw=true" alt="img"></p>
+<p><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/TextMeshPro/Material%20Preset%E6%9C%BA%E5%88%B6/10.png?raw=true" alt="img"></p>
 <h2 id="代码更新材质"><a href="#代码更新材质" class="headerlink" title="代码更新材质"></a>代码更新材质</h2>
           
         
@@ -506,34 +506,34 @@
         
           
             <h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><p>图集一张，图集必须要是Sprite（2D and UI）,SpriteMode 必须为Multiple，并在Sprite Editor中切好。图集对应的Json文件一个配置参考下图：</p>
-<p><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/TextMeshPro/Sprite%20Assets/1.png?raw=true" alt="img"></p>
+<p><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/TextMeshPro/Sprite%20Assets/1.png?raw=true" alt="img"></p>
 <p>法1：</p>
 <p>Windows - TextMeshPro - Sprite Importer:</p>
-<p><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/TextMeshPro/Sprite%20Assets/2.png?raw=true" alt="img"></p>
+<p><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/TextMeshPro/Sprite%20Assets/2.png?raw=true" alt="img"></p>
 <p>将准备好的Json文件拖入Sprite Date Source，然后将图集拖入SpriteTexture Atlas，Import Format选择TexturePacker</p>
 <p>点击Create Sprite Asset即可，点击保存</p>
 <p>法2：</p>
 <p>选中图集，右键 - Create - Text Mesh Pro - Sprite Asset，自动生成Sprite Asset</p>
 <p>生成以后面板如下：</p>
-<p><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/TextMeshPro/Sprite%20Assets/3.png?raw=true" alt="img"></p>
+<p><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/TextMeshPro/Sprite%20Assets/3.png?raw=true" alt="img"></p>
 <p>Sprite Character Table 为精灵的列表，记录了精灵的ID、Name、Unicode等参数，Sprite Glyph Table为字形列表，定义了元素的裁切、位置跟偏移等信息，Previous Page 跟 Next Page可以进行切页，</p>
 <p>点击SpriteCharacter Table中的元素，会变为对应图片的Glyph操作面板，可以操作单个图片的偏移等数据，如果需要统一操作，可以在Sprite Glyph Table的最底下看到Global操作，修改值将会同步到所有的</p>
 <p>精灵图片</p>
-<p><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/TextMeshPro/Sprite%20Assets/4.png?raw=true" alt="img"></p>
+<p><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/TextMeshPro/Sprite%20Assets/4.png?raw=true" alt="img"></p>
 <h3 id="更新"><a href="#更新" class="headerlink" title="更新"></a>更新</h3><p>一旦添加跟删除Sprite，Sprite Asset对应的Texture贴图必然会发生改变，那么如何更新Sprite Asset呢？</p>
 <p>选中需要更新的Sprite Asset，将其Inspector面板拉取到最顶端，点击右上角的齿轮按钮，在弹出的窗口中点击“Update Sprite Asset”，就会更新新增的图素到这个Sprite Asset中</p>
-<p><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/TextMeshPro/Sprite%20Assets/5.png?raw=true" alt="img"></p>
+<p><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/TextMeshPro/Sprite%20Assets/5.png?raw=true" alt="img"></p>
 <h3 id="颜色修改"><a href="#颜色修改" class="headerlink" title="颜色修改"></a>颜色修改</h3><p>Sprite Asset默认时不参与组件的颜色变化，即如果是图文混排，那么直接修改Text的color变化，图素并不会跟着更改，那么怎么同步修改呢？</p>
 <ul>
 <li>tint 色调</li>
 </ul>
 <p><sprite index="0" tint="1">真棒！ tint值为0时不参与文本颜色（包括alpha）变化，为1时参与颜色变化</sprite></p>
-<p>tint=0时：<img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/TextMeshPro/Sprite%20Assets/6.png?raw=true" alt="img"><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/TextMeshPro/Sprite%20Assets/7.png?raw=true" alt="img"></p>
-<p>tint=1时：<img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/TextMeshPro/Sprite%20Assets/8.png?raw=true" alt="img"><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/TextMeshPro/Sprite%20Assets/9.png?raw=true" alt="img"></p>
+<p>tint=0时：<img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/TextMeshPro/Sprite%20Assets/6.png?raw=true" alt="img"><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/TextMeshPro/Sprite%20Assets/7.png?raw=true" alt="img"></p>
+<p>tint=1时：<img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/TextMeshPro/Sprite%20Assets/8.png?raw=true" alt="img"><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/TextMeshPro/Sprite%20Assets/9.png?raw=true" alt="img"></p>
 <p>那么如果只是需要对图素Sprite进行颜色修改呢？使用color标签</p>
-<p><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/TextMeshPro/Sprite%20Assets/10.png?raw=true" alt="img"><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/TextMeshPro/Sprite%20Assets/11.png?raw=true" alt="img"></p>
+<p><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/TextMeshPro/Sprite%20Assets/10.png?raw=true" alt="img"><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/TextMeshPro/Sprite%20Assets/11.png?raw=true" alt="img"></p>
 <p>如果想要同时参与文本的Alpha修改又保持图素的颜色，则可以color与tint同时使用：</p>
-<p>alpha修改：<img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/TextMeshPro/Sprite%20Assets/12.png?raw=true" alt="img"><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/TextMeshPro/Sprite%20Assets/13.png?raw=true" alt="img"></p>
+<p>alpha修改：<img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/TextMeshPro/Sprite%20Assets/12.png?raw=true" alt="img"><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/TextMeshPro/Sprite%20Assets/13.png?raw=true" alt="img"></p>
 <p>这种方式，需要谨慎，如果只有Alpha调整是没有关系的，但是一旦涉及到颜色的变化，那么图素由于不是白色，颜色的变化就会很诡异，大概就是只有在白色上面绘制颜色才是正常的颜色。</p>
 <h3 id="使用-Tag标签"><a href="#使用-Tag标签" class="headerlink" title="使用 Tag标签"></a>使用 Tag标签</h3><p>在场景中创建Create - UI - TextMeshPro UI</p>
 <p>在输入框中输入对应的文本即可</p>
@@ -542,9 +542,9 @@
 </ul>
 <p>&lt;sprite=0&gt; 或者<sprite index="0">  直接显示index为0的图素  </sprite></p>
 <p>当然这里显示的只是TMP Setting中默认的Sprite Asset中的图素，默认Sprite Asset中不存在的，是没有的，设置如下图：</p>
-<p><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/TextMeshPro/Sprite%20Assets/14.png?raw=true" alt="img"></p>
+<p><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/TextMeshPro/Sprite%20Assets/14.png?raw=true" alt="img"></p>
 <p>如果默认的Sprite Asset添加了Fallback Sprite Asset，如下图：</p>
-<p><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/TextMeshPro/Sprite%20Assets/15.png?raw=true" alt="img"></p>
+<p><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/TextMeshPro/Sprite%20Assets/15.png?raw=true" alt="img"></p>
 <p>用index也是找不到的，需要使用name来查找</p>
 <p><sprite name="ham_1"> 可以找到两个Sprite Asset中name为“ham_1”的图素，先去默认的Sprite Asset，也就是Common中查找，没有的话再去Ham中查找，还没有的话，gg，不显示</sprite></p>
 <p>如果没有添加Fallback Sprite Asset的话，使用name只会查找默认Sprite Asset即Common中的图素Sprite，因此需要添加Sprite Asset名称来告诉TMP去哪里查找：</p>
@@ -685,9 +685,9 @@
           
             <p>Font Asset是TextMeshPro渲染字体的主要资源文件，TextMeshPro渲染字体采用的是贴图渲染，因此需要将所有的文字都渲染为一张Font Asset进行使用</p>
 <h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><p>需要原生字体（Font）一个、保存着中文的txt文件一个</p>
-<p><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/TextMeshPro/FontAssets/1.png?raw=true" alt="img"></p>
+<p><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/TextMeshPro/FontAssets/1.png?raw=true" alt="img"></p>
 <h2 id="创建"><a href="#创建" class="headerlink" title="创建"></a>创建</h2><h3 id="静态Font-Asset："><a href="#静态Font-Asset：" class="headerlink" title="静态Font Asset："></a>静态Font Asset：</h3><p>打开Winddows - TextMeshPro - Font Asset Creator，打开创建面板</p>
-<p><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/TextMeshPro/FontAssets/2.png?raw=true" alt="img"></p>
+<p><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/TextMeshPro/FontAssets/2.png?raw=true" alt="img"></p>
 <p>将准备好的字体拖入Source Font File中，Sampling Point Size 是每个元素的大小，选择Auto Sizing即可。Auto Sizing会自动填满整张贴图且不会丢失，除非实在放不下。</p>
 <p>Padding是每个元素之间的间隔，这个保持9-12，对字体特效影响比较大</p>
 <p>PackingMethod为打包方法，Fast为快捷方式，Otl为最优，开发时选择fast，出包选择Otl。</p>
@@ -699,14 +699,14 @@
 <p>RenderMode，渲染模式，开发选择ADFAA，出包选择SDF16</p>
 <p>Get kerning Pairs 不要问，问也不清楚</p>
 <p>最后点击 Generate Font Asset 进行生成</p>
-<p><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/TextMeshPro/FontAssets/3.png?raw=true" alt="img"></p>
+<p><img src="https://https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/TextMeshPro/FontAssets/3.png?raw=true" alt="img"></p>
 <p>左边的红框中是结果，Missing characters表示丢失了多少个字，下面是丢失的列表，这些是无法打入的，可能需要删除或者重新打包</p>
 <p>右边的红框是生成的贴图预览，一堆点表示原始文本里面有很多点，不合格，需要删除这些点</p>
 <p>最后点击Save/SaveAs进行保存，Save是覆盖，Save As 是另存为</p>
-<p><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/TextMeshPro/FontAssets/4.png?raw=true" alt="img"></p>
+<p><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/TextMeshPro/FontAssets/4.png?raw=true" alt="img"></p>
 <p>生成之后使用请看：<a href="https://stl.woobest.com/wiki/pages/viewpage.action?pageId=58759620" target="_blank" rel="noopener">8. TextMesh使用流程</a></p>
 <h3 id="动态Font-Asset："><a href="#动态Font-Asset：" class="headerlink" title="动态Font Asset："></a>动态Font Asset：</h3><p>选中准备好的字体Font，然后右键Create - TextMeshPro - Font Asset，会生成一个以Font为格式的空Font Asset文件</p>
-<p><img src="https://github.com/chenyunxiong/chenyunxiong.github.io/blob/master/img/TextMeshPro/FontAssets/5.png?raw=true" alt="img"></p>
+<p><img src="https://github.com/chenyunxiong/Personal-Study-Wiki/blob/master/Image/TextMeshPro/FontAssets/5.png?raw=true" alt="img"></p>
 <p>可以看到这张Font Asset的Atlas Population Mode为Dynamic，即动态的，动态的意思为此Font Asset为空，用以保存玩家或者服务器的不确定输入</p>
 <h3 id="静态跟动态Font-Asset"><a href="#静态跟动态Font-Asset" class="headerlink" title="静态跟动态Font Asset"></a>静态跟动态Font Asset</h3><p>静态贴图只能通过生成来更新贴图的内容，而动态贴图则可以在游戏过程中进行输入跟更新贴图内容，</p>
 <p>这种方式的优势在于，如果遇到不确定的输入文本，需要进行显示的时候，静态Font Asset中没有，则无法显示，</p>
